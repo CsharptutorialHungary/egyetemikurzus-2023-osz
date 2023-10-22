@@ -1,5 +1,6 @@
 ﻿using PersonalBudgetApp.Transactions;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace PersonalBudgetApp.Serialization
 {
@@ -11,7 +12,11 @@ namespace PersonalBudgetApp.Serialization
             try
             {
                 using FileStream createStream = File.Create(filename);
-                await JsonSerializer.SerializeAsync(createStream, Transactions);
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    Converters = { new DateTimeConverter() }
+                };
+                await JsonSerializer.SerializeAsync(createStream, Transactions, options);
                 await createStream.DisposeAsync();
             }
             catch (IOException exp)
@@ -32,7 +37,11 @@ namespace PersonalBudgetApp.Serialization
             try
             {
                 using FileStream openStream = File.OpenRead(filename);
-                transactions = await JsonSerializer.DeserializeAsync<List<Transaction>>(openStream);
+                JsonSerializerOptions options = new JsonSerializerOptions
+                {
+                    Converters = { new DateTimeConverter() }
+                };
+                transactions = await JsonSerializer.DeserializeAsync<List<Transaction>>(openStream, options);
             }
             catch (IOException exp)
             {
@@ -48,6 +57,18 @@ namespace PersonalBudgetApp.Serialization
             {
                 Console.WriteLine("A fájlnak json kiterjesztésűnek kell lennie!");
                 return;
+            }
+        }
+        private class DateTimeConverter : JsonConverter<DateTime>
+        {
+            public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            {
+                return DateTime.Parse(reader.GetString());
+            }
+
+            public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+            {
+                writer.WriteStringValue(value.ToString("yyyy-MM-ddTHH:mm:ss"));
             }
         }
     }
