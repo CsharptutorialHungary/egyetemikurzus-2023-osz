@@ -2,17 +2,40 @@
 
 namespace PersonalBudgetApp.Services
 {
-    internal class TransactionManager
+    static class TransactionManager
     {
-        private static IEnumerable<Transaction> Transactions = new List<Transaction>();
+        private static List<Transaction> _transactions = new();
 
-        public IEnumerable<Transaction> Transaction
+        public static List<Transaction> Transaction
         {
-            get { return Transactions; }
+            get { return _transactions; }
         }
-        public void ClearTransactions()
+        public static void ClearTransactions()
         {
-            Transactions = new List<Transaction>();
+            _transactions = new List<Transaction>();
+        }
+        public static void AddTransaction(Transaction transaction)
+        {
+            _transactions.Add(transaction);
+        }
+        public static void RemoveTransaction(Transaction transaction)
+        {
+            _transactions.Remove(transaction);
+        }
+
+        public static void PrintTransaction(List<Transaction> transactions)
+        {
+            foreach (Transaction transaction in transactions)
+            {
+                Console.WriteLine(transaction);
+            }
+        }
+        public static void PrintTransaction()
+        {
+            foreach (Transaction transaction in _transactions)
+            {
+                Console.WriteLine(transaction);
+            }
         }
 
     }
