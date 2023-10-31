@@ -1,19 +1,30 @@
-﻿using PersonalBudgetApp.Categories;
-using PersonalBudgetApp.Data;
+﻿using Q1EJTS.PersonalBudgetApp.Categories;
+using Q1EJTS.PersonalBudgetApp.Data;
+using System.Text.Json.Serialization;
 
-namespace PersonalBudgetApp.Transactions
+namespace Q1EJTS.PersonalBudgetApp.Transactions
 {
     public class Transaction
     {
+        [JsonPropertyName("Date")]
         public DateTime Date { get; }
-        public Money Amount { get; }
+        [JsonPropertyName("Money")]
+        public Money Total { get; }
+        [JsonPropertyName("Category")]
         public FinancialCategory Category { get; }
 
         public Transaction(DateTime date, Money amount, FinancialCategory category)
         {
             Date = date;
-            Amount = amount;
+            Total = amount;
             Category = category;
         }
+
+        public override string? ToString()
+        {
+            return $"Tranzakció napja: {Date.Year}.{Date.Month}.{Date.Day}, költsége: {Total}, kategóriája: {Category}";
+        }
+
     }
 }
+

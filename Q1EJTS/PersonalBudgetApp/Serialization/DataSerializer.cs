@@ -1,8 +1,8 @@
-﻿using PersonalBudgetApp.Transactions;
+﻿using Q1EJTS.PersonalBudgetApp.Transactions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace PersonalBudgetApp.Serialization
+namespace Q1EJTS.PersonalBudgetApp.Serialization
 {
     internal class DataSerializer
     { 
