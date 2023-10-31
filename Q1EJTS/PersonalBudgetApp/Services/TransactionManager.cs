@@ -1,11 +1,10 @@
-﻿using PersonalBudgetApp.Transactions;
+﻿using Q1EJTS.PersonalBudgetApp.Transactions;
 
-namespace PersonalBudgetApp.Services
+namespace Q1EJTS.PersonalBudgetApp.Services
 {
     static class TransactionManager
     {
         private static List<Transaction> _transactions = new();
-
         public static List<Transaction> Transaction
         {
             get { return _transactions; }
@@ -14,13 +13,10 @@ namespace PersonalBudgetApp.Services
         {
             _transactions = new List<Transaction>();
         }
-        public static void AddTransaction(Transaction transaction)
+        public static void AddTransaction(Transaction transaction, BalanceManager balanceManager)
         {
+            balanceManager.UpdateBalance(transaction);
             _transactions.Add(transaction);
-        }
-        public static void RemoveTransaction(Transaction transaction)
-        {
-            _transactions.Remove(transaction);
         }
 
         public static void PrintTransaction(List<Transaction> transactions)

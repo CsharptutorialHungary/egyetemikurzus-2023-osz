@@ -4,37 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PersonalBudgetApp.Data
+namespace Q1EJTS.PersonalBudgetApp.Data
 {
-    class Balance
+    public class Balance
     {
-        private Money _currentBalance;
-        private static Balance? instance;
-        public static Balance Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new Balance();
-                }
-                return instance;
-            }
-        }
-        private Balance()
-        {
-            _currentBalance = new Money(0);
-            
-        }
+        public Money CurrentBalance { get; private set; }
 
-        public void AddMoneyToCurrentBalance(Money money)
+        public Balance(Money initialBalance)
         {
-            this._currentBalance = new Money(this._currentBalance.Amount + money.Amount);
+            CurrentBalance = initialBalance;
         }
-        public void SubtractMoneyFromCurrentBalance(Money money)
+        public void UpdateBalance(Money change)
         {
-            this._currentBalance = new Money(this._currentBalance.Amount - money.Amount);
+            CurrentBalance += change;
         }
-
     }
 }

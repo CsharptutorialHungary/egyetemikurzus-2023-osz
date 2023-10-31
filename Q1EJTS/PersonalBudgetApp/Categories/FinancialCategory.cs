@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PersonalBudgetApp.Categories
+namespace Q1EJTS.PersonalBudgetApp.Categories
 {
     public enum FinancialCategory
     {
@@ -14,6 +14,7 @@ namespace PersonalBudgetApp.Categories
         Utilities,
         Transportation,
         Entertainment,
+        Health,
         Other
     }
 
