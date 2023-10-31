@@ -12,8 +12,9 @@ namespace Q1EJTS.PersonalBudgetApp.Query
     }
     static class TransactionQueries
     {
-        public static List<Transaction> SortTransactionsByDate(SortingOrder order, List<Transaction> transactions)
+        public static List<Transaction> SortTransactionsByDate(SortingOrder order, List<Transaction> transactions=null)
         {
+            transactions ??= TransactionManager.Transaction;
             if (order == SortingOrder.Descending)
             {
                 return transactions.OrderByDescending(t => t.Date).ToList();
@@ -22,13 +23,15 @@ namespace Q1EJTS.PersonalBudgetApp.Query
 
         }
 
-        public static List<Transaction> FilterTransactionByCategory(FinancialCategory financialCategory, List<Transaction> transactions)
+        public static List<Transaction> FilterTransactionByCategory(FinancialCategory financialCategory, List<Transaction> transactions=null)
         {
+            transactions ??= TransactionManager.Transaction;
             return transactions.Where(x => x.Category == financialCategory).ToList();
         }
 
-        public static List<Transaction> FilterTransactionsByMonth(int numberOfMonth, List<Transaction> transactions)
+        public static List<Transaction> FilterTransactionsByMonth(int numberOfMonth, List<Transaction> transactions = null)
         {
+            transactions ??= TransactionManager.Transaction;
             if (numberOfMonth > 12 || numberOfMonth < 1)
             {
                 throw new ArgumentException("Érvénytelen hónap!");
@@ -36,13 +39,15 @@ namespace Q1EJTS.PersonalBudgetApp.Query
             return transactions.Where(x => x.Date.Month == numberOfMonth).ToList();
         }
 
-        public static List<Transaction> FilterTransactionsByYear(int year, List<Transaction> transactions)
+        public static List<Transaction> FilterTransactionsByYear(int year, List<Transaction> transactions=null)
         {
+            transactions ??= TransactionManager.Transaction;
             return transactions.Where(x => x.Date.Year == year).ToList();
         }
 
-        public static Dictionary<FinancialCategory, List<Transaction>> GroupTransactionsByCategory(List<Transaction> transactions)
+        public static Dictionary<FinancialCategory, List<Transaction>> GroupTransactionsByCategory(List<Transaction> transactions=null)
         {
+            transactions ??= TransactionManager.Transaction;
             Dictionary<FinancialCategory, List<Transaction>> groupByCategory = transactions.GroupBy(x => x.Category).ToDictionary(group => group.Key, group => group.ToList());
             foreach (KeyValuePair<FinancialCategory, List<Transaction>> entry in groupByCategory)
             {
