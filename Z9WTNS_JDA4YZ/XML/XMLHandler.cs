@@ -1,7 +1,6 @@
 ﻿using System.Xml.Serialization;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace Z9WTNS_JDA4YZ
+namespace Z9WTNS_JDA4YZ.XML
 {
     internal static class XMLHandler
     {
@@ -25,7 +24,7 @@ namespace Z9WTNS_JDA4YZ
 
                 return true;
             }
-            catch(IOException exception)
+            catch (IOException exception)
             {
                 Console.WriteLine(exception.Message);
 
@@ -33,7 +32,7 @@ namespace Z9WTNS_JDA4YZ
             }
         }
 
-        internal static List<Type>? readObjectsFromXML<Type>(string filePath) 
+        internal static List<Type>? readObjectsFromXML<Type>(string filePath)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Type));
 
@@ -46,14 +45,14 @@ namespace Z9WTNS_JDA4YZ
                     return deserialized == null ? new List<Type>() : deserialized;
                 }
             }
-            catch(IOException exception)
+            catch (IOException exception)
             {
                 Console.WriteLine(exception.Message);
-
                 return null;
             }
         }
-        internal static bool? writeObjectsToXML<Type>(string filePath, List<Type> data)
+
+        internal static bool writeObjectsToXML<Type>(string filePath, List<Type> data)
         {
             try
             {
@@ -71,10 +70,5 @@ namespace Z9WTNS_JDA4YZ
                 return false;
             }
         }
-
-
-        }
-
     }
-
-   
+}
