@@ -1,5 +1,6 @@
 ﻿using Z9WTNS_JDA4YZ.CLI;
 using Z9WTNS_JDA4YZ.CLI.Commands;
+using Z9WTNS_JDA4YZ.DataClasses;
 using Z9WTNS_JDA4YZ.XML;
 
 namespace Z9WTNS_JDA4YZ
@@ -8,7 +9,7 @@ namespace Z9WTNS_JDA4YZ
     {
         static void Main(string[] args)
         {
-            const string USERS_PATH = @".\data\users.xml";
+            const string USERS_PATH = @"E:\Iskola_stuff\Egyetem\net-income\Z9WTNS_JDA4YZ\users.xml";
             const string TRANSACTIONS_PATH = @".\data\transactions.xml";
 
             if (!XMLHandler.InitializeXMLData(USERS_PATH) || !XMLHandler.InitializeXMLData(TRANSACTIONS_PATH))
@@ -17,11 +18,14 @@ namespace Z9WTNS_JDA4YZ
                 return;
             }
 
-            CommandRunner commandRunner = new CommandRunner
+            
+
+            List<User> users = new List<User>()
             {
-                Message = "\rChoose an option ('login' or 'register' or 'exit'): ",
-                Commands = new ICommand[] {ExitCommand, LoginCommand, RegisterCommand}
+                new User(0, "Jenő", "asdasdasdasdasd")
             };
+
+            XMLHandler.writeObjectsToXML(USERS_PATH, users);
         }
     }
 }

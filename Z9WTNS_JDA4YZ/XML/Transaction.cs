@@ -1,5 +1,27 @@
 ﻿namespace Z9WTNS_JDA4YZ.DataClasses
 {
     [Serializable]
-    internal sealed record class Transaction(int Id, int UserId, long Amount, string Message);
+    public sealed record class Transaction
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public long Amount { get; set; }
+        public string Message { get; set; }
+
+        public Transaction()
+        {
+            Id = 0;
+            UserId = 0;
+            Amount = 0;
+            Message = string.Empty;
+        }
+
+        public Transaction(int id, int userId, long amount, string message)
+        {
+            Id = id;
+            UserId = userId;
+            Amount = amount;
+            Message = message;
+        }
+    }
 }

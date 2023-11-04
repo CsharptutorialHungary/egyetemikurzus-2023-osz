@@ -1,5 +1,24 @@
 ﻿namespace Z9WTNS_JDA4YZ.DataClasses
 {
     [Serializable]
-    internal sealed record class User(int Id, string Username, string HashedPassword);
+    public sealed record class User
+    {
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public string HashedPassword { get; set; }
+
+        public User()
+        {
+            Id = 0;
+            Username = "";
+            HashedPassword = "";
+        }
+
+        public User(int id, string username, string hashedPassword)
+        {
+            Id = id;
+            Username = username;
+            HashedPassword = hashedPassword;
+        }
+    }
 }
