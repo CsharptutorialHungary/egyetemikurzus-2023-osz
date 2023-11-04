@@ -19,7 +19,7 @@ namespace Z9WTNS_JDA4YZ.XML
 
                 if (!File.Exists(filePath))
                 {
-                    File.Create(filePath);
+                    File.Create(filePath).Dispose();
                 }
 
                 return true;

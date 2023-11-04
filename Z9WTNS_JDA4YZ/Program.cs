@@ -9,7 +9,7 @@ namespace Z9WTNS_JDA4YZ
     {
         static void Main(string[] args)
         {
-            const string USERS_PATH = @"E:\Iskola_stuff\Egyetem\net-income\Z9WTNS_JDA4YZ\users.xml";
+            const string USERS_PATH = @".\data\users.xml";
             const string TRANSACTIONS_PATH = @".\data\transactions.xml";
 
             if (!XMLHandler.InitializeXMLData(USERS_PATH) || !XMLHandler.InitializeXMLData(TRANSACTIONS_PATH))
@@ -18,7 +18,14 @@ namespace Z9WTNS_JDA4YZ
                 return;
             }
 
+            /*CommandRunner commandRunner = new CommandRunner
+            {
+                Message = "\rChoose an option ('login' or 'register' or 'exit'): ",
+                Commands = new ICommand[] {new ExitCommand(), new LoginCommand(), new RegisterCommand()}
+            };
             
+            commandRunner.Run();
+             */
 
             List<User> users = new List<User>()
             {
