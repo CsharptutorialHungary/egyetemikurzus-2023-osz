@@ -33,7 +33,7 @@ namespace Z9WTNS_JDA4YZ
             }
         }
 
-        internal static List<Type>? loadObjectsFromXML<Type>(string filePath) 
+        internal static List<Type>? readObjectsFromXML<Type>(string filePath) 
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Type));
 
@@ -53,5 +53,28 @@ namespace Z9WTNS_JDA4YZ
                 return null;
             }
         }
+        internal static bool? writeObjectsToXML<Type>(string filePath, List<Type> data)
+        {
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(List<Type>));
+
+                using (StreamWriter writer = new StreamWriter(filePath, true))
+                {
+                    serializer.Serialize(writer, data);
+                    return true;
+                }
+            }
+            catch (IOException exception)
+            {
+                Console.WriteLine(exception.Message);
+                return false;
+            }
+        }
+
+
+        }
+
     }
-}
+
+   
