@@ -1,7 +1,7 @@
 ﻿using Z9WTNS_JDA4YZ.CLI;
 using Z9WTNS_JDA4YZ.CLI.Commands;
 using Z9WTNS_JDA4YZ.DataClasses;
-using Z9WTNS_JDA4YZ.XML;
+using Z9WTNS_JDA4YZ.Xml;
 
 namespace Z9WTNS_JDA4YZ
 {
@@ -9,22 +9,27 @@ namespace Z9WTNS_JDA4YZ
     {
         static void Main(string[] args)
         {
-            if (!XMLHandler.InitializeXMLData(PathConst.USERS_PATH) || !XMLHandler.InitializeXMLData(PathConst.TRANSACTIONS_PATH))
+            if (!XmlHandler.InitializeXmlData(PathConst.USERS_PATH) || !XmlHandler.InitializeXmlData(PathConst.TRANSACTIONS_PATH))
             {
-                Console.Write(PathConst.USERS_PATH, "\n");
-                Console.WriteLine("The Program stops running due to an error with xml initialization.");
+                Console.WriteLine("The Program stops running due to an error with Xml initialization.");
                 return;
             }
 
-            CommandRunner commandRunner = new CommandRunner
+            CommandRunner loginRegisterRunner = new CommandRunner
             {
-                Message = "\rChoose an option ('login' or 'register' or 'exit'): ",
-                Commands = new ICommand[] {new ExitCommand(), new LoginCommand(), new RegisterCommand()}
+                Message = "Choose an option ('login' or 'register' or 'exit'): ",
+                Commands = new ICommand[] { new ExitCommand(), new LoginCommand(), new RegisterCommand() }
             };
-            
-            User user = (User)commandRunner.Run();
 
-            Console.WriteLine(user);
+            User user = (User)loginRegisterRunner.Run();
+
+            CommandRunner programRunner = new CommandRunner
+            {
+                Message = "Add a transaction or query the net income statistics ('add' or 'stats'): ",
+                Commands = new ICommand[] { new ExitCommand(), new AddTransactionCommand(), new QueryStatisticsCommand() }
+            };
+
+            programRunner.Run(user);
         }
     }
 }

@@ -4,7 +4,7 @@
     {
         public HashSet<string> Names => new HashSet<string> {"exit", "quit", "e", "q"};
 
-        public object? Execute()
+        public object? Execute(params object[] inputs)
         {
             Environment.Exit(0);
             return true;

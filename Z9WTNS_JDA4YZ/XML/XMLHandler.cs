@@ -1,10 +1,10 @@
 ﻿using System.Xml.Serialization;
 
-namespace Z9WTNS_JDA4YZ.XML
+namespace Z9WTNS_JDA4YZ.Xml
 {
-    internal static class XMLHandler
+    internal static class XmlHandler
     {
-        internal static bool InitializeXMLData(string filePath)
+        internal static bool InitializeXmlData(string filePath)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace Z9WTNS_JDA4YZ.XML
             }
         }
 
-        internal static List<Type>? readObjectsFromXML<Type>(string filePath)
+        internal static List<Type> ReadObjectsFromXml<Type>(string filePath)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Type));
 
@@ -48,11 +48,11 @@ namespace Z9WTNS_JDA4YZ.XML
             catch (IOException exception)
             {
                 Console.WriteLine(exception.Message);
-                return null;
+                return new List<Type>();
             }
         }
 
-        internal static bool writeObjectsToXML<Type>(string filePath, List<Type> data)
+        internal static bool WriteObjectsToXml<Type>(string filePath, List<Type> data)
         {
             try
             {

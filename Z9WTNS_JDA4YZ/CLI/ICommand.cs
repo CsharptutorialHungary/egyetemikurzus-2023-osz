@@ -3,6 +3,6 @@
     internal interface ICommand
     {
         HashSet<string> Names { get; }
-        object? Execute();
+        object? Execute(params object[] inputs);
     }
 }

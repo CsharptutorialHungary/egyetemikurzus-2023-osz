@@ -4,7 +4,7 @@
     {
         public HashSet<string> Names => new HashSet<string> { "register", "r" };
 
-        public object? Execute()
+        public object? Execute(params object[] inputs)
         {
             return AccountHandler.Register();
         }

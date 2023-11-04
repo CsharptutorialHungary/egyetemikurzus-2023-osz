@@ -5,7 +5,7 @@
         internal required string Message { get; set; }
         internal required ICommand[] Commands { get; set; }
 
-        public object Run()
+        public object Run(params object[] inputs)
         {
             while(true)
             {
@@ -20,7 +20,7 @@
 
                 if (command != null)
                 {
-                    object? result = command.Execute();
+                    object? result = command.Execute(inputs);
 
                     if (result != null) return result;
                 }

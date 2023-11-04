@@ -1,16 +1,13 @@
 ﻿using System.Reflection;
 
-namespace Z9WTNS_JDA4YZ.XML
+namespace Z9WTNS_JDA4YZ.Xml
 {
     internal static class PathConst
     {
-        public static string USERS_PATH { get => Path.Combine(new string[] {GetProgramPath(), "data", "users.xml" }); }
+        public static string PROGRAM_PATH { get => Path.GetDirectoryName(Assembly.GetAssembly(typeof(PathConst))?.Location)!; }
 
-        public static string TRANSACTIONS_PATH { get => Path.Combine(new string[] { GetProgramPath(), "data", "transactions.xml" }); }
+        public static string USERS_PATH { get => Path.Combine(new string[] { PROGRAM_PATH, "data", "users.Xml" }); }
 
-        private static string GetProgramPath()
-        {
-            return Path.GetDirectoryName(Assembly.GetAssembly(typeof(PathConst))?.Location)!;
-        }
+        public static string TRANSACTIONS_PATH { get => Path.Combine(new string[] { PROGRAM_PATH, "data", "transactions.Xml" }); }
     }
 }
