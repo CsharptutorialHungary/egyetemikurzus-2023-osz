@@ -1,4 +1,5 @@
-﻿using Z9WTNS_JDA4YZ.CLI;
+﻿using System.Reflection;
+using Z9WTNS_JDA4YZ.CLI;
 using Z9WTNS_JDA4YZ.CLI.Commands;
 using Z9WTNS_JDA4YZ.DataClasses;
 using Z9WTNS_JDA4YZ.XML;
@@ -9,6 +10,7 @@ namespace Z9WTNS_JDA4YZ
     {
         static void Main(string[] args)
         {
+            string PROGRAM_PATH = Assembly.GetAssembly(typeof(Program))?.Location ?? ".\\";
             const string USERS_PATH = @".\data\users.xml";
             const string TRANSACTIONS_PATH = @".\data\transactions.xml";
 
