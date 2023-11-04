@@ -10,7 +10,13 @@ namespace Z9WTNS_JDA4YZ
     {
         static void Main(string[] args)
         {
+<<<<<<< HEAD
             
+=======
+            string PROGRAM_PATH = Assembly.GetAssembly(typeof(Program))?.Location ?? ".\\";
+            const string USERS_PATH = @".\data\users.xml";
+            const string TRANSACTIONS_PATH = @".\data\transactions.xml";
+>>>>>>> c9e79a340a6d80b0b7cba6ae52a4c06f4b680ff9
 
             if (!XMLHandler.InitializeXMLData(PathConst.USERS_PATH) || !XMLHandler.InitializeXMLData(PathConst.TRANSACTIONS_PATH))
             {
