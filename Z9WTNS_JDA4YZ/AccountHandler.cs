@@ -9,6 +9,21 @@ namespace Z9WTNS_JDA4YZ
         {
             List<User> users = XmlHandler.ReadObjectsFromXml<User>(PathConst.USERS_PATH);
             Console.WriteLine("Bejelentkezés");
+            Console.WriteLine("---------------------------------------");
+            Console.WriteLine("Kérem, írja be a Nevét: ");
+            string name = Console.ReadLine();
+            Console.WriteLine("Kérem, írja be a jelszavát ");
+            string password = Console.ReadLine();
+            foreach (var user in users)
+            {
+                if(user.Username.Equals(name) || user.HashedPassword.Equals(password))
+                {
+                    Console.WriteLine("Sikeresen bent vagy");
+                    break;
+                }
+                else { Console.WriteLine("Valami nem jó"); break; }
+
+            }
 
             return null;
         }
