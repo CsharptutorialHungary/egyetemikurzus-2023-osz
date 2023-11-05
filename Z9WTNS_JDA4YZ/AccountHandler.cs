@@ -8,17 +8,20 @@ namespace Z9WTNS_JDA4YZ
         internal static User? Login()
         {
             List<User> users = XmlHandler.ReadObjectsFromXml<User>(PathConst.USERS_PATH);
-
-
+            
 
             return null;
         }
 
         internal static User? Register()
         {
-            XmlHandler.AppendObjectsToXml<User>(PathConst.USERS_PATH, new List<User>() { new User(2, "asd", "4124") });
+            List<User> users = XmlHandler.ReadObjectsFromXml<User>(PathConst.USERS_PATH);
+            Console.WriteLine(users.Count);
+            XmlHandler.AppendObjectsToXml<User>(PathConst.USERS_PATH, new List<User>() { new User(users.Count+1, "jeno", "123") });
 
+            Console.WriteLine("regiszteáricó");
 
+  
 
             return null;
         }

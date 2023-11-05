@@ -12,8 +12,11 @@ namespace Z9WTNS_JDA4YZ
             if (!XmlHandler.InitializeXmlData(PathConst.USERS_PATH) || !XmlHandler.InitializeXmlData(PathConst.TRANSACTIONS_PATH))
             {
                 Console.WriteLine("The Program stops running due to an error with Xml initialization.");
+
                 return;
+
             }
+
 
             CommandRunner loginRegisterRunner = new CommandRunner
             {
