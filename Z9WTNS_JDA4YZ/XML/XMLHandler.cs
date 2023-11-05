@@ -33,6 +33,7 @@ namespace Z9WTNS_JDA4YZ.Xml
             }
         }
 
+
         internal static List<Type> ReadObjectsFromXml<Type>(string filePath)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(List<Type>));
@@ -42,10 +43,10 @@ namespace Z9WTNS_JDA4YZ.Xml
                 using (StreamReader reader = new StreamReader(filePath))
                 {
                     //Console.WriteLine(reader.Peek()
-                    var deserialized = reader.Peek() == -1 ? new List<Type>() : (List<Type>)serializer.Deserialize(reader)!;
+                    var deserialized = reader.Peek() == -1 ? new List<Type>() : serializer.Deserialize(reader)!;
                     
 
-                    return deserialized == null ? new List<Type>() : deserialized;
+                    return deserialized == null ? new List<Type>() : (List<Type>)deserialized;
                 }
             }
             catch (IOException exception)
