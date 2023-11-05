@@ -16,7 +16,7 @@ namespace Z9WTNS_JDA4YZ
         internal static User? Register()
         {
             List<User> users = XmlHandler.ReadObjectsFromXml<User>(PathConst.USERS_PATH);
-            Console.WriteLine(users.Count);
+            
             XmlHandler.AppendObjectsToXml<User>(PathConst.USERS_PATH, new List<User>() { new User(users.Count+1, "jeno", "123") });
 
             Console.WriteLine("regiszteáricó");
