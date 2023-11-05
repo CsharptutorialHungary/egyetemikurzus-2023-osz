@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Xml;
+using System.Xml.Serialization;
 using Z9WTNS_JDA4YZ.DataClasses;
 
 namespace Z9WTNS_JDA4YZ.Xml
@@ -60,11 +61,18 @@ namespace Z9WTNS_JDA4YZ.Xml
         {
             try
             {
+                List<Type> objects = ReadObjectsFromXml<Type>(filePath);
+
+                foreach (Type obj in data)
+                {
+                    objects.Add(obj);
+                }
+
                 XmlSerializer serializer = new XmlSerializer(typeof(List<Type>));
 
-                using (StreamWriter writer = new StreamWriter(filePath, true))
+                using (StreamWriter writer = new StreamWriter(filePath))
                 {
-                    serializer.Serialize(writer, data);
+                    serializer.Serialize(writer, objects);
                     return true;
                 }
             }
