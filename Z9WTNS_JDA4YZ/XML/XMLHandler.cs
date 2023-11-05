@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Xml;
+using System.Xml.Serialization;
 using Z9WTNS_JDA4YZ.DataClasses;
 
 namespace Z9WTNS_JDA4YZ.Xml
@@ -35,15 +36,15 @@ namespace Z9WTNS_JDA4YZ.Xml
 
         internal static List<Type> ReadObjectsFromXml<Type>(string filePath)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(Type));
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Type>));
 
             try
             {
                 using (StreamReader reader = new StreamReader(filePath))
                 {
-                    var deserialized = reader.Peek() == -1 ? new List<Type>() : (List<Type>)serializer.Deserialize(reader)!;
+                    var deserialized = reader.Peek() == -1 ? new List<Type>() : serializer.Deserialize(reader);
 
-                    return deserialized == null ? new List<Type>() : deserialized;
+                    return deserialized == null ? new List<Type>() : (List<Type>)deserialized;
                 }
             }
             catch (IOException exception)
@@ -57,11 +58,18 @@ namespace Z9WTNS_JDA4YZ.Xml
         {
             try
             {
+                List<Type> objects = ReadObjectsFromXml<Type>(filePath);
+
+                foreach (Type obj in data)
+                {
+                    objects.Add(obj);
+                }
+
                 XmlSerializer serializer = new XmlSerializer(typeof(List<Type>));
 
-                using (StreamWriter writer = new StreamWriter(filePath, true))
+                using (StreamWriter writer = new StreamWriter(filePath))
                 {
-                    serializer.Serialize(writer, data);
+                    serializer.Serialize(writer, objects);
                     return true;
                 }
             }
