@@ -52,7 +52,7 @@ namespace Z9WTNS_JDA4YZ.Xml
             }
         }
 
-        internal static bool WriteObjectsToXml<Type>(string filePath, List<Type> data)
+        internal static bool AppendObjectsToXml<Type>(string filePath, List<Type> data)
         {
             try
             {
