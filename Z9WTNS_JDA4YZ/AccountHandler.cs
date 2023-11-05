@@ -21,17 +21,17 @@ namespace Z9WTNS_JDA4YZ
 
             Console.WriteLine("regiszteáricó");
 
-  
+
 
             return null;
         }
 
-        internal static void AddTransaction()
+        internal static void AddTransaction(User user)
         {
 
         }
 
-        internal static void QueryStatistics()
+        internal static void QueryStatistics(User user)
         {
 
         }
