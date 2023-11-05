@@ -1,4 +1,6 @@
-﻿namespace Z9WTNS_JDA4YZ.CLI.Commands
+﻿using Z9WTNS_JDA4YZ.DataClasses;
+
+namespace Z9WTNS_JDA4YZ.CLI.Commands
 {
     internal class QueryStatisticsCommand : ICommand
     {
@@ -6,7 +8,9 @@
 
         public object? Execute(params object[] inputs)
         {
-            AccountHandler.QueryStatistics();
+            User user = (User)inputs[0];
+
+            AccountHandler.QueryStatistics(user);
 
             return null;
         }
