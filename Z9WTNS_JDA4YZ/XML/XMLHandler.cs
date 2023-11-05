@@ -1,4 +1,5 @@
 ﻿using System.Xml.Serialization;
+using Z9WTNS_JDA4YZ.DataClasses;
 
 namespace Z9WTNS_JDA4YZ.Xml
 {
@@ -40,7 +41,7 @@ namespace Z9WTNS_JDA4YZ.Xml
             {
                 using (StreamReader reader = new StreamReader(filePath))
                 {
-                    var deserialized = (List<Type>)serializer.Deserialize(reader)!;
+                    var deserialized = reader.Peek() == -1 ? new List<Type>() : (List<Type>)serializer.Deserialize(reader)!;
 
                     return deserialized == null ? new List<Type>() : deserialized;
                 }
