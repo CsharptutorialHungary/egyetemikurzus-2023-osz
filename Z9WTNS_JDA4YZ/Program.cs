@@ -11,16 +11,13 @@ namespace Z9WTNS_JDA4YZ
         {
             if (!XmlHandler.InitializeXmlData(PathConst.USERS_PATH) || !XmlHandler.InitializeXmlData(PathConst.TRANSACTIONS_PATH))
             {
-                Console.WriteLine("The Program stops running due to an error with Xml initialization.");
-
+                Console.WriteLine("A program futása leáll, mert nem sikerült inicializálni az xml fájlokat.");
                 return;
-
             }
-
 
             CommandRunner loginRegisterRunner = new CommandRunner
             {
-                Message = "Choose an option ('login' or 'register' or 'exit'): ",
+                Message = "Válassz egy lehetőséget ('login' vagy 'register' vagy 'exit'): ",
                 Commands = new ICommand[] { new ExitCommand(), new LoginCommand(), new RegisterCommand() }
             };
 
@@ -28,7 +25,7 @@ namespace Z9WTNS_JDA4YZ
 
             CommandRunner programRunner = new CommandRunner
             {
-                Message = "Add a transaction or query the net income statistics ('add' or 'stats'): ",
+                Message = "Adj hozzá tranzakciót, vagy kérdezd le a statisztikádat ('add' vagy 'stats' vagy 'exit'): ",
                 Commands = new ICommand[] { new ExitCommand(), new AddTransactionCommand(), new QueryStatisticsCommand() }
             };
 

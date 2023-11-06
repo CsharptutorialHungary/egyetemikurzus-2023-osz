@@ -2,7 +2,7 @@
 {
     internal class ExitCommand : ICommand
     {
-        public HashSet<string> Names => new HashSet<string> {"exit", "quit", "e", "q"};
+        public HashSet<string> Names => new HashSet<string> { "exit", "quit", "e", "q" };
 
         public object? Execute(params object[] inputs)
         {

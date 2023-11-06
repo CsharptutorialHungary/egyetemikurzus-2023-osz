@@ -1,6 +1,4 @@
-﻿using System.Xml;
-using System.Xml.Serialization;
-using Z9WTNS_JDA4YZ.DataClasses;
+﻿using System.Xml.Serialization;
 
 namespace Z9WTNS_JDA4YZ.Xml
 {

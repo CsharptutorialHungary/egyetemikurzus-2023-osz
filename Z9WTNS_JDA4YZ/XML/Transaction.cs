@@ -5,7 +5,7 @@
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public long Amount { get; set; }
+        public decimal Amount { get; set; }
         public string Message { get; set; }
 
         public Transaction()
@@ -16,7 +16,7 @@
             Message = string.Empty;
         }
 
-        public Transaction(int id, int userId, long amount, string message)
+        public Transaction(int id, int userId, decimal amount, string message)
         {
             Id = id;
             UserId = userId;

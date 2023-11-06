@@ -7,7 +7,7 @@
 
         public object Run(params object[] inputs)
         {
-            while(true)
+            while (true)
             {
                 Console.Write(Message);
                 string? input = Console.ReadLine()!.Trim().ToLower();
