@@ -32,43 +32,59 @@ namespace Z9WTNS_JDA4YZ.Xml
             }
         }
 
-        internal static List<Type> ReadObjectsFromXml<Type>(string filePath)
+        internal static List<T> ReadObjectsFromXml<T>(string filePath)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Type>));
+            return ReadObjectsFromXmlAsync<T>(filePath).Result;
+        }
+
+        private static Task<List<T>> ReadObjectsFromXmlAsync<T>(string filePath)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+            var objects = new List<T>();
 
             try
             {
                 using (StreamReader reader = new StreamReader(filePath))
                 {
-                    var deserialized = reader.Peek() == -1 ? new List<Type>() : serializer.Deserialize(reader);
+                    var deserialized = reader.Peek() == -1 ? null : serializer.Deserialize(reader);
 
-                    return deserialized == null ? new List<Type>() : (List<Type>)deserialized;
+                    if (deserialized != null)
+                        objects = (List<T>)deserialized;
                 }
             }
             catch (IOException exception)
             {
                 Console.WriteLine(exception.Message);
-                return new List<Type>();
             }
+
+            return Task.FromResult(objects);
         }
 
-        internal static bool AppendObjectsToXml<Type>(string filePath, List<Type> data)
+        internal static bool AppendObjectToXml<T>(string filePath, T appendedObject)
+        {
+            return AppendObjectToXmlAsync(filePath, appendedObject).Result;
+        }
+
+        private static async Task<bool> AppendObjectToXmlAsync<T>(string filePath, T appendedObject)
         {
             try
             {
-                List<Type> objects = ReadObjectsFromXml<Type>(filePath);
+                List<T> objects = ReadObjectsFromXml<T>(filePath);
 
-                foreach (Type obj in data)
+                objects.Add(appendedObject);
+
+                XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+
+                using (var stream = new MemoryStream())
                 {
-                    objects.Add(obj);
-                }
+                    using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate))
+                    {
+                        serializer.Serialize(stream, objects);
+                        stream.Seek(0, SeekOrigin.Begin);
+                        await stream.CopyToAsync(fileStream);
 
-                XmlSerializer serializer = new XmlSerializer(typeof(List<Type>));
-
-                using (StreamWriter writer = new StreamWriter(filePath))
-                {
-                    serializer.Serialize(writer, objects);
-                    return true;
+                        return true;
+                    }
                 }
             }
             catch (IOException exception)

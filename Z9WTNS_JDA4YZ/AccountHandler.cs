@@ -14,8 +14,10 @@ namespace Z9WTNS_JDA4YZ
             Console.Clear();
             Console.WriteLine("Kérem jelentkezen be!");
             Console.WriteLine("---------------------------------------");
+
             Console.Write("Kérem, írja be a Nevét: ");
             string name = Console.ReadLine()!;
+
             Console.Write("Kérem, írja be a jelszavát: ");
             string password = Console.ReadLine()!;
 
@@ -39,16 +41,19 @@ namespace Z9WTNS_JDA4YZ
         {
             Console.Clear();
             Console.WriteLine("Most a regisztrációs menü sorban vagy!");
+
             List<User> users = XmlHandler.ReadObjectsFromXml<User>(PathConst.USERS_PATH);
+
             Console.Write("Kérem, írja be a Nevét: ");
             string name = Console.ReadLine()!;
+
             Console.Write("Kérem, írja be a jelszavát: ");
             string password = Console.ReadLine()!;
             string hashedPassword = HashPassword(password);
 
             Console.Clear();
 
-            if (XmlHandler.AppendObjectsToXml<User>(PathConst.USERS_PATH, new List<User> { new User(users.Count + 1, name, hashedPassword) }))
+            if (XmlHandler.AppendObjectToXml(PathConst.USERS_PATH, new User(users.Count, name, hashedPassword)))
             {
                 Console.WriteLine("Sikeres regisztráció!");
                 return Login();
@@ -59,7 +64,6 @@ namespace Z9WTNS_JDA4YZ
             }
 
             Console.WriteLine();
-
             return null;
         }
 
@@ -67,9 +71,8 @@ namespace Z9WTNS_JDA4YZ
         {
             Console.WriteLine();
             Console.Write("Add meg a tranzakció mennyiségét: ");
-            decimal amount = 0;
 
-            if (!decimal.TryParse(Console.ReadLine(), out amount))
+            if (!decimal.TryParse(Console.ReadLine(), out decimal amount))
             {
                 Console.WriteLine("Nem megfelelő mennyiség, sikertelen tranzakció hozzáadás!");
                 return;
@@ -88,7 +91,7 @@ namespace Z9WTNS_JDA4YZ
                 Message = message
             };
             
-            if(XmlHandler.AppendObjectsToXml<Transaction>(PathConst.TRANSACTIONS_PATH, new List<Transaction> { transaction }))
+            if(XmlHandler.AppendObjectToXml(PathConst.TRANSACTIONS_PATH, transaction))
             {
                 Console.WriteLine("Tranzakció sikeresen hozzáadva!");
             }
@@ -104,10 +107,10 @@ namespace Z9WTNS_JDA4YZ
         {
             List<Transaction> transactions = XmlHandler.ReadObjectsFromXml<Transaction>(PathConst.TRANSACTIONS_PATH);
 
-            var userTransactions = transactions.Where(t => t.UserId.Equals(user.Id)).ToList();
+            var userTransactions = transactions.Where(t => t.UserId.Equals(user.Id)).AsParallel().ToList();
 
-            var incomes = userTransactions.Where(t => t.Amount > 0);
-            var expenses = userTransactions.Where(t => t.Amount < 0);
+            var incomes = userTransactions.Where(t => t.Amount > 0).AsParallel();
+            var expenses = userTransactions.Where(t => t.Amount < 0).AsParallel();
 
             decimal grossIncome = incomes.Sum(t => t.Amount);
             decimal grossExpense = expenses.Sum(t => t.Amount);
@@ -119,19 +122,6 @@ namespace Z9WTNS_JDA4YZ
 
             decimal realFlow = netIncome - grossExpense;
 
-            var paddedValues = new string[2, 3];
-            decimal[] values = new[] { grossIncome, grossExpense, grossFlow, netIncome, netExpense, netFlow };
-
-            for (int i = 0; i < 2; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    paddedValues[i, j] = values[i * 3 + j].ToString("C").PadLeft(21);
-                }
-            }
-
-            string paddedRealFlow = realFlow.ToString("C").PadLeft(44);
-
             Console.WriteLine($"""
 
                     =================================================================================
@@ -139,11 +129,11 @@ namespace Z9WTNS_JDA4YZ
                     =================================================================================
                     |          |        Bevétel       |        Kiadás        |        Forgalom      |
                     ---------------------------------------------------------------------------------
-                    |  Bruttó  |{paddedValues[0, 0]} |{paddedValues[0, 1]} |{paddedValues[0, 2]} |
+                    |  Bruttó  |{grossIncome, 21:C} |{grossExpense, 21:C} |{grossFlow, 21:C} |
                      --------------------------------------------------------------------------------
-                    |  Nettó   |{paddedValues[1, 0]} |{paddedValues[1, 1]} |{paddedValues[1, 2]} |
+                    |  Nettó   |{netIncome, 21:C} |{netExpense, 21:C} |{netFlow, 21:C} |
                     ---------------------------------------------------------------------------------
-                    |         Valódi Forgalom         |{paddedRealFlow} |
+                    |         Valódi Forgalom         |{realFlow, 44:C} |
                     =================================================================================
                     
                     """);
