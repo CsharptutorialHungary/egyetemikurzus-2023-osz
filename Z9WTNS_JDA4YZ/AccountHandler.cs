@@ -120,7 +120,7 @@ namespace Z9WTNS_JDA4YZ
             decimal netExpense = CalculateNetExpense(grossExpense);
             decimal netFlow = netIncome + netExpense;
 
-            decimal realFlow = netIncome - grossExpense;
+            decimal realFlow = netIncome + grossExpense;
 
             Console.WriteLine($"""
 
