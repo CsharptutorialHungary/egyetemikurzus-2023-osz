@@ -7,7 +7,6 @@ namespace Q1EJTS.PersonalBudgetApp.Transactions
     [JsonObject]
     public class Transaction
     {
-        [JsonPropertyName("Date")]
         [JsonProperty("Date")]
         public DateTime Date { get; }
         [JsonProperty("Amount")]
