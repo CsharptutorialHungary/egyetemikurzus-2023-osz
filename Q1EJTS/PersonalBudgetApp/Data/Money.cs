@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-
+﻿
 namespace Q1EJTS.PersonalBudgetApp.Data
 {
     public record Money(decimal Amount)
