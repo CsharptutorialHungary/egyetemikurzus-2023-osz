@@ -1,4 +1,5 @@
 ﻿using Q1EJTS.PersonalBudgetApp.Categories;
+using Q1EJTS.PersonalBudgetApp.Data;
 using Q1EJTS.PersonalBudgetApp.Services;
 using Q1EJTS.PersonalBudgetApp.Transactions;
 
@@ -65,9 +66,9 @@ namespace Q1EJTS.PersonalBudgetApp.Query
             return TransactionManager.Transaction.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
         }
 
-        public static List<Transaction> FilterTransactionsByMoneyRange(int startAmount, int endAmount)
+        public static List<Transaction> FilterTransactionsByMoneyRange(Money startAmount, Money endAmount)
         {
-            return TransactionManager.Transaction.Where(x => x.Total.Amount >= startAmount && x.Total.Amount <= endAmount).ToList();
+            return TransactionManager.Transaction.Where(x => x.Total >= startAmount && x.Total <= endAmount).ToList();
         }
 
     }
