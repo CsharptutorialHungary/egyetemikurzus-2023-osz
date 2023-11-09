@@ -1,18 +1,20 @@
-﻿using Q1EJTS.PersonalBudgetApp.Categories;
+﻿using Newtonsoft.Json;
+using Q1EJTS.PersonalBudgetApp.Categories;
 using Q1EJTS.PersonalBudgetApp.Data;
-using System.Text.Json.Serialization;
 
 namespace Q1EJTS.PersonalBudgetApp.Transactions
 {
+    [JsonObject]
     public class Transaction
     {
-        [JsonPropertyName("Date")]
+        [JsonProperty("Date")]
         public DateTime Date { get; }
-        [JsonPropertyName("Money")]
+        [JsonProperty("Amount")]
         public Money Total { get; }
-        [JsonPropertyName("Category")]
+        [JsonProperty("Category")]
         public FinancialCategory Category { get; }
 
+        [JsonConstructor]
         public Transaction(DateTime date, Money amount, FinancialCategory category)
         {
             Date = date;

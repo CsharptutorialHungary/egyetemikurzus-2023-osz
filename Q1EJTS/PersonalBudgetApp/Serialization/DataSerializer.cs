@@ -1,55 +1,41 @@
-﻿using Q1EJTS.PersonalBudgetApp.Transactions;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using Q1EJTS.PersonalBudgetApp.Services;
+using Q1EJTS.PersonalBudgetApp.Transactions;
+using Newtonsoft.Json;
 
 namespace Q1EJTS.PersonalBudgetApp.Serialization
 {
     internal class DataSerializer
-    { 
-        public static async Task Serialization(string filename, List<Transaction> Transactions)
+    {
+        public static async Task Serialize(string filename)
         {
             CheckJson(filename);
+            string json = JsonConvert.SerializeObject(TransactionManager.Transaction, Formatting.Indented);
             try
             {
-                using FileStream createStream = File.Create(filename);
-                JsonSerializerOptions options = new JsonSerializerOptions
-                {
-                    Converters = { new DateTimeConverter() }
-                };
-                await JsonSerializer.SerializeAsync(createStream, Transactions, options);
-                await createStream.DisposeAsync();
+                await File.WriteAllTextAsync(filename, json);
             }
             catch (IOException exp)
             {
                 Console.WriteLine($"Hiba a szerializálás közben: {exp.Message}");
             }
-            catch (JsonException jsonExp)
-            {
-                Console.WriteLine($"Hiba a JSON szerializálás közben: {jsonExp.Message}");
-            }
         }
 
-        public static async Task<List<Transaction>> DeSerialization(string filename)
+        public static async Task<List<Transaction>?> Deserialize(string filename)
         {
             CheckJson(filename);
-            List<Transaction>? transactions = new List<Transaction>();
-
             try
             {
-                using FileStream openStream = File.OpenRead(filename);
-                JsonSerializerOptions options = new JsonSerializerOptions
-                {
-                    Converters = { new DateTimeConverter() }
-                };
-                transactions = await JsonSerializer.DeserializeAsync<List<Transaction>>(openStream, options);
+                string json = await File.ReadAllTextAsync(filename);
+                List<Transaction>? transactions = JsonConvert.DeserializeObject<List<Transaction>>(json);
+                return transactions;
             }
             catch (IOException exp)
             {
-                Console.WriteLine($"Hiba a deszerializálás közben: {exp.Message}");
+                Console.WriteLine($"Hiba történt {exp.Message}");
+                return null;
             }
-
-            return transactions;
         }
+
 
         private static void CheckJson(string filename)
         {
@@ -59,17 +45,6 @@ namespace Q1EJTS.PersonalBudgetApp.Serialization
                 return;
             }
         }
-        private class DateTimeConverter : JsonConverter<DateTime>
-        {
-            public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-            {
-                return DateTime.Parse(reader.GetString());
-            }
 
-            public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
-            {
-                writer.WriteStringValue(value.ToString("yyyy-MM-ddTHH:mm:ss"));
-            }
-        }
     }
 }
