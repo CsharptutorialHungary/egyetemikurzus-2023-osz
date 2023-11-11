@@ -7,34 +7,24 @@ using Q1EJTS.PersonalBudgetApp.Query;
 
 namespace Q1EJTS.PersonalBudgetApp.UserInterface
 {
-    internal class UserInterface
+    class CLIUserInterface : IUserInput, IMenu
     {
         private BalanceManager _balanceManager = new BalanceManager(new Money(0));
         private DateTime _minimumDate = new DateTime(1900, 01, 01);
-        private FinancialCategory[] _availableCategories =
-        {
-            FinancialCategory.Income,
-            FinancialCategory.Food,
-            FinancialCategory.Transportation,
-            FinancialCategory.Rent,
-            FinancialCategory.Utilities,
-            FinancialCategory.Entertainment,
-            FinancialCategory.Health,
-            FinancialCategory.Other
-        };
+        private FinancialCategory[] _availableCategories = Enum.GetValues<FinancialCategory>();
+        
 
-        private string GetFilePathFromUserInputAsync()
+        public string GetFilePathFromUserInput()
         {
             Console.WriteLine("Adjon meg egy fájlnevet: ");
-            string filename = Console.ReadLine();
+            string filename = Console.ReadLine()!;
             return filename;
         }
-        private async Task ExecuteDeSerializationAsync()
+        public async Task ExecuteDeSerializationAsync()
         {
-
             try
             {
-                string filename = GetFilePathFromUserInputAsync();
+                string? filename = GetFilePathFromUserInput();
                 var list = await DataSerializer.Deserialize(filename);
                 if (list == null)
                 {
@@ -50,11 +40,11 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
                 Console.WriteLine($"Hiba történt: {ex.Message}");
             }
         }
-        private async Task ExecuteSerializationAsync()
+        public async Task ExecuteSerializationAsync()
         {
             try
             {
-                string filename = GetFilePathFromUserInputAsync();
+                string filename = GetFilePathFromUserInput();
                 await DataSerializer.Serialize(filename);
             }
             catch (Exception ex)
@@ -63,13 +53,12 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
             }
         }
 
-
         private bool IsValidDate(DateTime date)
         {
             DateTime now = DateTime.Now;
             return date <= now && date >= _minimumDate;
         }
-        private DateTime GetValidDateFromUserInput()
+        public DateTime GetValidDateFromUserInput()
         {
             while (true)
             {
@@ -82,7 +71,7 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
             }
         }
 
-        private Money GetMoneyAmountFromUserInput()
+        public Money GetMoneyAmountFromUserInput()
         {
             while (true)
             {
@@ -94,9 +83,9 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
                 Console.WriteLine("Érvénytelen összeg, kérlek próbáld újra.");
             }
         }
-        private FinancialCategory GetFinancialCategoryFromUserInput()
+        public FinancialCategory GetFinancialCategoryFromUserInput()
         {
-            Console.WriteLine("Választható kategóriák: Income, Food, Rent, Utilities, Transportation, Entertainment, Health, Other");
+            Console.WriteLine($"Választható kategóriák: {string.Join(", ", _availableCategories)}");
             Console.Write("Kategória: ");
             string? input = Console.ReadLine();
 
@@ -136,7 +125,7 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
             while (true)
             {
                 Console.Write("Választás (1 vagy 2): ");
-                string userInput = Console.ReadLine();
+                string userInput = Console.ReadLine()!;
 
                 if (userInput == "1")
                 {
@@ -243,7 +232,7 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
                 }
             }
         }
-        private void RecordTransaction()
+        public void RecordTransaction()
         {
             try
             {
@@ -262,10 +251,29 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
                 Console.WriteLine($"Hiba történt: {ex.Message}");
 
             }
+            catch (LowBalanceException exp) 
+            {
+                Console.WriteLine(exp.Message);
+            }
             catch (Exception ex)
             {
                 Console.WriteLine($"Ismeretlen hiba történt: {ex.Message}");
             }
+        }
+        public void DisplayMainMenu()
+        {
+            Console.WriteLine("1. Tranzakció rögzítése");
+            Console.WriteLine("2. Egyenleg lekérdezése");
+            Console.WriteLine("3. Tranzakciók listázása");
+            Console.WriteLine("4. Tranzakciók lekérdezése és szűrése");
+            Console.WriteLine("5. Tranzakciók mentése fájlba");
+            Console.WriteLine("6. Tranzakciók beolvasása fájlból");
+            Console.WriteLine("7. Képernyő törlése");
+            Console.WriteLine("0. Kilépés");
+        }
+        public void ExecuteGetCurrentBalance()
+        {
+            Console.WriteLine($"Jelenlegi egyenlege: {_balanceManager.GetCurrentBalance()}");
         }
         public async Task Run()
         {
@@ -278,14 +286,7 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
             _balanceManager = new BalanceManager(new Money(initialBalanceAmount));
             while (true)
             {
-                Console.WriteLine("1. Tranzakció rögzítése");
-                Console.WriteLine("2. Egyenleg lekérdezése");
-                Console.WriteLine("3. Tranzakciók listázása");
-                Console.WriteLine("4. Tranzakciók lekérdezése és szűrése");
-                Console.WriteLine("5. Tranzakciók mentése fájlba");
-                Console.WriteLine("6. Tranzakciók beolvasása fájlból");
-                Console.WriteLine("7. Képernyő törlése");
-                Console.WriteLine("0. Kilépés");
+                DisplayMainMenu();
                 Console.Write("Válassz egy műveletet: ");
                 int choice;
                 int.TryParse(Console.ReadLine(), out choice);
@@ -298,7 +299,7 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
                         RecordTransaction();
                         break;
                     case 2:
-                        Console.WriteLine($"Jelenlegi egyenlege: {_balanceManager.GetCurrentBalance()}");
+                        ExecuteGetCurrentBalance();
                         break;
                     case 3:
                         TransactionManager.PrintTransaction();
@@ -321,8 +322,9 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
         }
         public async static Task Main()
         {
-            await new UserInterface().Run();
+            await new CLIUserInterface().Run();
         }
 
+        
     }
 }
