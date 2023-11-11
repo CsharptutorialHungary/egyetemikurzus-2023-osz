@@ -4,7 +4,7 @@ using Q1EJTS.PersonalBudgetApp.Transactions;
 
 namespace Q1EJTS.PersonalBudgetApp.Services
 {
-    class BalanceManager
+    class BalanceManager : IBalanceManager
     {
         private Balance _balance { get; set; }
 

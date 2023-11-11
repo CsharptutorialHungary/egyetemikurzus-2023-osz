@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Q1EJTS.PersonalBudgetApp.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,16 @@ namespace Q1EJTS.PersonalBudgetApp.Data
         }
         public void UpdateBalance(Money change)
         {
+            CheckBalance(change);
             CurrentBalance += change;
+        }
+
+        private void CheckBalance(Money change)
+        {
+            if (CurrentBalance + change < 0)
+            {
+                throw new LowBalanceException("Az egyenleg nem lehet negatív");
+            }
         }
     }
 }
