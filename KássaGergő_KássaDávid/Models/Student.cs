@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KássaGergő_KássaDávid.Models
 {
-    internal class Student
+    public record class Student
     {
         public string Name { get; set; }
         public int Age { get; set; }
@@ -25,6 +25,11 @@ namespace KássaGergő_KássaDávid.Models
             Email = email;
             Id = id;
             Average = average;
+        }
+
+        public override string? ToString()
+        {
+            return $"[{this.Id}] [{this.Name}] [{this.Age}] [{this.Email}] [{this.Courses}] [{this.Credits}] [{this.Average}]";
         }
     }
 }
