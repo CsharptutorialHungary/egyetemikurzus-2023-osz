@@ -8,7 +8,6 @@ public record WeatherForecast(
     Location Location,
     ValueUnit<float> Temperature,
     ValueUnit<float> ApparentTemperature,
-    ValueUnit<float> PrecipitationProbability,
     Precipitation Precipitation,
     ValueUnit<float> Humidity,
     ValueUnit<float> DewPoint,
