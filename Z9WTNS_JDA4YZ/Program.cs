@@ -9,7 +9,7 @@ namespace Z9WTNS_JDA4YZ
     {
         static void Main(string[] args)
         {
-            if (!XmlHandler.InitializeXmlData(PathConst.USERS_PATH) || !XmlHandler.InitializeXmlData(PathConst.TRANSACTIONS_PATH))
+            if (!XmlHandler.InitializeXmlData(PathConst.UsersPath) || !XmlHandler.InitializeXmlData(PathConst.TransactionsPath))
             {
                 Console.WriteLine("A program futása leáll, mert nem sikerült inicializálni az xml fájlokat.");
                 return;

@@ -9,7 +9,7 @@ namespace Z9WTNS_JDA4YZ
     {
         internal static User? Login()
         {
-            List<User> users = XmlHandler.ReadObjectsFromXml<User>(PathConst.USERS_PATH);
+            List<User> users = XmlHandler.ReadObjectsFromXml<User>(PathConst.UsersPath);
 
             Console.Clear();
             Console.WriteLine("Kérem jelentkezen be!");
@@ -42,7 +42,7 @@ namespace Z9WTNS_JDA4YZ
             Console.Clear();
             Console.WriteLine("Most a regisztrációs menü sorban vagy!");
 
-            List<User> users = XmlHandler.ReadObjectsFromXml<User>(PathConst.USERS_PATH);
+            List<User> users = XmlHandler.ReadObjectsFromXml<User>(PathConst.UsersPath);
 
             Console.Write("Kérem, írja be a Nevét: ");
             string name = Console.ReadLine()!;
@@ -53,7 +53,7 @@ namespace Z9WTNS_JDA4YZ
 
             Console.Clear();
 
-            if (XmlHandler.AppendObjectToXml(PathConst.USERS_PATH, new User(users.Count, name, hashedPassword)))
+            if (XmlHandler.AppendObjectToXml(PathConst.UsersPath, new User(users.Count, name, hashedPassword)))
             {
                 Console.WriteLine("Sikeres regisztráció!");
                 return Login();
@@ -81,7 +81,7 @@ namespace Z9WTNS_JDA4YZ
             Console.Write("Adj meg egy tranzakciós üzenetet: ");
             string message = Console.ReadLine()!;
 
-            var transactions = XmlHandler.ReadObjectsFromXml<Transaction>(PathConst.TRANSACTIONS_PATH);
+            var transactions = XmlHandler.ReadObjectsFromXml<Transaction>(PathConst.TransactionsPath);
 
             Transaction transaction = new Transaction
             {
@@ -91,7 +91,7 @@ namespace Z9WTNS_JDA4YZ
                 Message = message
             };
             
-            if(XmlHandler.AppendObjectToXml(PathConst.TRANSACTIONS_PATH, transaction))
+            if(XmlHandler.AppendObjectToXml(PathConst.TransactionsPath, transaction))
             {
                 Console.WriteLine("Tranzakció sikeresen hozzáadva!");
             }
@@ -105,7 +105,7 @@ namespace Z9WTNS_JDA4YZ
 
         internal static void QueryStatistics(User user)
         {
-            List<Transaction> transactions = XmlHandler.ReadObjectsFromXml<Transaction>(PathConst.TRANSACTIONS_PATH);
+            List<Transaction> transactions = XmlHandler.ReadObjectsFromXml<Transaction>(PathConst.TransactionsPath);
 
             var userTransactions = transactions.Where(t => t.UserId.Equals(user.Id)).AsParallel().ToList();
 
