@@ -9,7 +9,7 @@ public record WeatherForecast(
     ValueUnit<float> Temperature,
     ValueUnit<float> ApparentTemperature,
     Precipitation Precipitation,
-    ValueUnit<float> Humidity,
+    float Humidity,
     ValueUnit<float> DewPoint,
     ValueUnit<WeatherCode> WeatherCode,
     Wind Wind
