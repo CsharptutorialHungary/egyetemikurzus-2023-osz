@@ -3,7 +3,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Configuration;
 using WeatherAnalyzer.Cli;
-using static WeatherAnalyzer.Util.Util;
 
 namespace WeatherAnalyzer.Geocode.Api.OpenMeteo;
 
@@ -36,30 +35,26 @@ public class OpenMeteoGeocodeApi(string apiUrl, string languageCode) : IGeocodeA
         foreach (var city in response.Cities)
         {
             yield return new City(
-                ApiResultNullCheck(city.Name),
-                ApiResultNullCheck(city.CountryCode),
-                ApiResultNullCheck(city.Admin1),
+                city.Name,
+                city.CountryCode,
+                city.Admin1,
                 new Location(city.Lat, city.Lon),
                 city.Population
             );
         }
     }
 
-    private class ApiResponse
-    {
-        [JsonPropertyName("results")]
-        public IEnumerable<ApiResponseCity> Cities { get; set; } = Enumerable.Empty<ApiResponseCity>();
-    }
+    private record ApiResponse([property: JsonPropertyName("results")]
+        IEnumerable<ApiResponseCity> Cities);
 
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")] // Instantiated by JSON deserializer
-    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")] // Used by JSON deserializer
-    private class ApiResponseCity
-    {
-        [JsonPropertyName("name")] public string? Name { get; set; }
-        [JsonPropertyName("country_code")] public string? CountryCode { get; set; }
-        [JsonPropertyName("admin1")] public string? Admin1 { get; set; }
-        [JsonPropertyName("latitude")] public float Lat { get; set; }
-        [JsonPropertyName("longitude")] public float Lon { get; set; }
-        [JsonPropertyName("population")] public int Population { get; set; }
-    }
+    private record ApiResponseCity
+    (
+        [property: JsonPropertyName("name")] string Name,
+        [property: JsonPropertyName("country_code")] string CountryCode,
+        [property: JsonPropertyName("admin1")] string Admin1,
+        [property: JsonPropertyName("latitude")] float Lat,
+        [property: JsonPropertyName("longitude")] float Lon,
+        [property: JsonPropertyName("population")] int Population
+    );
 }
