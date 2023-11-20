@@ -1,9 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Configuration;
 using WeatherAnalyzer.Cli;
+using static WeatherAnalyzer.Util.Util;
 
 namespace WeatherAnalyzer.Geocode.Api.OpenMeteo;
 
@@ -23,18 +23,6 @@ public class OpenMeteoGeocodeApi(string apiUrl, string languageCode) : IGeocodeA
 
     public string CliName => "open-meteo";
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [return: NotNull]
-    private static T NullCheck<T>(T value, [CallerArgumentExpression(nameof(value))] string expr = null!)
-    {
-        if (value is null)
-        {
-            throw new InvalidOperationException($"API error: '{expr}' was null");
-        }
-
-        return value;
-    }
-
     public async IAsyncEnumerable<City> FindCitiesAsync(string name)
     {
         using var http = new HttpClient();
@@ -48,9 +36,9 @@ public class OpenMeteoGeocodeApi(string apiUrl, string languageCode) : IGeocodeA
         foreach (var city in response.Cities)
         {
             yield return new City(
-                NullCheck(city.Name),
-                NullCheck(city.CountryCode),
-                NullCheck(city.Admin1),
+                ApiResultNullCheck(city.Name),
+                ApiResultNullCheck(city.CountryCode),
+                ApiResultNullCheck(city.Admin1),
                 new Location(city.Lat, city.Lon),
                 city.Population
             );
