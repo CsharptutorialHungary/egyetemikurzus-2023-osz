@@ -5,8 +5,9 @@ using System.Text.Json;
 
 public class GameController
 {
-
-    private string JsonFilePath = "";
+    private static string appPath = AppContext.BaseDirectory;
+    private static string fileName = "Answers.json";
+    private string JsonFilePath = Path.Combine(appPath, fileName);
     private List<string> words;
 
     public GameController()
@@ -16,14 +17,26 @@ public class GameController
 
     public void AddNewWord(string newWord)
     {
-        if (newWord.Length == 5)
+        if(words == null)
         {
-            words.Add(newWord.ToUpper());
-            SaveWords();
+            return;
+        }
+        string upperCaseWord=newWord.ToUpper();
+        if (!words.Contains(newWord.ToUpper()))
+        {
+            if (newWord.Length == 5)
+            {
+                words.Add(newWord.ToUpper());
+                SaveWords();
+            }
+            else
+            {
+                Console.WriteLine("The word must be 5 characters long.");
+            }
         }
         else
         {
-            Console.WriteLine("The word must be 5 characters long.");
+            Console.WriteLine("This word is already on the list");
         }
     }
 
@@ -51,32 +64,55 @@ public class GameController
         List<string> words = new List<string>();
         try
         {
-            var appPath = AppContext.BaseDirectory;
-            var fileName = "Answers.json";
-            var JsonFilePath = Path.Combine(appPath, fileName);
-            Console.WriteLine(JsonFilePath);
-
             using(var fileReader = File.OpenText(JsonFilePath))
             {
                 string? line = null;
                 do
                 {
                     line=fileReader.ReadLine();
-                    words.Add(line);
+                    if (line != null) //belerakja a nullt is valamiert sooo....
+                    {
+                        words.Add(line);
+                    }
                 }while (line != null);
+                fileReader.Dispose();
             }
+            
         }
         catch (Exception e)
         {
             Console.WriteLine($"{e.Message}");
-        }        
+            Console.WriteLine("A new File is being created with a single answer: PLANE");
+            using (var fileCreater = File.CreateText(JsonFilePath))
+            {
+                fileCreater.WriteLine("PLANE");
+                fileCreater.Dispose();
+            }
+            
+        }
         return words;
         
     }
 
     private void SaveWords()
     {
-        string json = JsonSerializer.Serialize(words);
-        File.WriteAllText(JsonFilePath, json);
+        try
+        {
+            // Serialize each word to a separate line.
+            string[] lines = words.ToArray();
+            File.WriteAllLines(JsonFilePath, lines);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error saving words: {e.Message}");
+        }
+    }
+
+    public void getWords()
+    {
+        foreach (string word in words)
+        {
+            Console.WriteLine(word);
+        }
     }
 }

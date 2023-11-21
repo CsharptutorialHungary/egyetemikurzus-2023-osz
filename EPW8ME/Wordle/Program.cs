@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 
 namespace EWP8ME
@@ -10,7 +11,11 @@ namespace EWP8ME
         static void Main(string[] args)
         {
             GameController gameController = new GameController();
-            //gameController.AddNewWord("PLANE");
+            //gameController.AddNewWord("asdss");
+
+            //Console.WriteLine(gameController.GetAnAnswer());
+
+            gameController.getWords();
             
             Console.ReadKey();
         }
