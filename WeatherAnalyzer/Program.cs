@@ -1,7 +1,9 @@
 using System.CommandLine;
 using System.Diagnostics;
+using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using WeatherAnalyzer.Cli;
+using WeatherAnalyzer.Geocode;
 using WeatherAnalyzer.Geocode.Api;
 using WeatherAnalyzer.Weather;
 using WeatherAnalyzer.Weather.Api;
@@ -76,7 +78,42 @@ async Task<int> Main(string geocodeApi, string location, string weatherApi, File
 
 async IAsyncEnumerable<WeatherForecast> LoadWeatherForecastsAsync(string geocodeApi, string location, string weatherApi)
 {
-    yield break;
+    var geocodeImpl = geocodeImpls[geocodeApi];
+    var cities = geocodeImpl.FindCitiesAsync(location);
+
+    var city = await ChooseCity(cities);
+    if (city is null)
+    {
+        throw new Exception("No city was found");
+    }
+
+    var weatherForecastImpl = weatherForecastImpls[weatherApi];
+    var forecasts = weatherForecastImpl.GetWeatherForecastsAsync(city);
+
+    //return forecasts;
+    await foreach (var forecast in forecasts)
+    {
+        yield return forecast;
+    }
+}
+
+async Task<City?> ChooseCity(IAsyncEnumerable<City> cityOptions)
+{
+    IReadOnlyList<City> cityList = await cityOptions.ToListAsync();
+
+    if (cityList.Count == 1) return cityList[0];
+
+    for (var i = 0; i < cityList.Count; i++)
+    {
+        Console.WriteLine($"{i}.\t{cityList[i]}");
+    }
+
+    Console.Write("?: ");
+
+    if (int.TryParse(Console.ReadLine(), out var choice) is false) return null;
+
+    if (choice >= 0 && choice < cityList.Count) return cityList[choice];
+    return null;
 }
 
 async Task Analyze(IAsyncEnumerable<WeatherForecast> weatherForecasts)
