@@ -52,7 +52,26 @@ IConfiguration LoadConfig() => new ConfigurationBuilder()
 
 async Task<int> Main(string geocodeApi, string location, string weatherApi, FileInfo? downloadOutFile)
 {
-    return 0;
+    try
+    {
+        var forecasts = LoadWeatherForecastsAsync(geocodeApi, location, weatherApi);
+
+        if (downloadOutFile is not null)
+        {
+            await using var file = downloadOutFile.OpenWrite();
+            await JsonSerializer.SerializeAsync(file, forecasts);
+
+            return 0;
+        }
+
+        await Analyze(forecasts);
+        return 0;
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e.Message);
+        return 1;
+    }
 }
 
 async IAsyncEnumerable<WeatherForecast> LoadWeatherForecastsAsync(string geocodeApi, string location, string weatherApi)
