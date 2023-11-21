@@ -4,13 +4,13 @@ using WeatherAnalyzer.Util;
 namespace WeatherAnalyzer.Weather;
 
 public record WeatherForecast(
-    ValueUnit<DateTime> Time,
+    DateTime Time,
     Location Location,
     ValueUnit<float> Temperature,
     ValueUnit<float> ApparentTemperature,
     Precipitation Precipitation,
     float Humidity,
     ValueUnit<float> DewPoint,
-    ValueUnit<WeatherCode> WeatherCode,
+    WeatherCode WeatherCode,
     Wind Wind
 );
