@@ -4,5 +4,5 @@ namespace WeatherAnalyzer.Weather.Api;
 
 public interface IWeatherForecastApi
 {
-    IAsyncEnumerable<WeatherForecast> GetWeatherForecastsAsync(Location location);
+    IAsyncEnumerable<WeatherForecast> GetWeatherForecastsAsync(City city);
 }
