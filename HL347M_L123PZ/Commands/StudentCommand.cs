@@ -91,9 +91,31 @@ namespace StudentTerminal.Commands
 
             string fileName = "students.json";
 
-            var baseFolder = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(directory)!.ToString())!.ToString())!.ToString());
+            string baseFolder = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(directory)!.ToString())!.ToString())!.ToString())!.ToString();
 
-            var filePath = Path.Combine(baseFolder!.ToString(), "Resources", fileName);
+            if(!Directory.Exists(Path.Combine(baseFolder, "Resources")))
+            {
+                try
+                {
+                    baseFolder = Path.Combine(baseFolder, "Resources");
+
+                    Directory.CreateDirectory(baseFolder);
+                }
+                catch(IOException fileException)
+                {
+                    await Console.Error.WriteLineAsync("Az alábbi hiba történt:" + fileException.Message);
+
+                    await Console.Error.WriteLineAsync("A folytatáshoz nyomj meg egy gombot!");
+                }
+                catch(Exception pokemon)
+                {
+                    await Console.Error.WriteLineAsync("Az alábbi hiba történt:" + pokemon.Message);
+
+                    await Console.Error.WriteLineAsync("A folytatáshoz nyomj meg egy gombot!");
+                }
+            }
+
+            var filePath = Path.Combine(baseFolder, fileName);
 
             try
             {
@@ -110,9 +132,9 @@ namespace StudentTerminal.Commands
                     await createStream.DisposeAsync();
                 }
             }
-            catch (IOException exception)
+            catch (IOException fileException)
             {
-                Console.Error.WriteLine(exception.Message);
+                await Console.Error.WriteLineAsync("Az alábbi hiba történt:" + fileException.Message);
 
                 await Console.Out.WriteLineAsync("A folytatáshoz nyomj meg egy gombot!");
 
@@ -120,7 +142,7 @@ namespace StudentTerminal.Commands
             }
             catch (Exception pokemon)
             {
-                Console.Error.WriteLine(pokemon.Message);
+                await Console.Error.WriteLineAsync("Az alábbi hiba történt:" + pokemon.Message);
 
                 await Console.Out.WriteLineAsync("A folytatáshoz nyomj meg egy gombot!");
 
