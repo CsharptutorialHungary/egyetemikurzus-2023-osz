@@ -1,7 +1,7 @@
-﻿using KássaGergő_KássaDávid.Commands;
+﻿using StudentTerminal.Commands;
 
 #if NEW // Feltölti a JSON file-t új adattal
-StudentCommand.Initialize();
+await StudentCommand.Initialize();
 #endif
 
 MenuCommand.Menu();
