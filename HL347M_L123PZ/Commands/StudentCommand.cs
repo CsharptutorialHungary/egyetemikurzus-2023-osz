@@ -1,4 +1,4 @@
-﻿using KássaGergő_KássaDávid.Models;
+﻿using StudentTerminal.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace KássaGergő_KássaDávid.Commands
+namespace StudentTerminal.Commands
 {
     public static class StudentCommand
     {
@@ -14,7 +14,7 @@ namespace KássaGergő_KássaDávid.Commands
         /// League of Legends karakter nevekkel és randomizált értékekkel feltölt egy Student listát
         /// </summary>
         /// <param name="numberOfStudents">Studentek száma. Max 165</param>
-        public static async void Initialize(int numberOfStudents = 165)
+        public static async Task Initialize(int numberOfStudents = 165)
         {
             List<string> names = new List<string>()
             {
@@ -30,7 +30,7 @@ namespace KássaGergő_KássaDávid.Commands
                 "Vladimir", "Volibear", "Warwick", "Wukong", "Xayah", "Xerath", "Xin Zhao", "Yasuo", "Yone", "Yorick", "Yuumi", "Zac", "Zed", "Zeri", "Ziggs", "Zilean", "Zoe", "Zyra",
             };
 
-            if(numberOfStudents > 165)
+            if (numberOfStudents > 165)
             {
                 numberOfStudents = 165;
             }
@@ -43,13 +43,13 @@ namespace KássaGergő_KássaDávid.Commands
 
             for (int i = 0; i < numberOfStudents; i++)
             {
-                int actualNumber = random.Next(0,165);
+                int actualNumber = random.Next(0, 165);
 
                 string name = names[actualNumber];
 
-                while(true)
+                while (true)
                 {
-                    if(!addedNames.Contains(name))
+                    if (!addedNames.Contains(name))
                     {
                         addedNames.Add(name);
                         break;
@@ -68,7 +68,7 @@ namespace KássaGergő_KássaDávid.Commands
 
                 string email = $"{name.ToLower().Replace(' ', '_')}@gmail.com";
 
-                string id = $"h{random.Next(1000,9001)}";
+                string id = $"h{random.Next(1000, 9001)}";
 
                 double average = Math.Round(random.NextDouble() * (5 - 1) + 1, 2);
 
@@ -87,15 +87,45 @@ namespace KássaGergő_KássaDávid.Commands
         /// <returns></returns>
         public static async Task SaveStudentsToJSON(List<Student> students)
         {
-            string fileName = "..//..//..//students.json";
-            
-            using FileStream createStream = File.Create(fileName);
+            var directory = AppContext.BaseDirectory;
 
-            var options = new JsonSerializerOptions { WriteIndented = true };
+            string fileName = "students.json";
 
-            await JsonSerializer.SerializeAsync(createStream, students, options);
-            
-            await createStream.DisposeAsync();
+            var baseFolder = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(directory)!.ToString())!.ToString())!.ToString());
+
+            var filePath = Path.Combine(baseFolder!.ToString(), "Resources", fileName);
+
+            try
+            {
+                using (FileStream createStream = File.Create(filePath))
+                {
+                    var options = new JsonSerializerOptions
+                    {
+                        WriteIndented = true,
+                        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                    };
+
+                    await JsonSerializer.SerializeAsync(createStream, students, options);
+
+                    await createStream.DisposeAsync();
+                }
+            }
+            catch (IOException exception)
+            {
+                Console.Error.WriteLine(exception.Message);
+
+                await Console.Out.WriteLineAsync("A folytatáshoz nyomj meg egy gombot!");
+
+                Console.ReadKey();
+            }
+            catch (Exception pokemon)
+            {
+                Console.Error.WriteLine(pokemon.Message);
+
+                await Console.Out.WriteLineAsync("A folytatáshoz nyomj meg egy gombot!");
+
+                Console.ReadKey();
+            }
         }
     }
 }

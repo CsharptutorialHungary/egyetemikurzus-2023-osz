@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KássaGergő_KássaDávid.Commands
+namespace StudentTerminal.Commands
 {
     public static class MenuCommand
     {
         public static void Menu()
         {
+            
+
             Console.Clear();
             Console.WriteLine("Válassz egy műveletet:");
             Console.Write("1 - Felhasználók listázása\t");

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KássaGergő_KássaDávid.Models
+namespace StudentTerminal.Models
 {
     public record class Student
     {
