@@ -7,13 +7,13 @@ public class Player
 {
 	private string _name;
 	private int _score;
-	private int _wordsInARow;
+	private int _round;
 
 	public Player()
 	{
 		_name = "Anonymus";
 		_score = 0;
-        _wordsInARow = 0;
+        _round= 0;
 	}
 
 	public void updateScoreBy(int newPoints)
@@ -45,12 +45,12 @@ public class Player
 	{ 		
 		_name = name;
 	}
-	public int getWords()
+	public int getRound()
 	{
-		return _wordsInARow;
+		return _round;
 	}
-	public void setWords(int words)
+	public void setRound(int round)
 	{
-        _wordsInARow = words;
+        _round = round;
 	}
 }
