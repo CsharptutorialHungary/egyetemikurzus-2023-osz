@@ -1,7 +1,7 @@
 ﻿using StudentTerminal.Commands;
 
-#if NEW // Feltölti a JSON file-t új adattal
+#if NEW // Feltölti a JSON file-t új randomizált adatokkal
 await StudentCommand.Initialize();
 #endif
 
-MenuCommand.Menu();
+await MenuCommand.Menu();
