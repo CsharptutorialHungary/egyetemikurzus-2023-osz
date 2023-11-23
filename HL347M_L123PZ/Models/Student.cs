@@ -29,7 +29,7 @@ namespace StudentTerminal.Models
 
         public override string? ToString()
         {
-            return $"[{this.Id}] [{this.Name}] [{this.Age}] [{this.Email}] [{this.Courses}] [{this.Credits}] [{this.Average}]";
+            return $"[{this.Id}][{this.Name}][{this.Age}][{this.Email}][{this.Courses}][{this.Credits}][{this.Average}]";
         }
     }
 }
