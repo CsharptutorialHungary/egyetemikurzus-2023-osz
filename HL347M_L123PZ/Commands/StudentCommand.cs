@@ -13,8 +13,9 @@ namespace StudentTerminal.Commands
         /// <summary>
         /// League of Legends karakter nevekkel és randomizált értékekkel feltölt egy Student listát
         /// </summary>
-        /// <param name="numberOfStudents">Studentek száma. Max 165</param>
-        public static async Task Initialize(int numberOfStudents = 165)
+        /// <param name="numberOfStudents">Generálni kívánt studentek száma</param>
+        /// <returns>True, ha lefutott</returns>
+        public static async Task<bool> Initialize(int numberOfStudents = 165)
         {
             List<string> names = new List<string>()
             {
@@ -78,14 +79,16 @@ namespace StudentTerminal.Commands
             }
 
             await SaveStudentsToJSON(students);
+
+            return true;
         }
 
         /// <summary>
         /// Egy Student listát elment JSON formátú fileba.
         /// </summary>
         /// <param name="students">Student lista</param>
-        /// <returns></returns>
-        public static async Task SaveStudentsToJSON(List<Student> students)
+        /// <returns>True, ha lefutott</returns>
+        public static async Task<bool> SaveStudentsToJSON(List<Student> students)
         {
             var directory = AppContext.BaseDirectory;
 
@@ -93,21 +96,21 @@ namespace StudentTerminal.Commands
 
             string baseFolder = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(directory)!.ToString())!.ToString())!.ToString())!.ToString();
 
-            if(!Directory.Exists(Path.Combine(baseFolder, "Resources")))
+            baseFolder = Path.Combine(baseFolder, "Resources");
+
+            if (!Directory.Exists(Path.Combine(baseFolder, "Resources")))
             {
                 try
                 {
-                    baseFolder = Path.Combine(baseFolder, "Resources");
-
                     Directory.CreateDirectory(baseFolder);
                 }
-                catch(IOException fileException)
+                catch (IOException fileException)
                 {
                     await Console.Error.WriteLineAsync("Az alábbi hiba történt:" + fileException.Message);
 
                     await Console.Error.WriteLineAsync("A folytatáshoz nyomj meg egy gombot!");
                 }
-                catch(Exception pokemon)
+                catch (Exception pokemon)
                 {
                     await Console.Error.WriteLineAsync("Az alábbi hiba történt:" + pokemon.Message);
 
@@ -148,6 +151,90 @@ namespace StudentTerminal.Commands
 
                 Console.ReadKey();
             }
+
+            return true;
+        }
+
+        /// <summary>
+        /// A Resources mappában található JSON fileból készít egy Student listát
+        /// </summary>
+        /// <returns>Student lista JSON fileból</returns>
+        public static async Task<List<Student>> LoadStudentsFromJson()
+        {
+            var directory = AppContext.BaseDirectory;
+
+            string fileName = "students.json";
+
+            var baseFolder = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(directory)!.ToString())!.ToString())!.ToString());
+
+            var filePath = Path.Combine(baseFolder!.ToString(), "Resources", fileName);
+
+            if (!File.Exists(filePath))
+            {
+                await Initialize();
+            }
+
+            try
+            {
+                using (FileStream jsonFile = File.OpenRead(filePath))
+                {
+                    var options = new JsonSerializerOptions
+                    {
+                        WriteIndented = true,
+                        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                    };
+
+                    List<Student>? students = await JsonSerializer.DeserializeAsync<List<Student>>(jsonFile, options);
+
+                    return students!;
+                }
+            }
+            catch (IOException fileException)
+            {
+                await Console.Error.WriteLineAsync("Az alábbi hiba történt:" + fileException.Message);
+
+                await Console.Out.WriteLineAsync("A folytatáshoz nyomj meg egy gombot!");
+
+                Console.ReadKey();
+            }
+            catch (Exception pokemon)
+            {
+                await Console.Error.WriteLineAsync("Az alábbi hiba történt:" + pokemon.Message);
+
+                await Console.Out.WriteLineAsync("A folytatáshoz nyomj meg egy gombot!");
+
+                Console.ReadKey();
+            }
+
+            return new List<Student>();
+        }
+
+        /// <summary>
+        /// Lista elemeire meghívja a Console.WriteLine metódust
+        /// </summary>
+        /// <typeparam name="T">Lista típusa</typeparam>
+        /// <param name="list">Lista</param>
+        public static void Write<T>(List<T> list)
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.DarkRed;
+            Console.Write("[AZONOSÍTÓ]");
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.Write("[NÉV]");
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
+            Console.Write("[KOR]");
+            Console.BackgroundColor = ConsoleColor.DarkGray;
+            Console.Write("[EMAIL]");
+            Console.BackgroundColor = ConsoleColor.DarkYellow;
+            Console.Write("[FELVETT KURZUSOK SZÁMA]");
+            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+            Console.Write("[MEGSZERZETT KREDITEK]");
+            Console.BackgroundColor = ConsoleColor.DarkCyan;
+            Console.Write("[TANULMÁNYI ÁTLAG]" + "\n");
+            Console.ResetColor();
+
+            list.ForEach(item => Console.WriteLine(item));
         }
     }
 }
