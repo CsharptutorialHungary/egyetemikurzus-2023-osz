@@ -10,18 +10,103 @@ public class GameController
     private string JsonFilePath = Path.Combine(appPath, fileName);
     private List<string> words;
 
+    private List<string> players;
+    private Player currentplayer;
+
+
     public GameController()
     {
         words = LoadWords();
     }
 
+
+    public string getInput()
+    {
+        string input = Console.ReadLine();
+        return input;
+    }
+
+    public void startGameController()
+    {
+        string input ="";
+        loadMenu(false);
+        input=getInput();   //elso input a jatekostol
+        Console.WriteLine(input);
+        while (input != "5")
+        {
+            if(input=="1" || input == "2" || input == "3" || input == "4")
+            {
+                loadMenu(false);
+                switch (input)
+                {
+                    case "1":
+                        Console.WriteLine("1 as input");
+                        input = getInput();
+                        break;
+                    case "2":
+                        Console.WriteLine("2 as input");
+                        input = getInput();
+                        break;
+                    case "3":
+                        Console.WriteLine("3 as input");
+                        input = getInput();
+                        break;
+                    case "4":
+                        Console.WriteLine("4 as input");
+                        input = getInput();
+                        break;
+                }                
+            }
+            else
+            {
+                loadMenu(true);
+                input = getInput();
+            }
+        }
+        loadMenu(false);
+        Console.WriteLine("Thanks for Checking out my game!");
+        Console.ReadKey();
+        return;
+    }
+
+    public void newGame()
+    {
+
+    }
+
+    public void loadMenu(bool hiba)
+    {
+        Console.Clear();
+        Console.WriteLine(" __      __________ __________________  .____     ___________\r\n/  \\    /  \\_____  \\\\______   \\______ \\ |    |    \\_   _____/\r\n\\   \\/\\/   //   |   \\|       _/|    |  \\|    |     |    __)_ \r\n \\        //    |    \\    |   \\|    `   \\    |___  |        \\\r\n  \\__/\\  / \\_______  /____|_  /_______  /_______ \\/_______  /\r\n       \\/          \\/       \\/        \\/        \\/        \\/ \n");
+
+        if (hiba)
+        {
+            Console.WriteLine("Press a number to navigate!\n!! A number from the list below !!\n");
+            
+        }
+        else
+        {
+            Console.WriteLine("Press a number to navigate!\n\n");
+        }
+
+
+
+        Console.WriteLine("1. New Game\n" +
+                          "2. Rules\n" +
+                          "3. High-Score\n" +
+                          "4. Add a new Word\n" +
+                          "5. Exit Game\n");
+
+        
+    }
+
     public void AddNewWord(string newWord)
     {
-        if(words == null)
+        if (words == null)
         {
             return;
         }
-        string upperCaseWord=newWord.ToUpper();
+        string upperCaseWord = newWord.ToUpper();
         if (!words.Contains(newWord.ToUpper()))
         {
             if (newWord.Length == 5)
@@ -64,20 +149,20 @@ public class GameController
         List<string> words = new List<string>();
         try
         {
-            using(var fileReader = File.OpenText(JsonFilePath))
+            using (var fileReader = File.OpenText(JsonFilePath))
             {
                 string? line = null;
                 do
                 {
-                    line=fileReader.ReadLine();
+                    line = fileReader.ReadLine();
                     if (line != null) //belerakja a nullt is valamiert sooo....
                     {
                         words.Add(line);
                     }
-                }while (line != null);
+                } while (line != null);
                 fileReader.Dispose();
             }
-            
+
         }
         catch (Exception e)
         {
@@ -88,10 +173,10 @@ public class GameController
                 fileCreater.WriteLine("PLANE");
                 fileCreater.Dispose();
             }
-            
+
         }
         return words;
-        
+
     }
 
     private void SaveWords()
