@@ -30,7 +30,7 @@ public class OpenMeteoGeocodeApi(string apiUrl, string languageCode) : IGeocodeA
             $"{apiUrl}?name={name}&count={MaxResultCount}&language={languageCode}&format=json");
 
         var response = await JsonSerializer.DeserializeAsync<ApiResponse>(stream);
-        if (response is null) yield break;
+        if (response?.Cities is null) yield break;
 
         foreach (var city in response.Cities)
         {
@@ -44,7 +44,7 @@ public class OpenMeteoGeocodeApi(string apiUrl, string languageCode) : IGeocodeA
         }
     }
 
-    private record ApiResponse([property: JsonPropertyName("results")] IEnumerable<ApiResponseCity> Cities);
+    private record ApiResponse([property: JsonPropertyName("results")] IEnumerable<ApiResponseCity>? Cities);
 
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")] // Instantiated by JSON deserializer
     private record ApiResponseCity

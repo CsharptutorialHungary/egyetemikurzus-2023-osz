@@ -102,6 +102,7 @@ async Task<City?> ChooseCity(IAsyncEnumerable<City> cityOptions)
 {
     IReadOnlyList<City> cityList = await cityOptions.ToListAsync();
 
+    if (cityList.Count == 0) return null;
     if (cityList.Count == 1) return cityList[0];
 
     for (var i = 0; i < cityList.Count; i++)
