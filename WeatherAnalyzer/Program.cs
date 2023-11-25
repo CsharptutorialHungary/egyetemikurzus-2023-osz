@@ -176,20 +176,18 @@ async Task Analyze(IAsyncEnumerable<WeatherForecast> weatherForecasts)
         Func<WeatherForecast, ValueUnit<float>> selector
     )
     {
-        return CreateAnalysis2(forecasts, by, f => selector(f).Value, f => selector(f).Unit);
-    }
+        var min = forecasts.MinBy(ValueSelector);
+        var max = forecasts.MaxBy(ValueSelector);
+        var avg = forecasts.Average(ValueSelector);
 
-    string CreateAnalysis2(
-        IList<WeatherForecast> forecasts,
-        string by,
-        Func<WeatherForecast, float> valueSelector,
-        Func<WeatherForecast, string> unitSelector
-    )
-    {
-        var (min, max, avg) = AnalyzeWeatherForecastsBy(forecasts, valueSelector);
-        var minValue = valueSelector(min);
-        var maxValue = valueSelector(max);
-        var unit = unitSelector(min);
+        if (min is null || max is null)
+        {
+            throw new ArgumentException("List was empty", nameof(forecasts));
+        }
+
+        var minValue = selector(min).Value;
+        var maxValue = selector(max).Value;
+        var unit = selector(min).Unit;
 
         if (unit == "%")
         {
@@ -202,18 +200,7 @@ async Task Analyze(IAsyncEnumerable<WeatherForecast> weatherForecasts)
         }
 
         return $"{by}: {minValue:F1}{unit}..{maxValue:F1}{unit}, average: {avg:F1}{unit}";
-    }
 
-    (WeatherForecast Min, WeatherForecast Max, float Average)
-        AnalyzeWeatherForecastsBy(IList<WeatherForecast> forecasts, Func<WeatherForecast, float> selector)
-    {
-        var min = forecasts.MinBy(selector);
-        var max = forecasts.MaxBy(selector);
-        if (min is null || max is null)
-        {
-            throw new ArgumentException("List was empty", nameof(forecasts));
-        }
-
-        return (min, max, forecasts.Average(selector));
+        float ValueSelector(WeatherForecast forecast) => selector(forecast).Value;
     }
 }
