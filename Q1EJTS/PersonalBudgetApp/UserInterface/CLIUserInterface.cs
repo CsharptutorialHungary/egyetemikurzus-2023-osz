@@ -9,7 +9,7 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
 {
     class CLIUserInterface : IUserInput, IMenu
     {
-        private IBalanceManager _balanceManager = new BalanceManager(new Money(0));
+        private IBalanceManager _balanceManager = new CreditBalanceManager(new Money(0));
         private DateTime _minimumDate = new DateTime(1900, 01, 01);
         private FinancialCategory[] _availableCategories = Enum.GetValues<FinancialCategory>();
         
@@ -285,7 +285,7 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
             {
                 Console.WriteLine("Érvénytelen összeg. Kérjük, adjon meg egy pozitív összeget.");
             }
-            _balanceManager = new BalanceManager(new Money(initialBalanceAmount));
+            _balanceManager = new CreditBalanceManager(new Money(initialBalanceAmount));
             while (true)
             {
                 DisplayMainMenu();
