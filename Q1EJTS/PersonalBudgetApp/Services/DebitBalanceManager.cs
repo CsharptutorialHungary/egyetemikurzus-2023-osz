@@ -4,11 +4,11 @@ using Q1EJTS.PersonalBudgetApp.Transactions;
 
 namespace Q1EJTS.PersonalBudgetApp.Services
 {
-    class CreditBalanceManager : IBalanceManager
+    class DebitBalanceManager : IBalanceManager
     {
         private Balance _balance { get; set; }
 
-        public CreditBalanceManager(Money initialBalance)
+        public DebitBalanceManager(Money initialBalance)
         {
             _balance = new Balance(initialBalance);
         }
