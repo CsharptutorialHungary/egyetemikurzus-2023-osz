@@ -13,12 +13,12 @@ namespace Q1EJTS.PersonalBudgetApp.Services
         {
             _transactions = new List<Transaction>();
         }
-        public static void AddTransaction(Transaction transaction, BalanceManager balanceManager)
+        public static void AddTransaction(Transaction transaction, IBalanceManager balanceManager)
         {
             balanceManager.UpdateBalance(transaction);
             _transactions.Add(transaction);
         }
-        public static void AddTransaction(List<Transaction> transactions, BalanceManager balanceManager)
+        public static void AddTransaction(List<Transaction> transactions, IBalanceManager balanceManager)
         {
             foreach (Transaction transaction in transactions)
             {

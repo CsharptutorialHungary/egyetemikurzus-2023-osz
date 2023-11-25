@@ -9,7 +9,7 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
 {
     class CLIUserInterface : IUserInput, IMenu
     {
-        private BalanceManager _balanceManager = new BalanceManager(new Money(0));
+        private IBalanceManager _balanceManager = new BalanceManager(new Money(0));
         private DateTime _minimumDate = new DateTime(1900, 01, 01);
         private FinancialCategory[] _availableCategories = Enum.GetValues<FinancialCategory>();
         
@@ -33,6 +33,7 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
                 else
                 {
                     TransactionManager.AddTransaction(list, _balanceManager);
+                    Console.WriteLine("Sikeres fájlbeolvasás!");
                 }
             }
             catch (Exception ex)
@@ -46,6 +47,7 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
             {
                 string filename = GetFilePathFromUserInput();
                 await DataSerializer.Serialize(filename);
+                Console.WriteLine("Sikeres mentés!");
             }
             catch (Exception ex)
             {
@@ -60,28 +62,22 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
         }
         public DateTime GetValidDateFromUserInput()
         {
-            while (true)
+            Console.WriteLine("Dátum (yyyy-MM-dd): ");
+            if (DateTime.TryParse(Console.ReadLine(), out DateTime date) && IsValidDate(date))
             {
-                Console.WriteLine("Dátum (yyyy-MM-dd): ");
-                if (DateTime.TryParse(Console.ReadLine(), out DateTime date) && IsValidDate(date))
-                {
-                    return date;
-                }
-                Console.WriteLine("Érvénytelen dátum formátum vagy érvénytelen dátum. Kérlek próbáld újra.");
+                return date;
             }
+            throw new FormatException("Érvénytelen dátum formátum vagy érvénytelen dátum!");
         }
 
         public Money GetMoneyAmountFromUserInput()
         {
-            while (true)
+            Console.WriteLine("Összeg: ");
+            if (decimal.TryParse(Console.ReadLine(), out decimal amount))
             {
-                Console.WriteLine("Összeg: ");
-                if (decimal.TryParse(Console.ReadLine(), out decimal amount))
-                {
-                    return new Money(amount);
-                }
-                Console.WriteLine("Érvénytelen összeg, kérlek próbáld újra.");
+                return new Money(amount);
             }
+            throw new FormatException("Érvénytelen összeg!");
         }
         public FinancialCategory GetFinancialCategoryFromUserInput()
         {
@@ -113,7 +109,7 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
             }
             else
             {
-                Console.WriteLine("Érvénytelen év!");
+                throw new FormatException("Érvénytelen év");
             }
         }
         public SortingOrder GetSortingOrderFromUserInput()
@@ -121,24 +117,20 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
             Console.WriteLine("Kérlek válassz rendezési sorrendet:");
             Console.WriteLine("1. Növekvő sorrend");
             Console.WriteLine("2. Csökkenő sorrend");
+            Console.Write("Választás (1 vagy 2): ");
+            string userInput = Console.ReadLine()!;
 
-            while (true)
+            if (userInput == "1")
             {
-                Console.Write("Választás (1 vagy 2): ");
-                string userInput = Console.ReadLine()!;
-
-                if (userInput == "1")
-                {
-                    return SortingOrder.Ascending;
-                }
-                else if (userInput == "2")
-                {
-                    return SortingOrder.Descending;
-                }
-                else
-                {
-                    Console.WriteLine("Érvénytelen választás. Kérlek válassz 1 vagy 2.");
-                }
+                return SortingOrder.Ascending;
+            }
+            else if (userInput == "2")
+            {
+                return SortingOrder.Descending;
+            }
+            else
+            {
+                throw new FormatException("Érvénytelen választás!");
             }
         }
         private void ExecuteDateSorting()
@@ -201,30 +193,41 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
                 Console.Write("Válassz egy műveletet: ");
                 int choice;
                 int.TryParse(Console.ReadLine(), out choice);
-                switch (choice)
+                try
                 {
-                    case 1:
-                        ExecuteDateSorting();
-                        break;
-                    case 2:
-                        ExecuteCategoryFilter();
-                        break;
-                    case 3:
-                        ExecuteYearFilter();
-                        break;
-                    case 4:
-                        ExecuteCategoryGroupBy();
-                        break;
-                    case 5:
-                        ExecuteIncomeAndOutcomeGroupBy();
-                        break;
-                    case 6:
-                        ExecuteDateRangeFilter();
-                        break;
-                    case 7:
-                        ExecuteMoneyRangeFilter();
-                        break;
+                    switch (choice)
+                    {
+                        case 1:
+                            ExecuteDateSorting();
+                            break;
+                        case 2:
+                            ExecuteCategoryFilter();
+                            break;
+                        case 3:
+                            ExecuteYearFilter();
+                            break;
+                        case 4:
+                            ExecuteCategoryGroupBy();
+                            break;
+                        case 5:
+                            ExecuteIncomeAndOutcomeGroupBy();
+                            break;
+                        case 6:
+                            ExecuteDateRangeFilter();
+                            break;
+                        case 7:
+                            ExecuteMoneyRangeFilter();
+                            break;
 
+                    }
+                }
+                catch (FormatException exp)
+                {
+                    Console.WriteLine(exp.Message);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Ismeretlen hiba történt!");
                 }
                 if (choice == 0)
                 {
@@ -249,15 +252,14 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
             catch (FormatException ex)
             {
                 Console.WriteLine($"Hiba történt: {ex.Message}");
-
             }
             catch (LowBalanceException exp) 
             {
                 Console.WriteLine(exp.Message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Ismeretlen hiba történt: {ex.Message}");
+                Console.WriteLine($"Ismeretlen hiba történt");
             }
         }
         public void DisplayMainMenu()
@@ -279,7 +281,7 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
         {
             Console.WriteLine("Add meg a kezdő(jelenlegi) egyenlegedet!");
             decimal initialBalanceAmount;
-            while (!decimal.TryParse(Console.ReadLine(), out initialBalanceAmount) || initialBalanceAmount <= 0)
+            while (!decimal.TryParse(Console.ReadLine(), out initialBalanceAmount))
             {
                 Console.WriteLine("Érvénytelen összeg. Kérjük, adjon meg egy pozitív összeget.");
             }
@@ -320,11 +322,5 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
                 }
             }
         }
-        public async static Task Main()
-        {
-            await new CLIUserInterface().Run();
-        }
-
-        
     }
 }
