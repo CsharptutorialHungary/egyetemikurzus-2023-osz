@@ -18,7 +18,7 @@
       
         }
 
-        public Transaction(int id, int userId, decimal amount, string message,)
+        public Transaction(int id, int userId, decimal amount, string message)
         {
             Id = id;
             UserId = userId;

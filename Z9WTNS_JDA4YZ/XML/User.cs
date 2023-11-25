@@ -13,7 +13,7 @@
             Id = 0;
             Username = "";
             HashedPassword = "";
-            isUnder25 = true;
+           
         }
 
         public User(int id, string username, string hashedPassword, bool under25)
@@ -21,7 +21,7 @@
             Id = id;
             Username = username;
             HashedPassword = hashedPassword;
-             isUnder25 &= under25;
+             isUnder25 = under25;
         }
     }
 }

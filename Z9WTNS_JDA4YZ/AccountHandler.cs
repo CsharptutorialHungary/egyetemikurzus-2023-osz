@@ -54,9 +54,10 @@ namespace Z9WTNS_JDA4YZ
             Console.Write("Kérem, adja meg, hogy25 év alatti vagy nem (igen vagy nem:) ");
             bool under25 = true;
             string yesNO = Console.ReadLine().ToLower();
+            Console.Write($"{yesNO} {password}");
             if(yesNO == "igen") {  under25 = true; } else {   under25 = false; }
-      
 
+     
             Console.Clear();
 
             if (XmlHandler.AppendObjectToXml(PathConst.UsersPath, new User(users.Count, name, hashedPassword, under25)))
@@ -76,14 +77,14 @@ namespace Z9WTNS_JDA4YZ
         internal static void AddTransaction(User user)
         {
             Console.WriteLine();
-            Console.Write("Add meg a tranzakció összegét: ");
+            Console.Write("Add megg a Bruttó bevételed: ");
             if (!decimal.TryParse(Console.ReadLine(), out decimal amount))
             {
                 Console.WriteLine("Nem megfelelő összegét, sikertelen tranzakció hozzáadás!");
                 return;
             }
 
-            Console.Write("Adj meg egy tranzakciós üzenetet: ");
+            Console.Write("Adj meg tranzakció üzenetét: ");
             string message = Console.ReadLine()!;
 
             var transactions = XmlHandler.ReadObjectsFromXml<Transaction>(PathConst.TransactionsPath);
@@ -121,12 +122,14 @@ namespace Z9WTNS_JDA4YZ
             decimal grossExpense = expenses.Sum(t => t.Amount);
             decimal grossFlow = grossExpense + grossIncome;
 
-            decimal netIncome = CalculateNetIncome(grossIncome);
+            decimal netIncome = CalculateNetIncome(grossIncome, user);
             decimal netExpense = CalculateNetExpense(grossExpense);
+            decimal all = All(grossIncome);
             decimal netFlow = netIncome + netExpense;
 
             decimal realFlow = netIncome + grossExpense;
-
+            decimal saveMoney = netIncome - all;
+            if (user.isUnder25 == true) { 
             Console.WriteLine($"""
 
                     =================================================================================
@@ -134,24 +137,57 @@ namespace Z9WTNS_JDA4YZ
                     =================================================================================
                     |          |        Bevétel       |        Kiadás        |        Forgalom      |
                     ---------------------------------------------------------------------------------
-                    |  Bruttó  |{grossIncome, 21:C} |{grossExpense, 21:C} |{grossFlow, 21:C} |
+                    |  Bruttó  |{grossIncome,21:C} |{grossExpense,21:C} |{grossFlow,21:C} |
                      --------------------------------------------------------------------------------
-                    |  Nettó   |{netIncome, 21:C} |{netExpense, 21:C} |{netFlow, 21:C} |
+                    |  Nettó   |{netIncome,21:C} |{netExpense,21:C} |{netFlow,21:C} |
                     ---------------------------------------------------------------------------------
-                    |         Valódi Forgalom         |{realFlow, 44:C} |
+                    |         Valódi Forgalom         |{realFlow,44:C} |
+                    =================================================================================
+                    |Szja menteség miatt ennyit sporoltál|    {saveMoney,23:C}|
                     =================================================================================
                     
                     """);
         }
+        else{
+                Console.WriteLine($"""
 
-        private static decimal CalculateNetIncome(decimal grossIncome)
+                    =================================================================================
+                    ||                            Tranzakciós Statisztikák                         ||
+                    =================================================================================
+                    |          |        Bevétel       |        Kiadás        |        Forgalom      |
+                    ---------------------------------------------------------------------------------
+                    |  Bruttó  |{grossIncome,21:C} |{grossExpense,21:C} |{grossFlow,21:C} |
+                     --------------------------------------------------------------------------------
+                    |  Nettó   |{netIncome,21:C} |{netExpense,21:C} |{netFlow,21:C} |
+                    ---------------------------------------------------------------------------------
+                    |         Valódi Forgalom         |{realFlow,44:C} |
+                    =================================================================================
+                    
+                    """);
+
+            }
+        }
+
+        private static decimal CalculateNetIncome(decimal grossIncome, User user)
         {
-            return grossIncome / 1.15m;
+            if (user.isUnder25 == true)
+            {
+                Console.WriteLine(user.isUnder25);
+                return grossIncome / 1.226993865m; // 1000 -> 854
+            }
+            else
+            {
+                return grossIncome / 1.5037593398m; // 751
+            }
+        }
+        private static decimal All(decimal grossIncome)
+        {
+            return grossIncome / 1.5037593398m; // 751
         }
 
         private static decimal CalculateNetExpense(decimal grossExpense)
         {
-            return grossExpense / 1.27m;
+            return grossExpense / 1.5037593398m; //751
         }
 
         private static string HashPassword(string password)
