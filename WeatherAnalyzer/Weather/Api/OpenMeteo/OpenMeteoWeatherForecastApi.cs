@@ -46,7 +46,7 @@ public class OpenMeteoWeatherForecastApi(string apiUrl) : IWeatherForecastApi, I
                     values.PrecipitationProbability[i] / 100f,
                     new ValueUnit<float>(values.PrecipitationAmount[i], units.PrecipitationAmount)
                 ),
-                values.RelativeHumidity[i] / 100f,
+                new ValueUnit<float>(values.RelativeHumidity[i], units.RelativeHumidity),
                 new ValueUnit<float>(values.DewPoint[i], units.DewPoint),
                 values.WeatherCode[i],
                 new Wind(

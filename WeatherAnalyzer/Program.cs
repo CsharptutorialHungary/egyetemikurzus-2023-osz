@@ -160,11 +160,8 @@ async Task Analyze(IAsyncEnumerable<WeatherForecast> weatherForecasts)
         Console.Write(tab);
         Console.WriteLine(precipitationAnalysis);
 
-        var humidityMin = forecasts.Min(f => f.Humidity);
-        var humidityMax = forecasts.Max(f => f.Humidity);
-        var humidityAvg = forecasts.Average(f => f.Humidity);
         Console.Write(tab);
-        Console.WriteLine($"Humidity: {humidityMin:P1}..{humidityMax:P1}, average: {humidityAvg:P1}");
+        Console.WriteLine(CreateAnalysis(forecasts, "Humidity", f => f.Humidity));
 
         Console.Write(tab);
         Console.WriteLine(CreateAnalysis(forecasts, "Dew point", f => f.DewPoint));
@@ -193,6 +190,16 @@ async Task Analyze(IAsyncEnumerable<WeatherForecast> weatherForecasts)
         var minValue = valueSelector(min);
         var maxValue = valueSelector(max);
         var unit = unitSelector(min);
+
+        if (unit == "%")
+        {
+            // 100% == new ValueUnit(100, "%")
+            // Divide everything, dotnet multiplies it back
+            minValue /= 100;
+            maxValue /= 100;
+            avg /= 100;
+            return $"{by}: {minValue:P1}..{maxValue:P1}, average: {avg:P1}";
+        }
 
         return $"{by}: {minValue:F1}{unit}..{maxValue:F1}{unit}, average: {avg:F1}{unit}";
     }
