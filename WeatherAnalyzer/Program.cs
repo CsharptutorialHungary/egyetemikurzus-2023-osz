@@ -57,7 +57,7 @@ async Task<int> Main(string geocodeApi, string location, string weatherApi, File
 {
     try
     {
-        var forecasts = LoadWeatherForecastsAsync(geocodeApi, location, weatherApi);
+        var forecasts = await LoadWeatherForecastsAsync(geocodeApi, location, weatherApi);
 
         if (downloadOutFile is not null)
         {
@@ -67,7 +67,7 @@ async Task<int> Main(string geocodeApi, string location, string weatherApi, File
             return 0;
         }
 
-        await Analyze(forecasts);
+        await Analyze(forecasts.WeatherForecasts);
         return 0;
     }
     catch (Exception e)
@@ -77,7 +77,7 @@ async Task<int> Main(string geocodeApi, string location, string weatherApi, File
     }
 }
 
-async IAsyncEnumerable<WeatherForecast> LoadWeatherForecastsAsync(string geocodeApi, string location, string weatherApi)
+async Task<StoredWeatherForecast> LoadWeatherForecastsAsync(string geocodeApi, string location, string weatherApi)
 {
     var geocodeImpl = geocodeImpls[geocodeApi];
     var cities = geocodeImpl.FindCitiesAsync(location);
@@ -91,11 +91,7 @@ async IAsyncEnumerable<WeatherForecast> LoadWeatherForecastsAsync(string geocode
     var weatherForecastImpl = weatherForecastImpls[weatherApi];
     var forecasts = weatherForecastImpl.GetWeatherForecastsAsync(city);
 
-    //return forecasts;
-    await foreach (var forecast in forecasts)
-    {
-        yield return forecast;
-    }
+    return new StoredWeatherForecast(city, forecasts);
 }
 
 async Task<City?> ChooseCity(IAsyncEnumerable<City> cityOptions)
