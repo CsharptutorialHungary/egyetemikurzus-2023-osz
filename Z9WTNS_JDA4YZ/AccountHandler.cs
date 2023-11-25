@@ -51,9 +51,15 @@ namespace Z9WTNS_JDA4YZ
             string password = Console.ReadLine()!;
             string hashedPassword = HashPassword(password);
 
+            Console.Write("Kérem, adja meg, hogy25 év alatti vagy nem (igen vagy nem:) ");
+            bool under25 = true;
+            string yesNO = Console.ReadLine().ToLower();
+            if(yesNO == "igen") {  under25 = true; } else {   under25 = false; }
+      
+
             Console.Clear();
 
-            if (XmlHandler.AppendObjectToXml(PathConst.UsersPath, new User(users.Count, name, hashedPassword)))
+            if (XmlHandler.AppendObjectToXml(PathConst.UsersPath, new User(users.Count, name, hashedPassword, under25)))
             {
                 Console.WriteLine("Sikeres regisztráció!");
                 return Login();
@@ -70,11 +76,10 @@ namespace Z9WTNS_JDA4YZ
         internal static void AddTransaction(User user)
         {
             Console.WriteLine();
-            Console.Write("Add meg a tranzakció mennyiségét: ");
-
+            Console.Write("Add meg a tranzakció összegét: ");
             if (!decimal.TryParse(Console.ReadLine(), out decimal amount))
             {
-                Console.WriteLine("Nem megfelelő mennyiség, sikertelen tranzakció hozzáadás!");
+                Console.WriteLine("Nem megfelelő összegét, sikertelen tranzakció hozzáadás!");
                 return;
             }
 
