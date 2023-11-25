@@ -44,8 +44,7 @@ public class OpenMeteoGeocodeApi(string apiUrl, string languageCode) : IGeocodeA
         }
     }
 
-    private record ApiResponse([property: JsonPropertyName("results")]
-        IEnumerable<ApiResponseCity> Cities);
+    private record ApiResponse([property: JsonPropertyName("results")] IEnumerable<ApiResponseCity> Cities);
 
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")] // Instantiated by JSON deserializer
     private record ApiResponseCity
