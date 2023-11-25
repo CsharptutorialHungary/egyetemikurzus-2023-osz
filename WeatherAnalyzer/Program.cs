@@ -167,6 +167,12 @@ async Task Analyze(IAsyncEnumerable<WeatherForecast> weatherForecasts)
         Console.WriteLine(CreateAnalysis(forecasts, "Dew point", f => f.DewPoint));
 
         Console.Write(tab);
+        Console.WriteLine(CreateAnalysis(forecasts, "Cloud cover", f => f.CloudCover));
+
+        Console.Write(tab);
+        Console.WriteLine(CreateAnalysis(forecasts, "Visibility", f => f.Visibility));
+
+        Console.Write(tab);
         Console.WriteLine(CreateAnalysis(forecasts, "Wind", f => f.Wind.Speed));
     }
 
