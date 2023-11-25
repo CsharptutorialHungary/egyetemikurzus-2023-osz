@@ -17,15 +17,15 @@ var weatherForecastImpls = weatherForecastApiDiscoverer.LoadImplementations();
 
 var geocodeApiOpt = new Option<string>(
     name: "--geocode-api",
-    description: ""
+    description: "The API to get coordinates from the given location"
 ) { IsRequired = true }.FromAmong(geocodeImpls.Keys.ToArray());
 var locationOpt = new Option<string>(
     name: "--location",
-    description: ""
+    description: "The location to retrieve weather forecast for"
 ) { IsRequired = true };
 var weatherApiOpt = new Option<string>(
     name: "--weather-api",
-    description: ""
+    description: "The API to retrieve weather forecast from"
 ) { IsRequired = true }.FromAmong(weatherForecastImpls.Keys.ToArray());
 var downloadOutputFileOpt = new Option<FileInfo>(name: "--download", description: "The file to download the data to")
     { IsRequired = false };
