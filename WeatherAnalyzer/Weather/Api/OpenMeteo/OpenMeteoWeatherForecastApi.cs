@@ -27,7 +27,7 @@ public class OpenMeteoWeatherForecastApi(string apiUrl) : IWeatherForecastApi, I
 
         var (lat, lon) = city.Location;
         var stream = await http.GetStreamAsync(
-            $"{apiUrl}?latitude={lat}&longitude={lon}&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m,wind_direction_10m");
+            $"{apiUrl}?latitude={lat}&longitude={lon}&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,apparent_temperature,precipitation_probability,precipitation,weather_code,cloud_cover,visibility,wind_speed_10m,wind_direction_10m");
 
         var response = await JsonSerializer.DeserializeAsync<ApiResponse>(stream);
         if (response is null) yield break;
@@ -49,6 +49,8 @@ public class OpenMeteoWeatherForecastApi(string apiUrl) : IWeatherForecastApi, I
                 new ValueUnit<float>(values.RelativeHumidity[i], units.RelativeHumidity),
                 new ValueUnit<float>(values.DewPoint[i], units.DewPoint),
                 values.WeatherCode[i],
+                new ValueUnit<float>(values.CloudCover[i], units.CloudCover),
+                new ValueUnit<float>(values.Visibility[i], units.Visibility),
                 new Wind(
                     new ValueUnit<float>(values.WindSpeed[i], units.WindSpeed),
                     new ValueUnit<int>(values.WindDirection[i], units.WindDirection)
@@ -76,6 +78,8 @@ public class OpenMeteoWeatherForecastApi(string apiUrl) : IWeatherForecastApi, I
         [property: JsonPropertyName("precipitation_probability")] string PrecipitationProbability,
         [property: JsonPropertyName("precipitation")] string PrecipitationAmount,
         [property: JsonPropertyName("weather_code")] string WeatherCode,
+        [property: JsonPropertyName("cloud_cover")] string CloudCover,
+        [property: JsonPropertyName("visibility")] string Visibility,
         [property: JsonPropertyName("wind_speed_10m")] string WindSpeed,
         [property: JsonPropertyName("wind_direction_10m")] string WindDirection
     );
@@ -91,6 +95,9 @@ public class OpenMeteoWeatherForecastApi(string apiUrl) : IWeatherForecastApi, I
         [property: JsonPropertyName("precipitation_probability")] IList<int> PrecipitationProbability,
         [property: JsonPropertyName("precipitation")] IList<float> PrecipitationAmount,
         [property: JsonPropertyName("weather_code")] IList<WeatherCode> WeatherCode,
+        [property: JsonPropertyName("cloud_cover")] IList<int> CloudCover,
+        // Firefox scammed me. Visibility not an int, because it has a .00 suffix making it a float
+        [property: JsonPropertyName("visibility")] IList<float> Visibility,
         [property: JsonPropertyName("wind_speed_10m")] IList<float> WindSpeed,
         [property: JsonPropertyName("wind_direction_10m")] IList<int> WindDirection
     )

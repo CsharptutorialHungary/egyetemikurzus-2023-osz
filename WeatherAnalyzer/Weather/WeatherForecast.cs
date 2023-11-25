@@ -12,5 +12,7 @@ public record WeatherForecast(
     ValueUnit<float> Humidity,
     ValueUnit<float> DewPoint,
     WeatherCode WeatherCode,
+    ValueUnit<float> CloudCover,
+    ValueUnit<float> Visibility,
     Wind Wind
 );
