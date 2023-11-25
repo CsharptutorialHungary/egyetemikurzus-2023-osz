@@ -51,13 +51,10 @@ namespace Z9WTNS_JDA4YZ
             string password = Console.ReadLine()!;
             string hashedPassword = HashPassword(password);
 
-            Console.Write("Kérem, adja meg, hogy25 év alatti vagy nem (igen vagy nem:) ");
-            bool under25 = true;
-            string yesNO = Console.ReadLine().ToLower();
-            Console.Write($"{yesNO} {password}");
-            if(yesNO == "igen") {  under25 = true; } else {   under25 = false; }
+            Console.Write("Kérem, adja meg, hogy25 év alatti vagy nem (igen vagy nem): ");
+            string userInput = Console.ReadLine()!.ToLower();
+            bool under25 = (userInput == "igen" || userInput == "i");
 
-     
             Console.Clear();
 
             if (XmlHandler.AppendObjectToXml(PathConst.UsersPath, new User(users.Count, name, hashedPassword, under25)))
@@ -77,7 +74,7 @@ namespace Z9WTNS_JDA4YZ
         internal static void AddTransaction(User user)
         {
             Console.WriteLine();
-            Console.Write("Add megg a Bruttó bevételed: ");
+            Console.Write("Add megg a Bruttó bevételed vagy kiadásod: ");
             if (!decimal.TryParse(Console.ReadLine(), out decimal amount))
             {
                 Console.WriteLine("Nem megfelelő összegét, sikertelen tranzakció hozzáadás!");
@@ -96,8 +93,8 @@ namespace Z9WTNS_JDA4YZ
                 Amount = amount,
                 Message = message
             };
-            
-            if(XmlHandler.AppendObjectToXml(PathConst.TransactionsPath, transaction))
+
+            if (XmlHandler.AppendObjectToXml(PathConst.TransactionsPath, transaction))
             {
                 Console.WriteLine("Tranzakció sikeresen hozzáadva!");
             }
@@ -124,70 +121,65 @@ namespace Z9WTNS_JDA4YZ
 
             decimal netIncome = CalculateNetIncome(grossIncome, user);
             decimal netExpense = CalculateNetExpense(grossExpense);
-            decimal all = All(grossIncome);
             decimal netFlow = netIncome + netExpense;
 
             decimal realFlow = netIncome + grossExpense;
-            decimal saveMoney = netIncome - all;
-            if (user.isUnder25 == true) { 
-            Console.WriteLine($"""
 
-                    =================================================================================
-                    ||                            Tranzakciós Statisztikák                         ||
-                    =================================================================================
-                    |          |        Bevétel       |        Kiadás        |        Forgalom      |
+            Console.WriteLine(
+                $"""
+
+                =================================================================================
+                ||                            Tranzakciós Statisztikák                         ||
+                =================================================================================
+                |          |        Bevétel       |        Kiadás        |        Forgalom      |
+                ---------------------------------------------------------------------------------
+                |  Bruttó  |{grossIncome,21:C} |{grossExpense,21:C} |{grossFlow,21:C} |
+                ---------------------------------------------------------------------------------
+                |  Nettó   |{netIncome,21:C} |{netExpense,21:C} |{netFlow,21:C} |
+                ---------------------------------------------------------------------------------
+                |         Valódi Forgalom         |{realFlow,44:C} |
+                """);
+
+            if (user.isUnder25)
+            {
+                decimal savedMoney = SavedMoney(grossIncome, user);
+
+                Console.WriteLine(
+                    $"""
                     ---------------------------------------------------------------------------------
-                    |  Bruttó  |{grossIncome,21:C} |{grossExpense,21:C} |{grossFlow,21:C} |
-                     --------------------------------------------------------------------------------
-                    |  Nettó   |{netIncome,21:C} |{netExpense,21:C} |{netFlow,21:C} |
-                    ---------------------------------------------------------------------------------
-                    |         Valódi Forgalom         |{realFlow,44:C} |
+                    |    SZJA Mentesség Miatt Ennyit Spóroltál   |    {savedMoney,29:C} |
                     =================================================================================
-                    |Szja menteség miatt ennyit sporoltál|    {saveMoney,23:C}|
-                    =================================================================================
-                    
                     """);
-        }
-        else{
-                Console.WriteLine($"""
-
-                    =================================================================================
-                    ||                            Tranzakciós Statisztikák                         ||
-                    =================================================================================
-                    |          |        Bevétel       |        Kiadás        |        Forgalom      |
-                    ---------------------------------------------------------------------------------
-                    |  Bruttó  |{grossIncome,21:C} |{grossExpense,21:C} |{grossFlow,21:C} |
-                     --------------------------------------------------------------------------------
-                    |  Nettó   |{netIncome,21:C} |{netExpense,21:C} |{netFlow,21:C} |
-                    ---------------------------------------------------------------------------------
-                    |         Valódi Forgalom         |{realFlow,44:C} |
-                    =================================================================================
-                    
-                    """);
-
             }
+            else
+            {
+                Console.WriteLine("=================================================================================");
+            }
+
+            Console.WriteLine();
         }
 
         private static decimal CalculateNetIncome(decimal grossIncome, User user)
         {
             if (user.isUnder25 == true)
-            {
-                Console.WriteLine(user.isUnder25);
-                return grossIncome / 1.226993865m; // 1000 -> 854
-            }
-            else
-            {
-                return grossIncome / 1.5037593398m; // 751
-            }
+                return grossIncome / 1.226993865m;
+
+            return grossIncome / 1.5037593398m;
         }
-        private static decimal All(decimal grossIncome)
+
+        private static decimal SavedMoney(decimal grossIncome, User user)
         {
-            return grossIncome / 1.5037593398m; // 751
+            User tempOver25 = new()
+            {
+                isUnder25 = false
+            };
+
+            return CalculateNetIncome(grossIncome, user) - CalculateNetIncome(grossIncome, tempOver25);
         }
 
         private static decimal CalculateNetExpense(decimal grossExpense)
         {
-            return grossExpense / 1.5037593398m; //751
+            return grossExpense / 1.5037593398m;
         }
 
         private static string HashPassword(string password)

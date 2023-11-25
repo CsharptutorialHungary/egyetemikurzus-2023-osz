@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Z9WTNS_JDA4YZ.Xml
+﻿namespace Z9WTNS_JDA4YZ.Xml
 {
     internal static class PathConst
     {

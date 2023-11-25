@@ -15,7 +15,6 @@
             UserId = 0;
             Amount = 0;
             Message = string.Empty;
-      
         }
 
         public Transaction(int id, int userId, decimal amount, string message)
@@ -24,7 +23,6 @@
             UserId = userId;
             Amount = amount;
             Message = message;
-          
         }
     }
 }
