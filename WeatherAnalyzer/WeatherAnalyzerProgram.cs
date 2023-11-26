@@ -28,7 +28,10 @@ public class WeatherAnalyzerProgram
     public async Task AnalyzeWeatherForecastAsync(string locationSearch)
     {
         var storedForecasts = await LoadWeatherForecastsAsync(locationSearch);
-        var weatherForecasts = await storedForecasts.WeatherForecasts.ToListAsync();
+        var orderedForecasts = from forecast in storedForecasts.WeatherForecasts
+            orderby forecast.Time
+            select forecast;
+        var weatherForecasts = await orderedForecasts.ToListAsync();
 
         AnalyzeWeatherForecasts(weatherForecasts);
         console.Out.WriteLine();
