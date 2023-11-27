@@ -43,4 +43,33 @@ public class GpsGeocodeApiTests
         
         Assert.That(async () => await cities.FirstAsync(), Throws.TypeOf<ArgumentOutOfRangeException>());
     }
+
+    [TestCase("too:many:colons")]
+    [TestCase("too few colons")]
+    [TestCase("gorillakecske")]
+    public void FindCitiesAsync_MalformedInput_ThrowsArgumentException(string coords)
+    {
+        var geocodeApi = new GpsGeocodeApi();
+
+        var cities = geocodeApi.FindCitiesAsync(coords);
+
+        Assert.That(async () => await cities.FirstAsync(), Throws.ArgumentException);
+    }
+
+
+    [TestCase("not:float")]
+    [TestCase("42:whoops")]
+    [TestCase("negative:7")]
+    [TestCase("forty:two")]
+    [TestCase("1:")]
+    [TestCase(":-2")]
+    [TestCase(":")]
+    public void FindCitiesAsync_MalformedInput_ThrowsNumberFormatException(string coords)
+    {
+        var geocodeApi = new GpsGeocodeApi();
+
+        var cities = geocodeApi.FindCitiesAsync(coords);
+
+        Assert.That(async () => await cities.FirstAsync(), Throws.TypeOf<FormatException>());
+    }
 }
