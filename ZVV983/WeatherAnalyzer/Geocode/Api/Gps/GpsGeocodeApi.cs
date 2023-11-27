@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using WeatherAnalyzer.Cli;
 
 namespace WeatherAnalyzer.Geocode.Api.Gps;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")] // Instantiated by reflection
 public class GpsGeocodeApi : IGeocodeApi, ICliDiscoverableApi
 {
     public string CliName => "gps";

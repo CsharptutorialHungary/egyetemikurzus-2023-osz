@@ -5,7 +5,7 @@ using WeatherAnalyzer.Util;
 
 namespace WeatherAnalyzer.Geocode.Api.File;
 
-[SuppressMessage("ReSharper", "UnusedType.Global")] // Used by reflection
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")] // Instantiated by reflection
 public class FileGeocodeApi : IGeocodeApi, ICliDiscoverableApi
 {
     public string CliName => "file";
