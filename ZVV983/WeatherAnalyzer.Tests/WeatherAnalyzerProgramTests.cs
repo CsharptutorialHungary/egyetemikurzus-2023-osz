@@ -56,6 +56,19 @@ public class WeatherAnalyzerProgramTests
         Assert.That(stdout, Is.Empty);
     }
 
+    [Test]
+    public void AnalyzeWeatherForecastAsync_InMemory_ThrowsExceptionIfNoCitySelected()
+    {
+        var geocodeApi = new TestGeocodeApi();
+        var weatherForecastApi = new TestWeatherForecastApi();
+        var program = new WeatherAnalyzerProgram(geocodeApi, weatherForecastApi, async _ => null, new TestConsole());
+        const string location = "Arcadia";
+
+        var analysisAwaitable = program.AnalyzeWeatherForecastAsync(location);
+
+        Assert.That(async () => await analysisAwaitable, Throws.Exception);
+    }
+
     private static async Task<City?> ChooseFirstCity(IAsyncEnumerable<City> cities)
     {
         return await cities.FirstOrDefaultAsync();
