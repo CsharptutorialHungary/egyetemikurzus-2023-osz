@@ -19,6 +19,9 @@ public class GpsGeocodeApi : IGeocodeApi, ICliDiscoverableApi
         var lat = float.Parse(parts[0]);
         var lon = float.Parse(parts[1]);
 
+        if (lat is < -90 or > 90) throw new ArgumentOutOfRangeException(nameof(name), "Latitude was out of range");
+        if (lon is < -180 or > 180) throw new ArgumentOutOfRangeException(nameof(name), "Longitude was out of range");
+
         yield return new City(
             "", 
             "",
