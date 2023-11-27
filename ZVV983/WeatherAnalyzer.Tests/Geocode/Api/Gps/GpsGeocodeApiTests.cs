@@ -20,7 +20,7 @@ public class GpsGeocodeApiTests
         var geocodeApi = new GpsGeocodeApi();
 
         var cities = geocodeApi.FindCitiesAsync(coords);
-        var city = await cities.FirstOrDefaultAsync();
+        var city = await cities.FirstAsync();
 
         Assert.Multiple(() =>
         {
