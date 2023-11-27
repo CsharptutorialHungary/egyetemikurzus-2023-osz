@@ -40,7 +40,7 @@ public class GpsGeocodeApiTests
         var geocodeApi = new GpsGeocodeApi();
 
         var cities = geocodeApi.FindCitiesAsync(coords);
-        
+
         Assert.That(async () => await cities.FirstAsync(), Throws.TypeOf<ArgumentOutOfRangeException>());
     }
 

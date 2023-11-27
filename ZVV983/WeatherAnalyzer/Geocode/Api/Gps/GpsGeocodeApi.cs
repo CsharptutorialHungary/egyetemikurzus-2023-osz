@@ -23,7 +23,7 @@ public class GpsGeocodeApi : IGeocodeApi, ICliDiscoverableApi
         if (lon is < -180 or > 180) throw new ArgumentOutOfRangeException(nameof(name), "Longitude was out of range");
 
         yield return new City(
-            "", 
+            "",
             "",
             "",
             new Location(lat, lon),
