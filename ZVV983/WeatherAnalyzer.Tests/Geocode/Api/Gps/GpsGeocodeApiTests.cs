@@ -30,4 +30,17 @@ public class GpsGeocodeApiTests
                 Has.Property(nameof(City.Location)).Property(nameof(Location.Lon)).EqualTo(expectedLon).Within(0.1f));
         });
     }
+
+    [TestCase("91:0")]
+    [TestCase("-91:0")]
+    [TestCase("0:-181")]
+    [TestCase("0:181")]
+    public void FindCitiesAsync_OutOfRange_ThrowsArgumentOutOfRangeException(string coords)
+    {
+        var geocodeApi = new GpsGeocodeApi();
+
+        var cities = geocodeApi.FindCitiesAsync(coords);
+        
+        Assert.That(async () => await cities.FirstAsync(), Throws.TypeOf<ArgumentOutOfRangeException>());
+    }
 }
