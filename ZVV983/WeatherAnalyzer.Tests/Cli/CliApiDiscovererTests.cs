@@ -64,9 +64,9 @@ public class CliApiDiscovererTests
             Assert.That(impls, Contains.Key("gps"));
             Assert.That(impls, Contains.Key("open-meteo"));
 
-            Assert.That(impls["file"], Is.TypeOf<FileGeocodeApi>());
-            Assert.That(impls["gps"], Is.TypeOf<GpsGeocodeApi>());
-            Assert.That(impls["open-meteo"], Is.TypeOf<OpenMeteoGeocodeApi>());
+            Assert.That(impls, Has.ItemAt("file").TypeOf<FileGeocodeApi>());
+            Assert.That(impls, Has.ItemAt("gps").TypeOf<GpsGeocodeApi>());
+            Assert.That(impls, Has.ItemAt("open-meteo").TypeOf<OpenMeteoGeocodeApi>());
 
             Assert.That(impls, Has.Count.EqualTo(3));
         });
@@ -85,8 +85,8 @@ public class CliApiDiscovererTests
             Assert.That(impls, Contains.Key("file"));
             Assert.That(impls, Contains.Key("open-meteo"));
 
-            Assert.That(impls["file"], Is.TypeOf<FileWeatherForecastApi>());
-            Assert.That(impls["open-meteo"], Is.TypeOf<OpenMeteoWeatherForecastApi>());
+            Assert.That(impls, Has.ItemAt("file").TypeOf<FileWeatherForecastApi>());
+            Assert.That(impls, Has.ItemAt("open-meteo").TypeOf<OpenMeteoWeatherForecastApi>());
 
             Assert.That(impls, Has.Count.EqualTo(2));
         });
