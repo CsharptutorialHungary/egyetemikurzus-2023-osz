@@ -1,5 +1,6 @@
 using System.CommandLine;
 using System.CommandLine.IO;
+using System.Diagnostics;
 using System.Text.Json;
 using WeatherAnalyzer.Geocode;
 using WeatherAnalyzer.Geocode.Api;
@@ -33,6 +34,8 @@ public class WeatherAnalyzerProgram
             select forecast;
         var weatherForecasts = await orderedForecasts.ToListAsync();
 
+        if (!weatherForecasts.Any()) return;
+
         AnalyzeWeatherForecasts(weatherForecasts);
         console.Out.WriteLine();
 
@@ -59,6 +62,8 @@ public class WeatherAnalyzerProgram
 
     private void AnalyzeWeatherForecasts(IList<WeatherForecast> forecasts)
     {
+        Debug.Assert(forecasts.Any(), $"{forecasts} was empty");
+
         var days = forecasts.Select(f => DateOnly.FromDateTime(f.Time)).ToList();
 
         var dayMin = days.Min();
@@ -104,14 +109,11 @@ public class WeatherAnalyzerProgram
         Func<WeatherForecast, ValueUnit<float>> selector
     )
     {
-        var min = forecasts.MinBy(ValueSelector);
-        var max = forecasts.MaxBy(ValueSelector);
-        var avg = forecasts.Average(ValueSelector);
+        Debug.Assert(forecasts.Any(), $"{forecasts} was empty");
 
-        if (min is null || max is null)
-        {
-            throw new ArgumentException("List was empty", nameof(forecasts));
-        }
+        var min = forecasts.MinBy(ValueSelector)!;
+        var max = forecasts.MaxBy(ValueSelector)!;
+        var avg = forecasts.Average(ValueSelector);
 
         var minValue = selector(min).Value;
         var maxValue = selector(max).Value;
