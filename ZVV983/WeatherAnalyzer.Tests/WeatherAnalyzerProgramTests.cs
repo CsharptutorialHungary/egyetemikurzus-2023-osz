@@ -12,12 +12,12 @@ namespace WeatherAnalyzer.Tests;
 public class WeatherAnalyzerProgramTests
 {
     [Test, Order(1)]
-    public async Task DownloadWeatherForecastsAsync_Invoke_CreatesOutputFile()
+    public async Task DownloadWeatherForecastsAsync_InMemory_CreatesOutputFile()
     {
         var geocodeApi = new TestGeocodeApi();
         var weatherForecastApi = new TestWeatherForecastApi();
         var program = new WeatherAnalyzerProgram(geocodeApi, weatherForecastApi, ChooseFirstCity, new TestConsole());
-        var outputFile = new FileInfo($"{nameof(DownloadWeatherForecastsAsync_Invoke_CreatesOutputFile)}.json");
+        var outputFile = new FileInfo($"{nameof(DownloadWeatherForecastsAsync_InMemory_CreatesOutputFile)}.json");
         outputFile.Delete();
         const string location = "Arcadia";
 
@@ -33,7 +33,7 @@ public class WeatherAnalyzerProgramTests
         var weatherForecastApi = new FileWeatherForecastApi();
         var console = new TestConsole();
         var program = new WeatherAnalyzerProgram(geocodeApi, weatherForecastApi, ChooseFirstCity, console);
-        const string location = $"{nameof(DownloadWeatherForecastsAsync_Invoke_CreatesOutputFile)}.json";
+        const string location = $"{nameof(DownloadWeatherForecastsAsync_InMemory_CreatesOutputFile)}.json";
 
         await program.AnalyzeWeatherForecastAsync(location);
         var stdout = console.Out.ToString();
