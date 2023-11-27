@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZVV983", "ZVV983", "{2E160A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherAnalyzer", "ZVV983\WeatherAnalyzer\WeatherAnalyzer.csproj", "{CB61C1BF-F517-47CA-BCF7-E682E6E7B5AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherAnalyzer.Tests", "ZVV983\WeatherAnalyzer.Tests\WeatherAnalyzer.Tests.csproj", "{650055B8-559E-440C-A77E-C008BDE1E895}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,8 +22,13 @@ Global
 		{CB61C1BF-F517-47CA-BCF7-E682E6E7B5AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB61C1BF-F517-47CA-BCF7-E682E6E7B5AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB61C1BF-F517-47CA-BCF7-E682E6E7B5AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{650055B8-559E-440C-A77E-C008BDE1E895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{650055B8-559E-440C-A77E-C008BDE1E895}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{650055B8-559E-440C-A77E-C008BDE1E895}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{650055B8-559E-440C-A77E-C008BDE1E895}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CB61C1BF-F517-47CA-BCF7-E682E6E7B5AC} = {2E160ACC-C99E-4C4D-B846-FE2363218A8C}
+		{650055B8-559E-440C-A77E-C008BDE1E895} = {2E160ACC-C99E-4C4D-B846-FE2363218A8C}
 	EndGlobalSection
 EndGlobal
