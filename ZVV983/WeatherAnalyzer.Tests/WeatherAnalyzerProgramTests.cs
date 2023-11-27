@@ -41,6 +41,21 @@ public class WeatherAnalyzerProgramTests
         Assert.That(stdout, Is.Not.Empty);
     }
 
+    [Test]
+    public async Task AnalyzeWeatherForecastAsync_InMemory_DoesNotWriteToConsoleOutIfWeatherForecastApiReturnsEmpty()
+    {
+        var geocodeApi = new TestGeocodeApi();
+        var weatherForecastApi = new EmptyWeatherForecastApi();
+        var console = new TestConsole();
+        var program = new WeatherAnalyzerProgram(geocodeApi, weatherForecastApi, ChooseFirstCity, console);
+        const string location = "Arcadia";
+
+        await program.AnalyzeWeatherForecastAsync(location);
+        var stdout = console.Out.ToString();
+
+        Assert.That(stdout, Is.Empty);
+    }
+
     private static async Task<City?> ChooseFirstCity(IAsyncEnumerable<City> cities)
     {
         return await cities.FirstOrDefaultAsync();
@@ -75,6 +90,14 @@ public class WeatherAnalyzerProgramTests
         public async IAsyncEnumerable<WeatherForecast> GetWeatherForecastsAsync(City city)
         {
             yield return WeatherForecast with { Location = city.Location };
+        }
+    }
+
+    private class EmptyWeatherForecastApi : IWeatherForecastApi
+    {
+        public async IAsyncEnumerable<WeatherForecast> GetWeatherForecastsAsync(City city)
+        {
+            yield break;
         }
     }
 }
