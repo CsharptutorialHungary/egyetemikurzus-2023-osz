@@ -16,8 +16,8 @@ public class GpsGeocodeApi : IGeocodeApi, ICliDiscoverableApi
             throw new ArgumentException("Invalid GPS format. Please specify it as LAT:LON");
         }
 
-        var lat = int.Parse(parts[0]);
-        var lon = int.Parse(parts[1]);
+        var lat = float.Parse(parts[0]);
+        var lon = float.Parse(parts[1]);
 
         yield return new City(
             "", 
