@@ -1,15 +1,17 @@
 using System.CommandLine.IO;
 using WeatherAnalyzer.Geocode;
 using WeatherAnalyzer.Geocode.Api;
+using WeatherAnalyzer.Geocode.Api.File;
 using WeatherAnalyzer.Util;
 using WeatherAnalyzer.Weather;
 using WeatherAnalyzer.Weather.Api;
+using WeatherAnalyzer.Weather.Api.File;
 
 namespace WeatherAnalyzer.Tests;
 
 public class WeatherAnalyzerProgramTests
 {
-    [Test]
+    [Test, Order(1)]
     public async Task DownloadWeatherForecastsAsync_Invoke_CreatesOutputFile()
     {
         var geocodeApi = new TestGeocodeApi();
@@ -22,6 +24,21 @@ public class WeatherAnalyzerProgramTests
         await program.DownloadWeatherForecastsAsync(location, outputFile);
 
         Assert.That(outputFile, Has.Property(nameof(FileInfo.Exists)).True);
+    }
+
+    [Test, Order(2)]
+    public async Task AnalyzeWeatherForecastAsync_LocalFile_WritesToConsoleOut()
+    {
+        var geocodeApi = new FileGeocodeApi();
+        var weatherForecastApi = new FileWeatherForecastApi();
+        var console = new TestConsole();
+        var program = new WeatherAnalyzerProgram(geocodeApi, weatherForecastApi, ChooseFirstCity, console);
+        const string location = $"{nameof(DownloadWeatherForecastsAsync_Invoke_CreatesOutputFile)}.json";
+
+        await program.AnalyzeWeatherForecastAsync(location);
+        var stdout = console.Out.ToString();
+
+        Assert.That(stdout, Is.Not.Empty);
     }
 
     private static async Task<City?> ChooseFirstCity(IAsyncEnumerable<City> cities)
