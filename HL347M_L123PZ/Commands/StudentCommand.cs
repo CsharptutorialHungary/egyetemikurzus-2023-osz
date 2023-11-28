@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -73,7 +74,7 @@ namespace StudentTerminal.Commands
 
                 double average = Math.Round(random.NextDouble() * (5 - 1) + 1, 2);
 
-                Student student = new Student(name, age, courses, credits, email, id, average);
+                Student student = new Student(id, name, age, email, courses, credits, average);
 
                 students.Add(student);
             }
@@ -216,23 +217,58 @@ namespace StudentTerminal.Commands
         /// <param name="list">Lista</param>
         public static void Write<T>(List<T> list)
         {
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.BackgroundColor = ConsoleColor.DarkRed;
-            Console.Write("[AZONOSÍTÓ]");
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
-            Console.Write("[NÉV]");
-            Console.BackgroundColor = ConsoleColor.DarkGreen;
-            Console.Write("[KOR]");
-            Console.BackgroundColor = ConsoleColor.DarkGray;
-            Console.Write("[EMAIL]");
-            Console.BackgroundColor = ConsoleColor.DarkYellow;
-            Console.Write("[FELVETT KURZUSOK SZÁMA]");
-            Console.BackgroundColor = ConsoleColor.DarkMagenta;
-            Console.Write("[MEGSZERZETT KREDITEK]");
-            Console.BackgroundColor = ConsoleColor.DarkCyan;
-            Console.Write("[TANULMÁNYI ÁTLAG]" + "\n");
-            Console.ResetColor();
-            
+            ConsoleColor[] consoleColors =
+            {
+                ConsoleColor.DarkRed,
+                ConsoleColor.DarkBlue,
+                ConsoleColor.DarkGreen,
+                ConsoleColor.DarkGray,
+                ConsoleColor.DarkYellow,
+                ConsoleColor.DarkMagenta,
+                ConsoleColor.DarkCyan,
+            };
+
+            Type? type = list[0]?.GetType();
+
+            PropertyInfo[]? properties = type?.GetProperties();
+
+            int indexOfColor = 0;
+
+            foreach (PropertyInfo? item in properties!)
+            {
+                Console.BackgroundColor = consoleColors[indexOfColor++];
+
+                Console.ForegroundColor = ConsoleColor.White;
+
+                Console.Write($"[{item.Name.ToUpper()}]");
+
+                if (indexOfColor >= consoleColors.Length)
+                {
+                    indexOfColor = 0;
+                }
+
+                Console.ResetColor();
+            }
+
+            Console.WriteLine();
+
+            foreach (var item in list)
+            {
+                foreach (PropertyInfo property in properties)
+                {
+                    Console.Write($"[{property.GetValue(item)}]");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        /// <summary>
+        /// Meghívja a ToString metódusát a paraméterből kapott listának az összes elemére
+        /// </summary>
+        /// <typeparam name="T">Lista típusa</typeparam>
+        /// <param name="list">Lista</param>
+        public static void WriteOnlyData<T>(List<T> list)
+        {
             list.ForEach(item => Console.WriteLine(item));
         }
     }
