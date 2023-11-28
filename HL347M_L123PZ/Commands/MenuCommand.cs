@@ -24,6 +24,7 @@ namespace StudentTerminal.Commands
 
             while (menu != 4)
             {
+                Console.Clear();
                 switch (menu)
                 {
                     case 1:

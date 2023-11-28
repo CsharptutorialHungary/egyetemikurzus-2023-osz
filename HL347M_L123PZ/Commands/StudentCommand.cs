@@ -216,7 +216,6 @@ namespace StudentTerminal.Commands
         /// <param name="list">Lista</param>
         public static void Write<T>(List<T> list)
         {
-            Console.Clear();
             Console.ForegroundColor = ConsoleColor.Black;
             Console.BackgroundColor = ConsoleColor.DarkRed;
             Console.Write("[AZONOSÍTÓ]");
@@ -233,7 +232,7 @@ namespace StudentTerminal.Commands
             Console.BackgroundColor = ConsoleColor.DarkCyan;
             Console.Write("[TANULMÁNYI ÁTLAG]" + "\n");
             Console.ResetColor();
-
+            
             list.ForEach(item => Console.WriteLine(item));
         }
     }
