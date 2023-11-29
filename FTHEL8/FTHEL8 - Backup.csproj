@@ -12,9 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Database\Database.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Database\Database.db" />
   </ItemGroup>
 
   <ItemGroup>
