@@ -18,8 +18,22 @@
 | legyen benne generikus kollekció (pl.: `List<T>`, `Stack<T>`, stb...) | ✔
 | legyen benne aszinkron rész (`async` és `Task`) | ✔ | ✔
 
-## Unit tesztek
+---
+# Unit tesztek
+---
+## SaveStudentsToJSON Tesztek:
+
+### TestThat_SaveStudentsToJSON_Runs:
 | Érték | Elvárt eredmény | Megfelelt
 |:-----:|:---------------:|:-------:|
+|`True`|`True`|✔|
 
+### TestThat_SaveStudentsToJSON_CreatesNewFolder:
+| Érték | Elvárt eredmény | Megfelelt
+|:-----:|:---------------:|:-------:|
+|`True`|`True`|✔|
 
+### TestThat_SaveStudentsToJSON_CreatesNewFile:
+| Érték | Elvárt eredmény | Megfelelt
+|:-----:|:---------------:|:-------:|
+|`True`|`True`|✔|
