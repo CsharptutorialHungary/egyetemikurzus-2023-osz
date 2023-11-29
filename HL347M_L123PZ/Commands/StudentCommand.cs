@@ -15,8 +15,8 @@ namespace StudentTerminal.Commands
         /// League of Legends karakter nevekkel és randomizált értékekkel feltölt egy Student listát
         /// </summary>
         /// <param name="numberOfStudents">Generálni kívánt studentek száma</param>
-        /// <returns>True, ha lefutott</returns>
-        public static async Task<bool> Initialize(int numberOfStudents = 165)
+        /// <returns>Student lista</returns>
+        public static async Task<List<Student>> Initialize(int numberOfStudents = 165)
         {
             List<string> names = new List<string>()
             {
