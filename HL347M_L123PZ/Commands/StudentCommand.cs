@@ -81,7 +81,7 @@ namespace StudentTerminal.Commands
 
             await SaveStudentsToJSON(students);
 
-            return true;
+            return students;
         }
 
         /// <summary>
@@ -211,7 +211,9 @@ namespace StudentTerminal.Commands
         }
 
         /// <summary>
-        /// Lista elemeire meghívja a Console.WriteLine metódust
+        /// A paraméterből kapott lista elemeit kiírja olyan formában, hogy az első sorban a 
+        /// propertyk nevei vannak.
+        /// A következő N darab sorban, pedig a propertykhez tartozó értékek kiíratása történik.
         /// </summary>
         /// <typeparam name="T">Lista típusa</typeparam>
         /// <param name="list">Lista</param>
