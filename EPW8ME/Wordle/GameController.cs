@@ -22,7 +22,11 @@ public class GameController
 
     public string getInput()
     {
-        string input = Console.ReadLine();       
+        string input = Console.ReadLine();
+        if(input == null)
+        {
+            input = "";
+        }
         return input;
     }
 
@@ -31,7 +35,7 @@ public class GameController
         string input = "";
         loadMenu(false);
         input = getInput();   //elso input a jatekostol
-        
+
         Console.WriteLine(input);
         while (input != "6")
         {
@@ -50,7 +54,6 @@ public class GameController
                         break;
                     case "3":
                         showHighScore();
-                        Console.ReadKey();
                         input = "";
                         break;
                     case "4":
@@ -84,39 +87,71 @@ public class GameController
 
     public void newGame()
     {
-        
+
         logo();
         string currentanswer = GetAnAnswer();
         Console.WriteLine(currentanswer);
-        //bool lost = false;
-        int score=0, round=0;
-        /*while (!lost)
+        bool lost = false;
+        int score = 0, round = 0;       
+        while (!lost)
         {
-            currentanswer = GetAnAnswer();
+            logo();
+            Console.WriteLine(currentanswer);
+            Guess[] guesses = new Guess[6];
+            for (int i = 0; i < 6; i++) //6-ot tippelhetunk
+            {                
+                Console.Write((i+1)+". guess: ");
+                string currentguess = getInput();
 
-        }*/
+                Console.Write(currentguess);
+                Console.ReadKey();
+                if (currentguess == currentanswer)
+                {
+                    score += 30;
+                    round++;
+                    currentanswer = GetAnAnswer();
+                    break;
+                }
+                else
+                {                    
+                    guesses[i] = new Guess(currentanswer, currentguess);
+                    Console.WriteLine(guesses[i]);
+                    if (i == 5)
+                    {
+                        lost = true;
+                    }
+                }
+
+            }
+
+        }
         saveGame(score, round, currentanswer);
         Console.ReadKey();
 
     }
 
-    public void saveGame(int score, int round,string answer)
+    public void saveGame(int score, int round, string answer)
     {
         logo();
         Console.WriteLine("You couldn't guess the word: " + answer + "\nYou got " + score + "points in " + round + " rounds!" +
                             "\nGive us your name, to save your scores.");
         string name = "";
         name = getInput();
-        while(name == "")
+        while (name == "")
         {
             Console.WriteLine("You need to give us a name.");
-            name=getInput();
+            name = getInput();
         }
-        Player currentplayer = new Player();
+        Player currentplayer = new Player
+        {
+            name = name,
+            score = score,
+            round = round,
+        };
         players.Add(currentplayer);
         savePlayers(players);
         logo();
-        Console.WriteLine("Your record is now saved "+name);
+        Console.WriteLine("Your record is now saved " + name);
     }
 
     public void showCurrentGame(int currentround, int currentscore, string[] previousGuessesAndFeedback)
@@ -148,10 +183,6 @@ public class GameController
                 break;
         }
     }
-
-
-
-
 
     public void showRules()
     {
@@ -190,7 +221,6 @@ public class GameController
     public void showHighScore()
     {
         Console.WriteLine(players.Count);
-        Console.ReadKey();
         Console.ReadKey();
     }
 
@@ -343,15 +373,21 @@ public class GameController
     {
         try
         {
-            string jsonString = JsonSerializer.Serialize(players, new JsonSerializerOptions { WriteIndented = true });
+            // Serialize the list of players to a JSON array
+            string jsonString = JsonSerializer.Serialize(players, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
 
+            // Write the JSON content to the file
             File.WriteAllText(JsonFilePathPlayers, jsonString);
 
             Console.WriteLine($"Players data saved to {JsonFilePathPlayers}");
         }
-        catch (Exception e)
+        catch (IOException e)
         {
-            Console.WriteLine($"Error saving players data: {e.Message}");
+            Console.WriteLine(e.Message);
         }
     }
 
@@ -360,12 +396,19 @@ public class GameController
         List<Player> loadedPlayers = new List<Player>();
         try
         {
-            
+            // Read the JSON content from the file
+            string jsonString = File.ReadAllText(JsonFilePathPlayers);
+
+            // Deserialize the JSON array into a list of players
+            loadedPlayers = JsonSerializer.Deserialize<List<Player>>(jsonString);
+
+            Console.WriteLine($"Players data loaded from {JsonFilePathPlayers}");
         }
-        catch (Exception e)
+        catch (IOException e)
         {
-            
+            Console.WriteLine(e.Message);
         }
+
         return loadedPlayers;
     }
 }

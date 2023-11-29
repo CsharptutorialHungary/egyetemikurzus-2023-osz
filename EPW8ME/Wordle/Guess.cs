@@ -1,30 +1,25 @@
 ﻿using System;
 
-public class Guess
+public record Guess
 {
-	private string _answer;
-	private string _guessedword;
-	private string _feedback;
+	public string answer;
+    public string guessedword;
+    public string feedback;
 
-	public Guess(string answer,string guess)
-	{
-
-        if (answer.Length != 5 || guess.Length != 5)
-        {
-            throw new ArgumentException("Both answer and guessedWord must be 5 characters long.");
-        }
-        _answer = answer.ToUpper();
-        _guessedword = guess.ToUpper();
-        _feedback = GenerateFeedback();
+	public Guess(string currentanswer,string guess)
+	{        
+        answer = currentanswer.ToUpper();        
+        guessedword = guess.ToUpper();
+        feedback = GenerateFeedback();
     }
 
-    private string GenerateFeedback()
+    public string GenerateFeedback()
     {
-        return string.Join("", _guessedword.Select((letter, index) =>
+        return string.Join("", guessedword.Select((letter, index) =>
         {
-            if (letter == _answer[index])
+            if (letter == answer[index])
                 return "█"; // Correct letter in the correct position
-            if (_answer.Contains(letter))
+            if (answer.Contains(letter))
                 return "▄"; // Correct letter in the wrong position
             return "X"; // Incorrect letter
         }));
@@ -32,14 +27,14 @@ public class Guess
 
     public string getFeedback()
     {
-        return _feedback;
+        return feedback;
     }
     public string getAnswer()
     {
-        return _answer;
+        return answer;
     }
     public string getGuessedword()
     {
-        return _guessedword;
+        return guessedword;
     }
 }

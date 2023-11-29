@@ -11,8 +11,14 @@ namespace EWP8ME
         static void Main(string[] args)
         {
 
-            //GameController gameController = new GameController();
-            //gameController.startGameController();
+            GameController gameController = new GameController();
+            gameController.startGameController();
+
+
+            //string answer = Console.ReadLine();
+            //Console.WriteLine(answer.Length);
+            //Console.ReadKey();
+            
             
             /*List<Player> players = new List<Player>();
             var newplayer = new Player
@@ -44,7 +50,7 @@ namespace EWP8ME
             Console.WriteLine(desserializalt.round);
             Console.ReadKey();*/
 
-
+            /*
             List<Player> players = new List<Player>();
             var newplayer = new Player
             {
@@ -82,7 +88,7 @@ namespace EWP8ME
             catch (IOException e)
             {
                 Console.WriteLine(e.Message);
-            }
+            }*/
 
 
 
