@@ -97,37 +97,96 @@ public class GameController
         {
             logo();
             Console.WriteLine(currentanswer);
-            Guess[] guesses = new Guess[6];
+            Console.WriteLine("Round " + round + ", score: " + score);
+            Guess[] guessFeedbacks = new Guess[6];
+            string[] myGuesses = new string[6];
             for (int i = 0; i < 6; i++) //6-ot tippelhetunk
             {                
-                Console.Write((i+1)+". guess: ");
+                Console.Write("\t\t"+(i+1)+". guess: ");
                 string currentguess = getInput();
-
-                Console.Write(currentguess);
-                Console.ReadKey();
-                if (currentguess == currentanswer)
+                
+                while (!isInValidGuess(currentguess))
+                {                    
+                    printPreviousLines(guessFeedbacks, myGuesses, i+1,round,score);
+                    currentguess = getInput();
+                }
+                myGuesses[i] = currentguess;
+                if (currentguess.ToUpper() == currentanswer.ToUpper())
                 {
-                    score += 30;
+                    switch (i)
+                    {
+                        case 0:
+                            score += 100;
+                            break;
+                        case 1:
+                            score += 80;
+                            break;
+                        case 2:
+                            score += 60;
+                            break;
+                        case 3:
+                            score += 40;
+                            break;
+                        case 4:
+                            score += 20;
+                            break;
+                        case 5:
+                            score += 5;
+                            break;
+                    }
                     round++;
                     currentanswer = GetAnAnswer();
                     break;
                 }
                 else
-                {                    
-                    guesses[i] = new Guess(currentanswer, currentguess);
-                    Console.WriteLine(guesses[i]);
+                {
+                    guessFeedbacks[i] = new Guess(currentanswer, currentguess);
+                    Console.WriteLine("\t\t\t  "+ guessFeedbacks[i].getFeedback());
                     if (i == 5)
                     {
                         lost = true;
                     }
                 }
-
             }
 
         }
         saveGame(score, round, currentanswer);
         Console.ReadKey();
 
+    }
+    public bool isInValidGuess(string guess)
+    {
+        if (guess == null)
+        {
+            return false;
+        }
+        if (guess.Length != 5)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public void printPreviousLines(Guess[] guesses, string[] feedbacks,int piece,int round,int score)
+    {
+        logo();
+        Console.WriteLine("Wrong input!");
+        Console.WriteLine("Round " + round + ", score: " + score);
+        for (int i = 0; i < piece; i++)
+        {
+            if (i != piece - 1)
+            {
+                Console.WriteLine("\t\t" + (i + 1) + ". guess: " + feedbacks[i]);
+            }
+            else
+            {
+                Console.Write("\t\t" + (i + 1) + ". guess: " + feedbacks[i]);
+            }
+            if (i != piece - 1)
+            {
+                Console.WriteLine("\t\t\t  " + guesses[i].getFeedback());
+            }
+        }
     }
 
     public void saveGame(int score, int round, string answer)
@@ -407,6 +466,10 @@ public class GameController
         catch (IOException e)
         {
             Console.WriteLine(e.Message);
+            using (var fileCreater = File.CreateText(JsonFilePathPlayers))
+            {
+                fileCreater.Dispose();
+            }
         }
 
         return loadedPlayers;
