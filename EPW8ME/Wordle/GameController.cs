@@ -89,59 +89,59 @@ public class GameController
     {
 
         logo();
-        string currentanswer = GetAnAnswer();
-        Console.WriteLine(currentanswer);
+        string currentAnswer = GetAnAnswer();
+        Console.WriteLine(currentAnswer);
         bool lost = false;
-        int score = 0, round = 0;       
+        int collectedScore = 0, reachedRound = 0;
         while (!lost)
         {
             logo();
-            Console.WriteLine(currentanswer);
-            Console.WriteLine("Round " + round + ", score: " + score);
+            Console.WriteLine(currentAnswer);
+            Console.WriteLine("Round " + reachedRound + ", score: " + collectedScore);
             Guess[] guessFeedbacks = new Guess[6];
-            string[] myGuesses = new string[6];
+            string[] allMyGuesses = new string[6];
             for (int i = 0; i < 6; i++) //6-ot tippelhetunk
-            {                
-                Console.Write("\t\t"+(i+1)+". guess: ");
-                string currentguess = getInput();
+            {
+                tries(i+1);
+                string currentGuess = getInput();
                 
-                while (!isInValidGuess(currentguess))
+                while (!isInValidGuess(currentGuess))
                 {                    
-                    printPreviousLines(guessFeedbacks, myGuesses, i+1,round,score);
-                    currentguess = getInput();
+                    printPreviousLines(guessFeedbacks, allMyGuesses, i+1,reachedRound,collectedScore);
+                    currentGuess = getInput();
                 }
-                myGuesses[i] = currentguess;
-                if (currentguess.ToUpper() == currentanswer.ToUpper())
+                allMyGuesses[i] = currentGuess;
+                if (currentGuess.ToUpper() == currentAnswer.ToUpper())
                 {
                     switch (i)
                     {
                         case 0:
-                            score += 100;
+                            collectedScore += 100;
                             break;
                         case 1:
-                            score += 80;
+                            collectedScore += 80;
                             break;
                         case 2:
-                            score += 60;
+                            collectedScore += 60;
                             break;
                         case 3:
-                            score += 40;
+                            collectedScore += 40;
                             break;
                         case 4:
-                            score += 20;
+                            collectedScore += 20;
                             break;
                         case 5:
-                            score += 5;
+                            collectedScore += 5;
                             break;
                     }
-                    round++;
-                    currentanswer = GetAnAnswer();
+                    reachedRound++;
+                    currentAnswer = GetAnAnswer();
                     break;
                 }
                 else
                 {
-                    guessFeedbacks[i] = new Guess(currentanswer, currentguess);
-                    Console.WriteLine("\t\t\t  "+ guessFeedbacks[i].getFeedback());
+                    guessFeedbacks[i] = new Guess(currentAnswer, currentGuess);
+                    Console.WriteLine("\t\t    "+ guessFeedbacks[i].getFeedback());
                     if (i == 5)
                     {
                         lost = true;
@@ -150,7 +150,7 @@ public class GameController
             }
 
         }
-        saveGame(score, round, currentanswer);
+        saveGame(collectedScore, reachedRound, currentAnswer);
         Console.ReadKey();
 
     }
@@ -163,14 +163,14 @@ public class GameController
         if (guess.Length != 5)
         {
             return false;
-        }
-        return true;
+        }        
+        return guess.All(char.IsLetter);
     }
 
     public void printPreviousLines(Guess[] guesses, string[] feedbacks,int piece,int round,int score)
     {
         logo();
-        Console.WriteLine("Wrong input!");
+        Console.WriteLine("Wrong input, the guess should be a 5 letter long word!");
         Console.WriteLine("Round " + round + ", score: " + score);
         for (int i = 0; i < piece; i++)
         {
@@ -203,7 +203,7 @@ public class GameController
         }
         Player currentplayer = new Player
         {
-            name = name,
+            name = name.ToUpper(),
             score = score,
             round = round,
         };
@@ -223,22 +223,22 @@ public class GameController
         switch (currentTry)
         {
             case 1:
-                Console.Write("1st try (100pts): ");
+                Console.Write("1st guess (100pts): ");
                 break;
             case 2:
-                Console.Write("2nd try  (80pts): ");
+                Console.Write("2nd guess  (80pts): ");
                 break;
             case 3:
-                Console.Write("3rd try  (60pts): ");
+                Console.Write("3rd guess  (60pts): ");
                 break;
             case 4:
-                Console.Write("4th try  (40pts): ");
+                Console.Write("4th guess  (40pts): ");
                 break;
             case 5:
-                Console.Write("5th try  (20pts): ");
+                Console.Write("5th guess  (20pts): ");
                 break;
             case 6:
-                Console.Write("6th try   (5pts): ");
+                Console.Write("6th guess   (5pts): ");
                 break;
         }
     }
@@ -279,8 +279,58 @@ public class GameController
 
     public void showHighScore()
     {
-        Console.WriteLine(players.Count);
+        logo();
+        var top10Players = players
+            .GroupBy(player => player.name)
+            .Select(group => group.OrderByDescending(player => player.score).First())
+            .OrderByDescending(player => player.score)
+            .ThenBy(player => player.name)
+            .Take(10)
+            .ToList();
+        Console.WriteLine("Top 10 (or less) Players by reached score:");
+        int place = 1;
+        foreach (var player in top10Players)
+        {
+            Console.WriteLine($"{place}. {player.name} - with {player.score} points in {player.round} round.");
+            place++;
+        }
+
+        Console.WriteLine("\nYou can check for any players records, if you give us it's username (or write \"exit\") to get back to menu:");
+        string input = getInput().ToUpper();
+        while(input != "EXIT")
+        {
+            searchPlayer(players, input);
+            input = getInput().ToUpper();
+        }
+        Console.WriteLine("You are getting back to the menu. Press any key to continue!");
         Console.ReadKey();
+    }
+
+    public void searchPlayer(List<Player> playerRecords, string playerName)
+    {
+        var playerDetails = playerRecords
+            .Where(player => player.name == playerName)
+            .ToList();
+
+        if (playerDetails.Any())
+        {
+            int highestScore = playerDetails.Max(player => player.score);
+            double averageScore = playerDetails.Average(player => player.score);
+            int highestRound = playerDetails.Max(player => player.round);
+            double averageRound = playerDetails.Average(player => player.round);
+
+            logo();
+            Console.WriteLine($"{playerName} details:");
+            Console.WriteLine($"   Highest score: {highestScore}  Average score: {averageScore:F2}");
+            Console.WriteLine($"   Highest round: {highestRound}  Average round: {averageRound:F2}");
+            Console.WriteLine("\nYou can check for any players records, if you give us it's username (or write \"exit\" to get back to menu:");
+        }
+        else
+        {
+            logo();
+            Console.WriteLine($"Player with {playerName} name does not played yet.");
+            Console.WriteLine("\nYou can check for any players records, if you give us it's username (or write \"exit\" to get back to menu:");
+        }
     }
 
     public void showAnswerList()
