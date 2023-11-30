@@ -176,15 +176,17 @@ public class GameController
         {
             if (i != piece - 1)
             {
-                Console.WriteLine("\t\t" + (i + 1) + ". guess: " + feedbacks[i]);
+                tries(i + 1);
+                Console.WriteLine(feedbacks[i]);
             }
             else
             {
-                Console.Write("\t\t" + (i + 1) + ". guess: " + feedbacks[i]);
+                tries(i + 1);
+                //Console.Write(guesses[i].getFeedback());
             }
             if (i != piece - 1)
             {
-                Console.WriteLine("\t\t\t  " + guesses[i].getFeedback());
+                Console.WriteLine("\t\t    " + guesses[i].getFeedback());
             }
         }
     }
