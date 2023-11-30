@@ -18,7 +18,6 @@ public class GameController
         players = playerFileManager.LoadData();
     }
 
-
     public string getInput()
     {
         string input = Console.ReadLine();
@@ -26,7 +25,7 @@ public class GameController
         {
             input = "";
         }
-        return input;
+        return input.ToUpper();
     }
 
     public void startGameController()
@@ -60,7 +59,7 @@ public class GameController
                         input = "";
                         break;
                     case "5":
-                        //showAddNewWord();
+                        showAddNewWord();
                         input = "";
                         break;
                 }
@@ -79,13 +78,14 @@ public class GameController
         loadMenu(false);
         Console.WriteLine("Thanks for checking out my game!\n" +
                           "Press any key, to close the program");
-
         Console.ReadKey();
         return;
     }
 
     public void newGame()
     {
+        bool testing=false;
+        testing=true;
 
         logo();
         string currentAnswer = GetAnAnswer();
@@ -95,8 +95,7 @@ public class GameController
         while (!lost)
         {
             logo();
-            Console.WriteLine(currentAnswer);
-            Console.WriteLine("Round " + reachedRound + ", score: " + collectedScore);
+            Console.WriteLine("Round " + reachedRound + ", score: " + collectedScore + (testing ? $"[TESTING] the answer is {currentAnswer}":""));
             Guess[] guessFeedbacks = new Guess[6];
             string[] allMyGuesses = new string[6];
             for (int i = 0; i < 6; i++) //6-ot tippelhetunk
@@ -104,9 +103,9 @@ public class GameController
                 tries(i+1);
                 string currentGuess = getInput();
                 
-                while (!isInValidGuess(currentGuess))
+                while (!isInValidInput(currentGuess))
                 {                    
-                    printPreviousLines(guessFeedbacks, allMyGuesses, i+1,reachedRound,collectedScore);
+                    reprintPreviousLines(guessFeedbacks, allMyGuesses, i+1,reachedRound,collectedScore,currentAnswer,testing,true);
                     currentGuess = getInput();
                 }
                 allMyGuesses[i] = currentGuess;
@@ -154,24 +153,31 @@ public class GameController
 
     }
 
-    public bool isInValidGuess(string guess)
+    public bool isInValidInput(string input)
     {
-        if (guess == null)
+        if (input == null)
         {
             return false;
         }
-        if (guess.Length != 5)
+        if (input.Length != 5)
         {
             return false;
-        }        
-        return guess.All(char.IsLetter);
+        }
+        return input.All(char.IsLetter);
     }
 
-    public void printPreviousLines(Guess[] guesses, string[] feedbacks,int piece,int round,int score)
+    public void reprintPreviousLines(Guess[] guesses, string[] feedbacks, int piece, int round, int score, string answer, bool testing, bool inputError)
     {
         logo();
-        Console.WriteLine("Wrong input, the guess should be a 5 letter long word!");
-        Console.WriteLine("Round " + round + ", score: " + score);
+        if (inputError)
+        {
+            Console.WriteLine("Wrong input, the guess should be a 5 letter long word!");
+        }
+        else
+        {
+            Console.WriteLine();
+        }
+        Console.WriteLine("Round " + round + ", score: " + score +(testing ? $"[TESTING] the answer is {answer}" : ""));
         for (int i = 0; i < piece; i++)
         {
             if (i != piece - 1)
@@ -243,7 +249,7 @@ public class GameController
                 Console.Write("6th guess   (5pts): ");
                 break;
         }
-    }
+    }   //done
 
     public void showRules()
     {
@@ -277,7 +283,7 @@ public class GameController
                       "Press any key to get back to menu");
         Console.ReadKey();
 
-    } //done
+    }   //done
 
     public void showHighScore()
     {
@@ -298,15 +304,15 @@ public class GameController
         }
 
         Console.WriteLine("\nYou can check for any players records, if you give us it's username (or write \"exit\") to get back to menu:");
-        string input = getInput().ToUpper();
+        string input = getInput();
         while(input != "EXIT")
         {
             searchPlayer(players, input);
-            input = getInput().ToUpper();
+            input = getInput();
         }
         Console.WriteLine("You are getting back to the menu. Press any key to continue!");
         Console.ReadKey();
-    } //done
+    }   //done
 
     public void searchPlayer(List<Player> playerRecords, string playerName)
     {
@@ -333,11 +339,12 @@ public class GameController
             Console.WriteLine($"Player with {playerName} name does not played yet.");
             Console.WriteLine("\nYou can check for any players records, if you give us it's username (or write \"exit\" to get back to menu:");
         }
-    } //done
+    }   //done
 
     public void showAnswerList()
     {
         logo();
+        words.Sort();
         foreach (string word in words)
         {
             Console.WriteLine(word);
@@ -346,18 +353,41 @@ public class GameController
         Console.WriteLine($"\nCurrent possible answers: {words.Count}\nPress any key to get back to menu");
         Console.ReadKey();
 
-    } //done
+    }   //done
 
     public void showAddNewWord()
     {
-
-    } //TODO
+        logo();
+        Console.WriteLine("Give us a new 5 letter word:");
+        string input = getInput();
+        while(!isInValidInput(input))
+        {
+            logo();            
+            Console.WriteLine("The Word you gave should not be an answer!\n(possible errors: not 5 letter long, using numbers or special characters)");
+            Console.WriteLine("Give us a new 5 letter word:");
+            input = getInput();
+        }
+        logo();
+        
+        if(!words.Contains(input))
+        {
+            words.Add(input.ToUpper());
+            answerFileManager.SaveData(words);
+            Console.WriteLine($"{input} is now added to the answer list!\n");
+        }
+        else
+        {
+            Console.WriteLine($"{input} is already on the list!\n");
+        }
+        Console.WriteLine("Press any key to get back to the menu");
+        Console.ReadKey();
+    }
 
     public void logo()
     {
         Console.Clear();
         Console.WriteLine(" __      __________ __________________  .____     ___________\r\n/  \\    /  \\_____  \\\\______   \\______ \\ |    |    \\_   _____/\r\n\\   \\/\\/   //   |   \\|       _/|    |  \\|    |     |    __)_ \r\n \\        //    |    \\    |   \\|    `   \\    |___  |        \\\r\n  \\__/\\  / \\_______  /____|_  /_______  /_______ \\/_______  /\r\n       \\/          \\/       \\/        \\/        \\/        \\/ \n");
-    } //done
+    }   //done
 
     public void loadMenu(bool isInputWrong)
     {
@@ -397,7 +427,7 @@ public class GameController
         {
             Console.WriteLine("This word is already on the list");
         }
-    }
+    }   //done
 
     public string GetAnAnswer()
     {
@@ -415,7 +445,7 @@ public class GameController
         {
             return "No words available.";
         }
-    }
+    }   //done
     
     public void getWords()
     {
@@ -423,5 +453,5 @@ public class GameController
         {
             Console.WriteLine(word);
         }
-    }
+    }   //done
 }
