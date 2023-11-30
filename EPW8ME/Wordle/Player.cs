@@ -12,6 +12,8 @@ public class Player
 	public Player()
 	{
 		name = string.Empty;
+		score = 0;
+		round = 0;
 	}
 
 	public string getplayer()

@@ -5,18 +5,17 @@ using System.Text.Json;
 
 public class GameController
 {
-    private static string appPath = AppContext.BaseDirectory;
-    private static string fileName = "Answers.json";
-    private static string fileNamePlayers = "Players.json";
-    private string JsonFilePathWords = Path.Combine(appPath, fileName);
-    private string JsonFilePathPlayers = Path.Combine(appPath, fileNamePlayers);
+    private FileManager<string> answerFileManager;
+    private FileManager<Player> playerFileManager;
     private List<string> words;
     private List<Player> players;
 
     public GameController()
     {
-        words = LoadWords();
-        players = LoadPlayers();
+        answerFileManager = new FileManager<string>("Answers.json");
+        playerFileManager = new FileManager<Player>("Player.json");
+        words = answerFileManager.LoadData();
+        players = playerFileManager.LoadData();
     }
 
 
@@ -154,6 +153,7 @@ public class GameController
         Console.ReadKey();
 
     }
+
     public bool isInValidGuess(string guess)
     {
         if (guess == null)
@@ -210,7 +210,7 @@ public class GameController
             round = round,
         };
         players.Add(currentplayer);
-        savePlayers(players);
+        playerFileManager.SaveData(players);
         logo();
         Console.WriteLine("Your record is now saved " + name);
     }
@@ -306,7 +306,7 @@ public class GameController
         }
         Console.WriteLine("You are getting back to the menu. Press any key to continue!");
         Console.ReadKey();
-    }
+    } //done
 
     public void searchPlayer(List<Player> playerRecords, string playerName)
     {
@@ -333,7 +333,7 @@ public class GameController
             Console.WriteLine($"Player with {playerName} name does not played yet.");
             Console.WriteLine("\nYou can check for any players records, if you give us it's username (or write \"exit\" to get back to menu:");
         }
-    }
+    } //done
 
     public void showAnswerList()
     {
@@ -351,14 +351,14 @@ public class GameController
     public void showAddNewWord()
     {
 
-    }
-
+    } //TODO
 
     public void logo()
     {
         Console.Clear();
         Console.WriteLine(" __      __________ __________________  .____     ___________\r\n/  \\    /  \\_____  \\\\______   \\______ \\ |    |    \\_   _____/\r\n\\   \\/\\/   //   |   \\|       _/|    |  \\|    |     |    __)_ \r\n \\        //    |    \\    |   \\|    `   \\    |___  |        \\\r\n  \\__/\\  / \\_______  /____|_  /_______  /_______ \\/_______  /\r\n       \\/          \\/       \\/        \\/        \\/        \\/ \n");
     } //done
+
     public void loadMenu(bool isInputWrong)
     {
         logo();
@@ -380,17 +380,13 @@ public class GameController
 
     public void AddNewWord(string newWord)
     {
-        if (words == null)
-        {
-            return;
-        }
         string upperCaseWord = newWord.ToUpper();
-        if (!words.Contains(newWord.ToUpper()))
+        if (!words.Contains(upperCaseWord))
         {
-            if (newWord.Length == 5)
+            if (upperCaseWord.Length == 5)
             {
-                words.Add(newWord.ToUpper());
-                SaveWords();
+                words.Add(upperCaseWord.ToUpper());
+                answerFileManager.SaveData(words);
             }
             else
             {
@@ -407,9 +403,8 @@ public class GameController
     {
         if (words == null)
         {
-            words = LoadWords();
+            words = answerFileManager.LoadData();
         }
-
         if (words.Count > 0)
         {
             Random random = new Random();
@@ -421,109 +416,12 @@ public class GameController
             return "No words available.";
         }
     }
-
-    private List<string> LoadWords()
-    {
-        List<string> loadedWords = new List<string>();
-        try
-        {
-            using (var fileReader = File.OpenText(JsonFilePathWords))
-            {
-                string? line = null;
-                do
-                {
-                    line = fileReader.ReadLine();
-                    if (line != null) //belerakja a nullt is valamiert sooo....
-                    {
-                        loadedWords.Add(line);
-                    }
-                } while (line != null);
-                loadedWords.Sort();
-                fileReader.Dispose();
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"{e.Message}");
-            Console.WriteLine("A new File is being created with a single answer: PLANE");
-            using (var fileCreater = File.CreateText(JsonFilePathWords))
-            {
-                fileCreater.WriteLine("PLANE");
-                fileCreater.Dispose();
-            }
-            Console.WriteLine("Press any key to continue");
-            Console.ReadKey();
-        }
-        return loadedWords;
-    }
-
-    private void SaveWords()
-    {
-        try
-        {
-            // Serialize each word to a separate line.
-            string[] lines = words.ToArray();
-            File.WriteAllLines(JsonFilePathWords, lines);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error saving words: {e.Message}\n Press any key to continue");
-            Console.ReadKey();
-        }
-    }
-
+    
     public void getWords()
     {
         foreach (string word in words)
         {
             Console.WriteLine(word);
         }
-    }
-
-    public void savePlayers(List<Player> players)
-    {
-        try
-        {
-            // Serialize the list of players to a JSON array
-            string jsonString = JsonSerializer.Serialize(players, new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
-
-            // Write the JSON content to the file
-            File.WriteAllText(JsonFilePathPlayers, jsonString);
-
-            Console.WriteLine($"Players data saved to {JsonFilePathPlayers}");
-        }
-        catch (IOException e)
-        {
-            Console.WriteLine(e.Message);
-        }
-    }
-
-    public List<Player> LoadPlayers()
-    {
-        List<Player> loadedPlayers = new List<Player>();
-        try
-        {
-            // Read the JSON content from the file
-            string jsonString = File.ReadAllText(JsonFilePathPlayers);
-
-            // Deserialize the JSON array into a list of players
-            loadedPlayers = JsonSerializer.Deserialize<List<Player>>(jsonString);
-
-            Console.WriteLine($"Players data loaded from {JsonFilePathPlayers}");
-        }
-        catch (IOException e)
-        {
-            Console.WriteLine(e.Message);
-            using (var fileCreater = File.CreateText(JsonFilePathPlayers))
-            {
-                fileCreater.Dispose();
-            }
-        }
-
-        return loadedPlayers;
     }
 }
