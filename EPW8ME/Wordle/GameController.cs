@@ -21,18 +21,18 @@ public class GameController
     public string getInput()
     {
         string input = Console.ReadLine();
-        if(input == null)
+        if (input == null)
         {
             input = "";
         }
         return input.ToUpper();
-    }
+    }   //done
 
     public void startGameController()
     {
         string input = "";
         loadMenu(false);
-        input = getInput();   //elso input a jatekostol
+        input = getInput();
 
         Console.WriteLine(input);
         while (input != "6")
@@ -40,29 +40,8 @@ public class GameController
             if (input == "1" || input == "2" || input == "3" || input == "4" || input == "5")
             {
                 loadMenu(false);
-                switch (input)
-                {
-                    case "1":
-                        newGame();
-                        input = "";
-                        break;
-                    case "2":
-                        showRules();
-                        input = "";
-                        break;
-                    case "3":
-                        showHighScore();
-                        input = "";
-                        break;
-                    case "4":
-                        showAnswerList();
-                        input = "";
-                        break;
-                    case "5":
-                        showAddNewWord();
-                        input = "";
-                        break;
-                }
+                handleMenuInput(input);
+                input = "";
             }
             else if (input == "")
             {
@@ -80,12 +59,34 @@ public class GameController
                           "Press any key, to close the program");
         Console.ReadKey();
         return;
-    }
+    }   //done
+
+    public void handleMenuInput(string input)
+    {
+        switch (input)
+        {
+            case "1":
+                newGame();                
+                break;
+            case "2":
+                showRules();                
+                break;
+            case "3":
+                showHighScore();                
+                break;
+            case "4":
+                showAnswerList();                
+                break;
+            case "5":
+                showAddNewWord();                
+                break;
+        }
+    }   //done
 
     public void newGame()
     {
-        bool testing=false;
-        testing=true;
+        bool testing = false;
+        testing = true;
 
         logo();
         string currentAnswer = GetAnAnswer();
@@ -95,43 +96,23 @@ public class GameController
         while (!lost)
         {
             logo();
-            Console.WriteLine("Round " + reachedRound + ", score: " + collectedScore + (testing ? $"[TESTING] the answer is {currentAnswer}":""));
+            Console.WriteLine("Round " + reachedRound + ", score: " + collectedScore + (testing ? $"[TESTING] the answer is {currentAnswer}" : ""));
             Guess[] guessFeedbacks = new Guess[6];
             string[] allMyGuesses = new string[6];
             for (int i = 0; i < 6; i++) //6-ot tippelhetunk
             {
-                tries(i+1);
+                tries(i + 1);
                 string currentGuess = getInput();
-                
+
                 while (!isInValidInput(currentGuess))
-                {                    
-                    reprintPreviousLines(guessFeedbacks, allMyGuesses, i+1,reachedRound,collectedScore,currentAnswer,testing,true);
+                {
+                    reprintPreviousLines(guessFeedbacks, allMyGuesses, i + 1, reachedRound, collectedScore, currentAnswer, testing, true);
                     currentGuess = getInput();
                 }
                 allMyGuesses[i] = currentGuess;
-                if (currentGuess.ToUpper() == currentAnswer.ToUpper())
+                if (currentGuess == currentAnswer)
                 {
-                    switch (i)
-                    {
-                        case 0:
-                            collectedScore += 100;
-                            break;
-                        case 1:
-                            collectedScore += 80;
-                            break;
-                        case 2:
-                            collectedScore += 60;
-                            break;
-                        case 3:
-                            collectedScore += 40;
-                            break;
-                        case 4:
-                            collectedScore += 20;
-                            break;
-                        case 5:
-                            collectedScore += 5;
-                            break;
-                    }
+                    collectedScore=handlePointCollection(collectedScore, i);
                     reachedRound++;
                     currentAnswer = GetAnAnswer();
                     break;
@@ -139,7 +120,7 @@ public class GameController
                 else
                 {
                     guessFeedbacks[i] = new Guess(currentAnswer, currentGuess);
-                    Console.WriteLine("\t\t    "+ guessFeedbacks[i].getFeedback());
+                    Console.WriteLine("\t\t    " + guessFeedbacks[i].getFeedback());
                     if (i == 5)
                     {
                         lost = true;
@@ -151,7 +132,33 @@ public class GameController
         saveGame(collectedScore, reachedRound, currentAnswer);
         Console.ReadKey();
 
-    }
+    }   //done
+
+    public int handlePointCollection(int score,int index)
+    {
+        switch (index)
+        {
+            case 0:
+                score += 100;
+                break;
+            case 1:
+                score += 80;
+                break;
+            case 2:
+                score += 60;
+                break;
+            case 3:
+                score += 40;
+                break;
+            case 4:
+                score += 20;
+                break;
+            case 5:
+                score += 5;
+                break;
+        }
+        return score;
+    }   //done
 
     public bool isInValidInput(string input)
     {
@@ -164,7 +171,7 @@ public class GameController
             return false;
         }
         return input.All(char.IsLetter);
-    }
+    }   //done
 
     public void reprintPreviousLines(Guess[] guesses, string[] feedbacks, int piece, int round, int score, string answer, bool testing, bool inputError)
     {
@@ -177,7 +184,7 @@ public class GameController
         {
             Console.WriteLine();
         }
-        Console.WriteLine("Round " + round + ", score: " + score +(testing ? $"[TESTING] the answer is {answer}" : ""));
+        Console.WriteLine("Round " + round + ", score: " + score + (testing ? $"[TESTING] the answer is {answer}" : ""));
         for (int i = 0; i < piece; i++)
         {
             if (i != piece - 1)
@@ -195,7 +202,7 @@ public class GameController
                 Console.WriteLine("\t\t    " + guesses[i].getFeedback());
             }
         }
-    }
+    }   //done
 
     public void saveGame(int score, int round, string answer)
     {
@@ -219,12 +226,7 @@ public class GameController
         playerFileManager.SaveData(players);
         logo();
         Console.WriteLine("Your record is now saved " + name);
-    }
-
-    public void showCurrentGame(int currentround, int currentscore, string[] previousGuessesAndFeedback)
-    {
-        logo();
-    }
+    }   //done
 
     public void tries(int currentTry)
     {
@@ -305,7 +307,7 @@ public class GameController
 
         Console.WriteLine("\nYou can check for any players records, if you give us it's username (or write \"exit\") to get back to menu:");
         string input = getInput();
-        while(input != "EXIT")
+        while (input != "EXIT")
         {
             searchPlayer(players, input);
             input = getInput();
@@ -331,13 +333,13 @@ public class GameController
             Console.WriteLine($"{playerName} details:");
             Console.WriteLine($"   Highest score: {highestScore}  Average score: {averageScore:F2}");
             Console.WriteLine($"   Highest round: {highestRound}  Average round: {averageRound:F2}");
-            Console.WriteLine("\nYou can check for any players records, if you give us it's username (or write \"exit\" to get back to menu:");
+            Console.WriteLine("\nYou can check for any players records, if you give us it's username (or write \"exit\") to get back to menu:");
         }
         else
         {
             logo();
             Console.WriteLine($"Player with {playerName} name does not played yet.");
-            Console.WriteLine("\nYou can check for any players records, if you give us it's username (or write \"exit\" to get back to menu:");
+            Console.WriteLine("\nYou can check for any players records, if you give us it's username (or write \"exit\") to get back to menu:");
         }
     }   //done
 
@@ -360,16 +362,16 @@ public class GameController
         logo();
         Console.WriteLine("Give us a new 5 letter word:");
         string input = getInput();
-        while(!isInValidInput(input))
+        while (!isInValidInput(input))
         {
-            logo();            
+            logo();
             Console.WriteLine("The Word you gave should not be an answer!\n(possible errors: not 5 letter long, using numbers or special characters)");
             Console.WriteLine("Give us a new 5 letter word:");
             input = getInput();
         }
         logo();
-        
-        if(!words.Contains(input))
+
+        if (!words.Contains(input))
         {
             words.Add(input.ToUpper());
             answerFileManager.SaveData(words);
@@ -381,7 +383,7 @@ public class GameController
         }
         Console.WriteLine("Press any key to get back to the menu");
         Console.ReadKey();
-    }
+    }   //done
 
     public void logo()
     {
@@ -446,7 +448,7 @@ public class GameController
             return "No words available.";
         }
     }   //done
-    
+
     public void getWords()
     {
         foreach (string word in words)
