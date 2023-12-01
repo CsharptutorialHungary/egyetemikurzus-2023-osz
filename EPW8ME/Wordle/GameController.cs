@@ -88,7 +88,7 @@ public class GameController
     public async Task newGameAsync()
     {
         bool testing = false;
-        testing = true;
+        //testing = true;
 
         logo();
         string currentAnswer = await GetAnAnswerAsync();
