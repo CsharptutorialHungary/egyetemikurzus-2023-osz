@@ -9,7 +9,7 @@ namespace FTHEL8.Models
     public class Class
     {
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string Task { get; set; }
         public Employee ClassLeader {  get; set; }
 
     }

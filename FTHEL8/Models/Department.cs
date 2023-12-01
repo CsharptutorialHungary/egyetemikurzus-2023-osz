@@ -9,9 +9,9 @@ namespace FTHEL8.Models
     public class Department
     {
         public string Name { get; set; }
-        public Class Class { get; set; }
-        public string Description { get; set; }
+        public string Task { get; set; }
         public Employee DepartmentLeader {  get; set; }
+        public Class Class { get; set; }
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Data.SQLite;
 using System.Diagnostics;
 using FTHEL8.Data;
+using FTHEL8.Models;
 
 namespace FTHEL8
 {
@@ -8,7 +9,7 @@ namespace FTHEL8
     {
         static void Main(string[] args)
         {
-            DatabaseInit.ReadEmployees();
+            
         }
     }
 }
