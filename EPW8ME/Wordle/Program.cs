@@ -12,13 +12,7 @@ namespace EWP8ME
         static async Task Main(string[] args)
         {
             GameController gameController = new GameController();
-            await gameController.startGameController();
-
-            //FileManager<string> filem = new FileManager<string>("Answers.json");
-            //List<string> valaszonk = await filem.LoadDataAsync();
-            //Console.Write("valaszok betoltve");
-            //foreach (string val in valaszonk) {  Console.WriteLine(val); }
-            //Console.ReadKey();
+            await gameController.startGameController();           
         }
     }
 }

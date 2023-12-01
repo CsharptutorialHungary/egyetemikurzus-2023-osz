@@ -210,10 +210,10 @@ public class GameController
     {
         logo();
         Console.WriteLine("You couldn't guess the word: " + answer + "\nYou got " + score + "points in " + round + " rounds!" +
-                            "\nGive us your name, to save your scores.");
+                            "\nGive us your name, to save your scores. (note: you can't use the name \'EXIT\')");
         string name = "";
         name = getInput();
-        while (name == "")
+        while (name == "" || name=="EXIT")
         {
             Console.WriteLine("You need to give us a name.");
             name = getInput();
