@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdezetGenerator", "IdezetGenerator\IdezetGenerator.csproj", "{D450F467-DDB2-4607-B3CE-B2A12D425E0C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{434A8FE4-F7A1-42F9-A5D4-86BE54D271D1}"
-	ProjectSection(SolutionItems) = preProject
-		idezetek.csv = idezetek.csv
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
