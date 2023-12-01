@@ -1,16 +1,10 @@
 ﻿using FTHEL8.Models;
-using System;
 using System.Data.SQLite;
-using System.Diagnostics.CodeAnalysis;
 
 namespace FTHEL8.Data
 {
     public class Database
     {
-        public Database()
-        {
-        }
-
         private static SQLiteConnection CreateConnection()
         {
             SQLiteConnection sqlite_conn;
@@ -19,8 +13,9 @@ namespace FTHEL8.Data
             {
                 sqlite_conn.Open();
             }
-            catch (Exception)
+            catch (SQLiteException)
             {
+                Console.Error.WriteLine("Database connection failed, maybe sqlite db file is in the wrong place!");
             }
             return sqlite_conn;
         }
@@ -40,14 +35,14 @@ namespace FTHEL8.Data
                         {
                             Employee employee = new Employee
                             {
-                                EmployeeId = reader["employee_id"].ToString(),
-                                Password = reader["password"].ToString(),
+                                EmployeeId = reader["employee_id"].ToString()?? "",
+                                Password = reader["password"].ToString() ?? "",
                                 Name = reader["name"].ToString(),
                                 PhoneNumber = reader["phone"].ToString(),
                                 Email = reader["email"].ToString(),
                                 Position = reader["position"].ToString(),
                                 Salary = Convert.ToInt32(reader["salary"]),
-                                Department = DepartmentReader(reader["department"].ToString())
+                                Department = DepartmentReader(reader["department"].ToString() ?? "")
                             };
 
                             employees.Add(employee);
@@ -72,10 +67,10 @@ namespace FTHEL8.Data
                         {
                             Department department = new Department
                             {
-                                Name = reader["name"].ToString(),
+                                Name = reader["name"].ToString() ?? "",
                                 Task = reader["task"].ToString(),
-                                DepartmentLeader = EmployeeReader(reader["department_leader"].ToString()),
-                                Class = ClassReader(reader["class_name"].ToString())
+                                DepartmentLeader = EmployeeReader(reader["department_leader"].ToString() ?? ""),
+                                Class = ClassReader(reader["class_name"].ToString() ?? "")
                             };
 
                             departments.Add(department);
@@ -99,9 +94,9 @@ namespace FTHEL8.Data
                         {
                             Class class_ = new Class
                             {
-                                Name = reader["name"].ToString(),
+                                Name = reader["name"].ToString() ?? "",
                                 Task = reader["task"].ToString(),
-                                ClassLeader = EmployeeReader(reader["class_leader"].ToString())
+                                ClassLeader = EmployeeReader(reader["class_leader"].ToString() ?? "")
                             };
 
                             classes.Add(class_);
@@ -125,11 +120,11 @@ namespace FTHEL8.Data
                         {
                             Project project = new Project
                             {
-                                Name = reader["name"].ToString(),
+                                Name = reader["name"].ToString() ?? "",
                                 Deadline = (DateTime)reader["deadline"],
                                 Description = reader["description"].ToString(),
-                                ProjectLeader = EmployeeReader(reader["project_leader"].ToString()),
-                                ClassName = ClassReader(reader["class_name"].ToString()) 
+                                ProjectLeader = EmployeeReader(reader["project_leader"].ToString() ?? ""),
+                                ClassName = ClassReader(reader["class_name"].ToString() ?? "") 
                             };
 
                             projects.Add(project);
@@ -153,8 +148,8 @@ namespace FTHEL8.Data
                         {
                             ProjectMembers projectmember = new ProjectMembers
                             {
-                                Name = ProjectReader(reader["project_name"].ToString()),
-                                Employee = EmployeeReader(reader["employee_id"].ToString())
+                                Name = ProjectReader(reader["project_name"].ToString() ?? ""),
+                                Employee = EmployeeReader(reader["employee_id"].ToString() ?? "")
                             };
 
                             projectmembers.Add(projectmember);
@@ -178,9 +173,9 @@ namespace FTHEL8.Data
                         {
                             ProjectReports projectreport = new ProjectReports
                             {
-                                Name = ProjectReader(reader["project_name"].ToString()),
-                                Employee = EmployeeReader(reader["employee_id"].ToString()),
-                                Report = reader["report"].ToString()
+                                Name = ProjectReader(reader["project_name"].ToString() ?? ""),
+                                Employee = EmployeeReader(reader["employee_id"].ToString() ?? ""),
+                                Report = reader["report"].ToString() ?? ""
                             };
 
                             projectreports.Add(projectreport);
@@ -192,7 +187,7 @@ namespace FTHEL8.Data
         }
 
 
-        private static Department DepartmentReader(string departmentName)
+        private static Department? DepartmentReader(string departmentName)
         {
             using (var connection = CreateConnection())
             {
@@ -204,10 +199,10 @@ namespace FTHEL8.Data
                         {
                             Department department = new Department
                             {
-                                Name = reader["name"].ToString(),
+                                Name = reader["name"].ToString() ?? "",
                                 Task = reader["task"].ToString(),
-                                DepartmentLeader = EmployeeReader(reader["department_leader"].ToString()),
-                                Class = ClassReader(reader["class_name"].ToString())
+                                DepartmentLeader = EmployeeReader(reader["department_leader"].ToString() ?? ""),
+                                Class = ClassReader(reader["class_name"].ToString() ?? "")
                             };
 
                             return department;
@@ -219,7 +214,7 @@ namespace FTHEL8.Data
             return null;
         }
 
-        private static Employee EmployeeReader(string employeeId)
+        private static Employee? EmployeeReader(string employeeId)
         {
             using (var connection = CreateConnection())
             {
@@ -231,8 +226,8 @@ namespace FTHEL8.Data
                         {
                             Employee employee = new Employee
                             {
-                                EmployeeId = reader["employee_id"].ToString(),
-                                Password = reader["password"].ToString(),
+                                EmployeeId = reader["employee_id"].ToString() ?? "",
+                                Password = reader["password"].ToString() ?? "",
                                 Name = reader["name"].ToString(),
                                 PhoneNumber = reader["phone"].ToString(),
                                 Email = reader["email"].ToString(),
@@ -249,7 +244,7 @@ namespace FTHEL8.Data
             return null;
         }
 
-        private static Class ClassReader(string className)
+        private static Class? ClassReader(string className)
         {
             using (var connection = CreateConnection())
             {
@@ -261,9 +256,9 @@ namespace FTHEL8.Data
                         {
                             Class class_ = new Class
                             {
-                                Name = reader["name"].ToString(),
+                                Name = reader["name"].ToString()?? "",
                                 Task = reader["task"].ToString(),
-                                ClassLeader = EmployeeReader(reader["class_leader"].ToString()),
+                                ClassLeader = EmployeeReader(reader["class_leader"].ToString()?? ""),
                             };
 
                             return class_;
@@ -275,7 +270,7 @@ namespace FTHEL8.Data
             return null;
         }
 
-        private static Project ProjectReader(string projectName)
+        private static Project? ProjectReader(string projectName)
         {
             using (var connection = CreateConnection())
             {
@@ -287,11 +282,11 @@ namespace FTHEL8.Data
                         {
                             Project project = new Project
                             {
-                                Name = reader["name"].ToString(),
+                                Name = reader["name"].ToString() ?? "",
                                 Description = reader["description"].ToString(),
                                 Deadline = (DateTime)reader["deadline"],
-                                ProjectLeader = EmployeeReader(reader["project_leader"].ToString()),
-                                ClassName = ClassReader(reader["class_name"].ToString())
+                                ProjectLeader = EmployeeReader(reader["project_leader"].ToString() ?? ""),
+                                ClassName = ClassReader(reader["class_name"].ToString() ?? "")
                             };
 
                             return project;

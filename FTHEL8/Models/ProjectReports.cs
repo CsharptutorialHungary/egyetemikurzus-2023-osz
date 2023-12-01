@@ -8,8 +8,8 @@ namespace FTHEL8.Models
 {
     public class ProjectReports
     {
-        public Project Name { get; set; }
-        public Employee Employee { get; set; }
-        public string Report {  get; set; }
+        public Project? Name { get; set; }
+        public Employee? Employee { get; set; }
+        public string? Report {  get; set; }
     }
 }
