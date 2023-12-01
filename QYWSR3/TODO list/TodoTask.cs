@@ -1,9 +1,9 @@
 ﻿using System;
 
-internal class TodoTask
+internal record TodoTask
 {
-    public int Id { get; }
-    public string Description { get; }
+    public int Id { get; init; }
+    public string Description { get; init; }
 
     public TodoTask(int id, string description)
     {
@@ -11,3 +11,4 @@ internal class TodoTask
         Description = description;
     }
 }
+

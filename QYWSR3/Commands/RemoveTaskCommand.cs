@@ -13,7 +13,8 @@ internal class RemoveTaskCommand : CommandBase
 
     public override void Execute()
     {
-        Host.WriteLine("Give task's ID to remove task:");
+        Host.WriteLine("Give task's ID to remove task!");
+        Host.Write("Input:");
 
         if (int.TryParse(Host.ReadLine(), out int removeTaskWithThisID))
         {

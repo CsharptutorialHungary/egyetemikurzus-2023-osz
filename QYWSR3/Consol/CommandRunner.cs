@@ -15,6 +15,7 @@ internal class CommandRunner : IHost
     {
         while (true)
         {
+            Console.Write("Command:");
             string? userInput = Console.ReadLine();
             if (!string.IsNullOrEmpty(userInput))
             {

@@ -13,7 +13,8 @@ internal class AddTaskCommand : CommandBase
 
     public override void Execute()
     {
-        Host.WriteLine("Give the task you'd like to add:");
+        Host.WriteLine("Give the task you'd like to add.");
+        Host.Write("Input:");
         string newTask = Host.ReadLine();
         todoList.AddTask(newTask);
     }

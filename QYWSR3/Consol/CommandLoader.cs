@@ -24,5 +24,8 @@ internal class CommandLoader
         Commands.Add(new AddTaskCommand(_host, _todoList));
         Commands.Add(new ViewTodoCommand(_host, _todoList));
         Commands.Add(new RemoveTaskCommand(_host, _todoList));
+        Commands.Add(new UppdateCommand(_host, _todoList));
+        Commands.Add(new DeleteAllTODOCommand(_host, _todoList));
+        Commands.Add(new LoadTODOCommand(_host, _todoList));
     }
 }
