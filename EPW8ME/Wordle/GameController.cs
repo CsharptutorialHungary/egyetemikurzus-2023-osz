@@ -14,8 +14,8 @@ public class GameController
     {
         answerFileManager = new FileManager<string>("Answers.json");
         playerFileManager = new FileManager<Player>("Players.json");
-        words = answerFileManager.LoadData();
-        players = playerFileManager.LoadData();
+        words = new List<string>();
+        players = new List<Player>();
     }
 
     public string getInput()
@@ -28,8 +28,10 @@ public class GameController
         return input.ToUpper();
     }   //done
 
-    public void startGameController()
+    public async Task startGameController()
     {
+        words = await answerFileManager.LoadDataAsync();
+        players = await playerFileManager.LoadDataAsync();
         string input = "";
         loadMenu(false);
         input = getInput();
@@ -40,7 +42,7 @@ public class GameController
             if (input == "1" || input == "2" || input == "3" || input == "4" || input == "5")
             {
                 loadMenu(false);
-                handleMenuInput(input);
+                await handleMenuInputAsync(input);
                 input = "";
             }
             else if (input == "")
@@ -61,12 +63,12 @@ public class GameController
         return;
     }   //done
 
-    public void handleMenuInput(string input)
+    public async Task handleMenuInputAsync(string input)
     {
         switch (input)
         {
             case "1":
-                newGame();                
+                await newGameAsync();                
                 break;
             case "2":
                 showRules();                
@@ -78,18 +80,18 @@ public class GameController
                 showAnswerList();                
                 break;
             case "5":
-                showAddNewWord();                
+                await showAddNewWordAsync();                
                 break;
         }
     }   //done
 
-    public void newGame()
+    public async Task newGameAsync()
     {
         bool testing = false;
         testing = true;
 
         logo();
-        string currentAnswer = GetAnAnswer();
+        string currentAnswer = await GetAnAnswerAsync();
         Console.WriteLine(currentAnswer);
         bool lost = false;
         int collectedScore = 0, reachedRound = 0;
@@ -114,7 +116,7 @@ public class GameController
                 {
                     collectedScore=handlePointCollection(collectedScore, i);
                     reachedRound++;
-                    currentAnswer = GetAnAnswer();
+                    currentAnswer = await GetAnAnswerAsync();
                     break;
                 }
                 else
@@ -129,7 +131,7 @@ public class GameController
             }
 
         }
-        saveGame(collectedScore, reachedRound, currentAnswer);
+        await saveGameAsync(collectedScore, reachedRound, currentAnswer);
         Console.ReadKey();
 
     }   //done
@@ -204,7 +206,7 @@ public class GameController
         }
     }   //done
 
-    public void saveGame(int score, int round, string answer)
+    public async Task saveGameAsync(int score, int round, string answer)
     {
         logo();
         Console.WriteLine("You couldn't guess the word: " + answer + "\nYou got " + score + "points in " + round + " rounds!" +
@@ -223,7 +225,7 @@ public class GameController
             round = round,
         };
         players.Add(currentplayer);
-        playerFileManager.SaveData(players);
+        await playerFileManager.SaveDataAsync(players);
         logo();
         Console.WriteLine("Your record is now saved " + name);
     }   //done
@@ -357,7 +359,7 @@ public class GameController
 
     }   //done
 
-    public void showAddNewWord()
+    public async Task showAddNewWordAsync()
     {
         logo();
         Console.WriteLine("Give us a new 5 letter word:");
@@ -374,7 +376,7 @@ public class GameController
         if (!words.Contains(input))
         {
             words.Add(input.ToUpper());
-            answerFileManager.SaveData(words);
+            await answerFileManager.SaveDataAsync(words);
             Console.WriteLine($"{input} is now added to the answer list!\n");
         }
         else
@@ -410,7 +412,7 @@ public class GameController
                           "6. Exit Game\n");
     }   //done
 
-    public void AddNewWord(string newWord)
+    public async Task AddNewWordAsync(string newWord)
     {
         string upperCaseWord = newWord.ToUpper();
         if (!words.Contains(upperCaseWord))
@@ -418,7 +420,7 @@ public class GameController
             if (upperCaseWord.Length == 5)
             {
                 words.Add(upperCaseWord.ToUpper());
-                answerFileManager.SaveData(words);
+                await answerFileManager.SaveDataAsync(words);
             }
             else
             {
@@ -431,11 +433,11 @@ public class GameController
         }
     }   //done
 
-    public string GetAnAnswer()
+    public async Task<string> GetAnAnswerAsync()
     {
         if (words == null)
         {
-            words = answerFileManager.LoadData();
+            words = await answerFileManager.LoadDataAsync();
         }
         if (words.Count > 0)
         {

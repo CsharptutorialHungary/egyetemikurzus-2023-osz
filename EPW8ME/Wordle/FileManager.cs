@@ -14,7 +14,7 @@ public class FileManager<T>
         fileName = fileNameValue;
     }
 
-    public void SaveData(List<T> data)
+    public async Task SaveDataAsync(List<T> data)
     {
         try
         {
@@ -23,7 +23,7 @@ public class FileManager<T>
                 WriteIndented = true,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             });
-            File.WriteAllText(filePath, jsonString);
+            await File.WriteAllTextAsync(filePath, jsonString);
         }
         catch (IOException e)
         {
@@ -31,23 +31,19 @@ public class FileManager<T>
         }
     }
 
-    public List<T> LoadData()
+    public async Task<List<T>> LoadDataAsync()
     {
         List<T> loadedData = new List<T>();
         try
         {
-            // Read the JSON content from the file
-            string jsonString = File.ReadAllText(filePath);
-
-            // Deserialize the JSON array into a list of players
+            string jsonString = await File.ReadAllTextAsync(filePath);
             loadedData = JsonSerializer.Deserialize<List<T>>(jsonString);
-
             Console.WriteLine($"Data loaded from {filePath}");
         }
         catch (IOException e)
         {
             Console.WriteLine($"ERROR while loading data from: {filePath}\n{e.Message}");
-            Console.WriteLine($"A new File is beeing created as \"{fileName}\" with an empty ");
+            Console.WriteLine($"A new File is being created as \"{fileName}\" with an empty ");
             Console.ReadKey();
             using (var fileCreater = File.CreateText(filePath))
             {
