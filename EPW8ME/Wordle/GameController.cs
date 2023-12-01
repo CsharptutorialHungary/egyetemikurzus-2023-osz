@@ -13,7 +13,7 @@ public class GameController
     public GameController()
     {
         answerFileManager = new FileManager<string>("Answers.json");
-        playerFileManager = new FileManager<Player>("Player.json");
+        playerFileManager = new FileManager<Player>("Players.json");
         words = answerFileManager.LoadData();
         players = playerFileManager.LoadData();
     }
