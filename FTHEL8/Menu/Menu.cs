@@ -6,18 +6,12 @@ using System.Threading.Tasks;
 
 namespace FTHEL8.Menu
 {
-    public class Menu
+    public abstract class Menu(string[] options, Action[] actions)
     {
-        private string[] options;
-        private Action[] actions;
+        private string[] options = options;
+        private Action[] actions = actions;
 
-        public Menu(string[] options, Action[] actions)
-        {
-            this.options = options;
-            this.actions = actions;
-        }
-
-        public void AddOption(string option, Action action)
+        protected void AddOption(string option, Action action)
         {
             int index = options.Length;
             Array.Resize(ref options, index + 1);
@@ -33,11 +27,13 @@ namespace FTHEL8.Menu
 
             do
             {
+                Console.WriteLine();
                 Console.WriteLine("Choose an option:");
                 for (int i = 0; i < options.Length; i++)
                 {
                     Console.WriteLine(options[i]);
                 }
+                Console.WriteLine();
 
                 int choice = GetChoice();
 
@@ -50,7 +46,6 @@ namespace FTHEL8.Menu
                     Console.WriteLine("Invalid choice. Please try again.");
                 }
 
-                // Check if the chosen action is the "Back" action
                 shouldExit = actions[choice - 1] == Back;
             } while (!shouldExit);
         }
@@ -67,7 +62,7 @@ namespace FTHEL8.Menu
 
         protected static void Back()
         {
-            Console.WriteLine("Returning to the main menu");
+            Console.WriteLine("Going back to the previous menu.");
         }
     }
 }

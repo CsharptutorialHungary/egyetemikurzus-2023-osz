@@ -12,24 +12,74 @@ namespace FTHEL8.Menu
     {
         public QueryMenu() : base([], [])
         {
+            Console.WriteLine();
             AddOption("Get employees data", GetEmployeesData);
-            AddOption("Option 2", Option2);
+            AddOption("Get classes data", GetClassesData);
+            AddOption("Get departments data", GetDepartmentsData);
+            AddOption("Get projects data", GetProjectsData);
+            AddOption("Get project members data", GetProjectMembersData);
+            AddOption("Get project reports", GetProjectReports);
             AddOption("Back", Back);
         }
 
-        private static void GetEmployeesData()
+        private async void GetEmployeesData()
         {
-            List<Employee> employees = Database.ReadEmployees();
-            Console.WriteLine("Employees:");
-            foreach (var employee in employees)
+            List<Employee> employees = await Database.ReadEmployeesAsync();
+            foreach (Employee employee in employees)
             {
-                Console.WriteLine($"Employee ID: {employee.EmployeeId}, Name: {employee.Name}, Position: {employee.Position}, Salary: {employee.Salary}");
+                Console.WriteLine($"Employee ID: {employee.EmployeeId}, Name: {employee.Name}, Phone number: {employee.PhoneNumber}, Email: {employee.Email}, Position: {employee.Position}, Salary: {employee.Salary}, Department: {employee.Department?.Name}");
+            }
+            Console.WriteLine();
+        }
+
+        private async void GetClassesData()
+        {
+            List<Class> classes = await Database.ReadClassesAsync();
+            foreach (Class class_ in classes)
+            {
+                Console.WriteLine($"Class name: {class_.Name}, Task: {class_.Task}, Class leader: {class_.ClassLeader?.Name}");
+            }
+            Console.WriteLine();
+        }
+
+        private async void GetProjectsData()
+        {
+            List<Project> projects = await Database.ReadProjectsAsync();
+            foreach (Project project in projects)
+            {
+                Console.WriteLine($"Project name: {project.Name}, Description: {project.Description}, Deadline: {project.Deadline}, Project leader: {project.ProjectLeader?.Name}, Class: {project.ClassName?.Name}");
+            }
+            Console.WriteLine();
+        }
+
+        private async void GetDepartmentsData()
+        {
+            List<Department> departments = await Database.ReadDepartmentsAsync();
+            foreach (Department department in departments)
+            {
+                Console.WriteLine($"Department name: {department.Name}, Task: {department.Task}, Department leader: {department.DepartmentLeader?.Name}, Class name: {department.ClassName?.Name}");
             }
         }
 
-        private static void Option2()
+        private async void GetProjectMembersData()
         {
-            Console.WriteLine("Selected: Option 2 in Query Menu");
+            List<ProjectMembers> projectMembers = await Database.ReadProjectMembersAsync();
+            foreach (var member in projectMembers)
+            {
+                string employeeNames = string.Join(", ", member.Employees?.Select(e => e?.Name));
+                Console.WriteLine($"Project name: {member.ProjectName?.Name}, Employee: {employeeNames}");
+            }
+            Console.WriteLine();
+        }
+
+        private async void GetProjectReports()
+        {
+            List<ProjectReports> projectReports = await Database.ReadProjectReportsAsync();
+            foreach (var report in projectReports)
+            {
+                Console.WriteLine($"Project name: {report.Name?.Name}, Employee: {report.Employee?.Name}, Report: {report.Report}");
+            }
+            Console.WriteLine();
         }
 
     }
