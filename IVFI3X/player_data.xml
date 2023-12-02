@@ -2,18 +2,9 @@
 <ArrayOfPlayer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Player>
     <Name>mark</Name>
-    <TopScores />
-  </Player>
-  <Player>
-    <Name>geci</Name>
-    <TopScores />
-  </Player>
-  <Player>
-    <Name>mark1</Name>
-    <TopScores />
-  </Player>
-  <Player>
-    <Name>maark</Name>
-    <TopScores />
+    <TopScores>
+      <int>7</int>
+      <int>4</int>
+    </TopScores>
   </Player>
 </ArrayOfPlayer>
