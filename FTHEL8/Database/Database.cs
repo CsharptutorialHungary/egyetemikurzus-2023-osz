@@ -147,7 +147,7 @@ namespace FTHEL8.Data
                     {
                         while (await reader.ReadAsync())
                         {
-                            string employeeIdsString = reader["EmployeeIds"].ToString();
+                            string employeeIdsString = reader["EmployeeIds"].ToString() ?? "";
                             var employeeIds = employeeIdsString.Split(',').ToList();
 
                             var employeeTasks = employeeIds.Select(EmployeeReaderAsync).ToList();
@@ -156,7 +156,7 @@ namespace FTHEL8.Data
 
                             ProjectMembers projectMember = new ProjectMembers
                             {
-                                ProjectName = await ProjectReaderAsync(reader["ProjectName"].ToString()),
+                                ProjectName = await ProjectReaderAsync(reader["ProjectName"].ToString() ?? ""),
                                 Employees = employees
                             };
 
@@ -167,32 +167,6 @@ namespace FTHEL8.Data
             }
             return projectmembers;
         }
-
-        public static async Task<List<ProjectReports>> ReadProjectReportsAsync()
-        {
-            List<ProjectReports> projectreports = new List<ProjectReports>();
-            using (var connection = await CreateConnectionAsync())
-            {
-
-                using (var command = new SQLiteCommand("SELECT * FROM project_reports", connection))
-                using (var reader = await command.ExecuteReaderAsync())
-                {
-                    while (await reader.ReadAsync())
-                    {
-                        ProjectReports projectreport = new ProjectReports
-                        {
-                            Name = await ProjectReaderAsync(reader["project_name"].ToString()),
-                            Employee = await EmployeeReaderAsync(reader["employee_id"].ToString()),
-                            Report = reader["report"].ToString() ?? ""
-                        };
-
-                        projectreports.Add(projectreport);
-                    }
-                }
-            }
-            return projectreports;
-        }
-
 
         private async static Task<Department?> DepartmentReaderAsync(string departmentName)
         {
@@ -355,30 +329,189 @@ namespace FTHEL8.Data
 
         public static async Task<bool> AddEmployeeAsync(string employeeId, string name, string phoneNumber, string email, string position, int salary, string departmentName)
         {
-            using (var connection = await CreateConnectionAsync())
+            try
             {
-                try
+                Department? department = await DepartmentReaderAsync(departmentName);
+
+                if (department != null)
                 {
-                    var department = await DepartmentReaderAsync(departmentName);
-                    if (department == null)
+                    using (var connection = await CreateConnectionAsync())
                     {
-                        Console.WriteLine("Department does not exist. Please add the department first.");
-                        return false;
-                    }
+                        using (var command = new SQLiteCommand(connection))
+                        {
+                            command.CommandText = "INSERT INTO employees (employee_id, name, phone, email, position, salary, department) " +
+                                                  "VALUES (@employeeId, @name, @phoneNumber, @email, @position, @salary, @department)";
+                            command.Parameters.AddWithValue("@employeeId", employeeId);
+                            command.Parameters.AddWithValue("@name", name);
+                            command.Parameters.AddWithValue("@phoneNumber", phoneNumber);
+                            command.Parameters.AddWithValue("@email", email);
+                            command.Parameters.AddWithValue("@position", position);
+                            command.Parameters.AddWithValue("@salary", salary);
+                            command.Parameters.AddWithValue("@department", departmentName);
 
-                    using (var command = new SQLiteCommand(connection))
-                    {
-                        command.CommandText = $"INSERT INTO employees (employee_id, name, phone, email, position, salary, department) VALUES ({employeeId}, {name}, {phoneNumber}, {email}, {position}, {salary}, {departmentName})";
-
-                        await command.ExecuteNonQueryAsync();
-                        return true;
+                            await command.ExecuteNonQueryAsync();
+                            return true;
+                        }
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine($"Error adding employee: {ex.Message}");
+                    Console.WriteLine("Invalid department name.");
                     return false;
                 }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public static async Task<bool> AddDepartmentAsync(string departmentName, string departmentTask, string departmentLeaderId, string className)
+        {
+            try
+            {
+                Employee? departmentLeader = await EmployeeReaderAsync(departmentLeaderId);
+                Class? class_ = await ClassReaderAsync(className);
+
+                if (departmentLeader != null && class_ != null)
+                {
+                    using (var connection = await CreateConnectionAsync())
+                    {
+                        using (var command = new SQLiteCommand(connection))
+                        {
+                            command.CommandText = "INSERT INTO departments (name, task, department_leader, class_name) " +
+                                                  "VALUES (@name, @task, @departmentLeader, @className)";
+                            command.Parameters.AddWithValue("@name", departmentName);
+                            command.Parameters.AddWithValue("@task", departmentTask);
+                            command.Parameters.AddWithValue("@departmentLeader", departmentLeaderId);
+                            command.Parameters.AddWithValue("@className", className);
+
+                            await command.ExecuteNonQueryAsync();
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid department leader ID or class name.");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public static async Task<bool> AddClassAsync(string className, string classTask, string classLeaderId)
+        {
+            try
+            {
+                Employee? classLeader = await EmployeeReaderAsync(classLeaderId);
+
+                if (classLeader != null)
+                {
+                    using (var connection = await CreateConnectionAsync())
+                    {
+                        using (var command = new SQLiteCommand(connection))
+                        {
+                            command.CommandText = "INSERT INTO classes (name, task, class_leader) " +
+                                                  "VALUES (@name, @task, @classLeader)";
+                            command.Parameters.AddWithValue("@name", className);
+                            command.Parameters.AddWithValue("@task", classTask);
+                            command.Parameters.AddWithValue("@classLeader", classLeaderId);
+
+                            await command.ExecuteNonQueryAsync();
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid class leader ID.");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public static async Task<bool> AddProjectAsync(string projectName, string projectDescription, DateTime deadline, string projectLeaderId, string className)
+        {
+            try
+            {
+                Employee? projectLeader = await EmployeeReaderAsync(projectLeaderId);
+                Class? class_ = await ClassReaderAsync(className);
+
+                if (projectLeader != null && class_ != null)
+                {
+                    using (var connection = await CreateConnectionAsync())
+                    {
+                        using (var command = new SQLiteCommand(connection))
+                        {
+                            command.CommandText = "INSERT INTO projects (name, description, deadline, project_leader, class_name) " +
+                                                  "VALUES (@name, @description, @deadline, @projectLeader, @className)";
+                            command.Parameters.AddWithValue("@name", projectName);
+                            command.Parameters.AddWithValue("@description", projectDescription);
+                            command.Parameters.AddWithValue("@deadline", deadline);
+                            command.Parameters.AddWithValue("@projectLeader", projectLeaderId);
+                            command.Parameters.AddWithValue("@className", className);
+
+                            await command.ExecuteNonQueryAsync();
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid project leader ID or class name.");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public static async Task<bool> AddEmployeeToProjectAsync(string employeeId, string projectName)
+        {
+            try
+            {
+                Employee? employee = await EmployeeReaderAsync(employeeId);
+                Project? project = await ProjectReaderAsync(projectName);
+
+                if (employee != null && project != null)
+                {
+                    using (var connection = await CreateConnectionAsync())
+                    {
+                        using (var command = new SQLiteCommand(connection))
+                        {
+                            command.CommandText = "INSERT INTO project_members (employee_id, project_name) " +
+                                                  "VALUES (@employeeId, @projectName)";
+                            command.Parameters.AddWithValue("@employeeId", employeeId);
+                            command.Parameters.AddWithValue("@projectName", projectName);
+
+                            await command.ExecuteNonQueryAsync();
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid employee ID or project name.");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                return false;
             }
         }
 

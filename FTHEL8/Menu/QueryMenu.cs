@@ -18,7 +18,6 @@ namespace FTHEL8.Menu
             AddOption("Get departments data", GetDepartmentsData);
             AddOption("Get projects data", GetProjectsData);
             AddOption("Get project members data", GetProjectMembersData);
-            AddOption("Get project reports", GetProjectReports);
             AddOption("Back", Back);
         }
 
@@ -66,18 +65,8 @@ namespace FTHEL8.Menu
             List<ProjectMembers> projectMembers = await Database.ReadProjectMembersAsync();
             foreach (var member in projectMembers)
             {
-                string employeeNames = string.Join(", ", member.Employees?.Select(e => e?.Name));
+                string employeeNames = string.Join(", ", member.Employees.Select(e => e.Name));
                 Console.WriteLine($"Project name: {member.ProjectName?.Name}, Employee: {employeeNames}");
-            }
-            Console.WriteLine();
-        }
-
-        private async void GetProjectReports()
-        {
-            List<ProjectReports> projectReports = await Database.ReadProjectReportsAsync();
-            foreach (var report in projectReports)
-            {
-                Console.WriteLine($"Project name: {report.Name?.Name}, Employee: {report.Employee?.Name}, Report: {report.Report}");
             }
             Console.WriteLine();
         }

@@ -41,12 +41,15 @@ namespace FTHEL8.Menu
                 {
                     actions[choice - 1]?.Invoke();
                 }
-                else
-                {
-                    Console.WriteLine("Invalid choice. Please try again.");
-                }
 
-                shouldExit = actions[choice - 1] == Back;
+                try
+                {
+                    shouldExit = actions[choice - 1] == Back;
+                }catch (IndexOutOfRangeException)
+                {
+                    Console.WriteLine("There is no option with that number!");
+                }
+                
             } while (!shouldExit);
         }
 
