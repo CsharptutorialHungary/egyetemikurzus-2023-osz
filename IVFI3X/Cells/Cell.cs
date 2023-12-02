@@ -7,16 +7,13 @@ namespace IVFI3X.Cells
 {
     internal class Cell
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Value { get; set; }
-        public bool IsVisible { get; set; }
-        public Cell(int x, int y, int value, bool isVisible)
+        public int X { get; }
+        public int Y { get; }
+        public Cell(int x, int y)
         {
             X = x;
             Y = y;
-            Value = value;
-            IsVisible = isVisible;
+            
         }
     }
 }

@@ -12,4 +12,8 @@
     <Name>mark1</Name>
     <TopScores />
   </Player>
+  <Player>
+    <Name>maark</Name>
+    <TopScores />
+  </Player>
 </ArrayOfPlayer>
