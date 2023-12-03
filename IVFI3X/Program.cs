@@ -1,6 +1,6 @@
-﻿using IVFI3X.Player;
+﻿using IVFI3X.Cells;
+using IVFI3X.Player;
 using System.Xml.Serialization;
-using IVFI3X.Cells;
 
 Console.WriteLine("Please input your name:");
 string name = Console.ReadLine();
@@ -29,7 +29,8 @@ try
             noPlayersSaved = true;
         }
     }
-}catch (FileNotFoundException)
+}
+catch (FileNotFoundException)
 {
     throw new FileNotFoundException("The player_data.xml is missing!");
 }
@@ -37,7 +38,7 @@ try
 
 
 
-if (!noPlayersSaved && existingPlayers.Any(p => p.Name == player.Name)  )
+if (!noPlayersSaved && existingPlayers.Any(p => p.Name == player.Name))
 {
     player = existingPlayers.First(p => p.Name == player.Name);
     Console.WriteLine($"Player {player.Name} is already in the database. Best score: {player.BestScore}");
@@ -64,8 +65,8 @@ while (true)
     Console.WriteLine("2 => Look at my top scores");
     Console.WriteLine("3 => Exit the app");
 
-    string numInput = Console.ReadLine(); 
-    int num; 
+    string numInput = Console.ReadLine();
+    int num;
 
     if (int.TryParse(numInput, out num))
     {
@@ -73,21 +74,21 @@ while (true)
         {
             // new game
             case 1:
-            {
-                Console.WriteLine("Start a new game");
-                Console.WriteLine("Choose the difficulty: easy,medium,hard");
-                PlayCell[,] playMap = await GeneratePlayingMapAsync(GetDifficuiltyInput());
+                {
+                    Console.WriteLine("Start a new game");
+                    Console.WriteLine("Choose the difficulty: easy,medium,hard");
+                    PlayCell[,] playMap = await GeneratePlayingMapAsync(GetDifficuiltyInput());
 
-                Player myPlayer = existingPlayers.Find(p => p.Name == player.Name)!;
-                await using StreamWriter writer = new StreamWriter(path);
+                    Player myPlayer = existingPlayers.Find(p => p.Name == player.Name)!;
+                    await using StreamWriter writer = new StreamWriter(path);
 
-                int score= PlayGame(playMap);
+                    int score = PlayGame(playMap);
 
-                myPlayer.TopScores.Add(score);
+                    myPlayer.AddScore(score);
 
-                serializer.Serialize(writer, existingPlayers);
-                break;
-            }
+                    serializer.Serialize(writer, existingPlayers);
+                    break;
+                }
             // show scores
             case 2:
                 ShowTopScores(player);
@@ -117,7 +118,7 @@ int PlayGame(PlayCell[,] playMap)
 
     int score = NonVisibleCount(playMap);
 
-    while (NonVisibleCount(playMap)!=0)
+    while (NonVisibleCount(playMap) != 0)
     {
         Console.WriteLine();
         Console.WriteLine("You have to guess the cells marked with X");
@@ -153,7 +154,7 @@ int[] GetNextStep()
     int[] nextStep = new int[3];
     Console.WriteLine("Enter your next step:");
     Console.Write("X coordinate (1-9)(sor): ");
-   
+
     int x;
     while (true)
     {
@@ -164,11 +165,11 @@ int[] GetNextStep()
             break;
         }
         Console.WriteLine("Invalid input. Please enter a valid integer for X coordinate.");
-        
+
     }
-    
+
     Console.Write("Y coordinate (1-9)(oszlop): ");
-   
+
     int y;
     while (true)
     {
@@ -180,9 +181,9 @@ int[] GetNextStep()
         }
         Console.WriteLine("Invalid input. Please enter a valid integer for Y coordinate.");
     }
-    
+
     Console.Write("Value (1-9): ");
-   
+
     int value;
     while (true)
     {
@@ -193,10 +194,10 @@ int[] GetNextStep()
             break;
         }
         Console.WriteLine("Invalid input. Please enter a valid integer between 1 and 9 for the value.");
-            
-        
+
+
     }
-    
+
     return nextStep;
 }
 
@@ -223,7 +224,7 @@ string GetDifficuiltyInput()
 async Task<PlayCell[,]> GeneratePlayingMapAsync(string difficulty)
 {
 
-    GenerateCell[,] myMap = new GenerateCell[9,9];
+    GenerateCell[,] myMap = new GenerateCell[9, 9];
     GenerateMap(myMap);
 
     PlayCell[,] playMap = new PlayCell[9, 9];
@@ -242,7 +243,7 @@ async Task<PlayCell[,]> GeneratePlayingMapAsync(string difficulty)
             FillPlayMap(playMap, myMap, 0.5);
             break;
     }
-    
+
     return playMap;
 }
 
@@ -273,20 +274,20 @@ void GenerateMap(GenerateCell[,] myArray)
     }
 
 
-    
-    while (filled!=81)
+
+    while (filled != 81)
     {
         for (int i = 0; i < myArray.GetLength(0); i++)
         {
             for (int j = 0; j < myArray.GetLength(1); j++)
             {
                 GenerateCell actualCell = myArray[i, j];
-                if (actualCell.ValidValues.Count==0 )
+                if (actualCell.ValidValues.Count == 0)
                 {
                     filled -= CrossDeleteValue(myArray, i, j);
                     UpdateCells(myArray);
                 }
-                else if (actualCell.Value==0)
+                else if (actualCell.Value == 0)
                 {
                     int randomIndex = random.Next(0, actualCell.ValidValues.Count);
                     int randomNumber = actualCell.ValidValues[randomIndex];
@@ -294,12 +295,12 @@ void GenerateMap(GenerateCell[,] myArray)
                     actualCell.Value = randomNumber;
                     UpdateCells(myArray);
                     filled++;
-                    
+
                 }
             }
         }
     }
-    
+
 }
 
 void PrintGenerateMap(GenerateCell[,] myArray)
@@ -328,7 +329,7 @@ void PrintPlayMap(PlayCell[,] myArray)
             {
                 Console.Write("X" + " ");
             }
-            
+
         }
         Console.WriteLine();
     }
@@ -338,7 +339,7 @@ int CrossDeleteValue(GenerateCell[,] myArray, int i, int j)
 {
 
     int count = 0;
-    
+
     for (int x = 0; x < myArray.GetLength(0); x++)
     {
         if (myArray[x, j].Value == 0) continue;
@@ -346,7 +347,7 @@ int CrossDeleteValue(GenerateCell[,] myArray, int i, int j)
         count++;
 
     }
-    
+
     for (int y = 0; y < myArray.GetLength(1); y++)
     {
         if (myArray[i, y].Value == 0) continue;
@@ -359,7 +360,7 @@ int CrossDeleteValue(GenerateCell[,] myArray, int i, int j)
 
 void UpdateCells(GenerateCell[,] myArray)
 {
-    
+
 
     for (int i = 0; i < myArray.GetLength(0); i++)
     {
@@ -384,12 +385,12 @@ void UpdateCells(GenerateCell[,] myArray)
                 }
             }
 
-            myArray[i,j].ValidValues= myValidValues;
+            myArray[i, j].ValidValues = myValidValues;
 
         }
     }
 
-    
+
 }
 
 void ShowTopScores(Player player)
@@ -401,7 +402,7 @@ void ShowTopScores(Player player)
     for (var index = 0; index < player.TopScores.Count; index++)
     {
         var score = player.TopScores[index];
-        Console.WriteLine(index+1 + ". " + score+"points");
+        Console.WriteLine(index + 1 + ". " + score + "points");
         noScores = false;
     }
 

@@ -9,7 +9,7 @@
         {
             get
             {
-                if (TopScores.Count>0)
+                if (TopScores.Count > 0)
                 {
                     return TopScores.Max();
 
@@ -18,7 +18,7 @@
                 {
                     return 0;
                 }
-                
+
             }
         }
 
@@ -26,7 +26,7 @@
         {
             TopScores = new List<int>();
         }
-        
+
         public Player(string name) : this()
         {
             Name = name;
@@ -40,6 +40,6 @@
                 .ToList();
         }
 
-        
+
     }
 }

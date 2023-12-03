@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IVFI3X.Cells
+﻿namespace IVFI3X.Cells
 {
     internal class GenerateCell : Cell
     {
@@ -13,10 +7,10 @@ namespace IVFI3X.Cells
         public GenerateCell(int x, int y, int value)
             : base(x, y)
         {
-            Value=value;
+            Value = value;
             ValidValues = Enumerable.Range(1, 9).ToList();
         }
-        
+
 
     }
 }
