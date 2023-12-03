@@ -75,13 +75,17 @@ while (true)
         {
             Console.WriteLine("Start a new game");
             Console.WriteLine("Choose the difficulty: easy,medium,hard");
-            PlayCell[,] playMap = GeneratePlayingMap(GetDifficuiltyInput());
-            int score= PlayGame(playMap);
+            PlayCell[,] playMap = await GeneratePlayingMapAsync(GetDifficuiltyInput());
 
             Player foundPlayer = existingPlayers.Find(p => p.Name == player.Name);
+            using StreamWriter writer = new StreamWriter(path);
+
+            int score= PlayGame(playMap);
+
+            
             foundPlayer?.TopScores.Add(score);
 
-            using StreamWriter writer = new StreamWriter(path);
+            
             serializer.Serialize(writer, existingPlayers);
 
         }
@@ -217,7 +221,7 @@ string GetDifficuiltyInput()
     return difficulty;
 }
 
-PlayCell[,] GeneratePlayingMap(string difficulty)
+async Task<PlayCell[,]> GeneratePlayingMapAsync(string difficulty)
 {
 
     GenerateCell[,] myMap = new GenerateCell[9,9];
@@ -414,3 +418,5 @@ void ShowTopScores(Player player)
         Console.WriteLine("You don't have saved scores yet");
     }
 }
+
+
