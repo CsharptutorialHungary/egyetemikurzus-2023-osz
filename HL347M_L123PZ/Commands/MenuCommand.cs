@@ -74,7 +74,7 @@ namespace StudentTerminal.Commands
                         await Menu();
                         return;
                     case 3:
-                        Console.WriteLine("Harmadik opció");
+                        StudentCommand.Write(students.OrderByDescending(item => item.Average).ToList());
                         Console.WriteLine("A folytatáshoz nyomj meg egy gombot!");
                         Console.ReadKey();
                         await Menu();
