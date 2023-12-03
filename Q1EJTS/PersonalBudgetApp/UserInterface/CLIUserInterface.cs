@@ -13,7 +13,6 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
         private DateTime _minimumDate = new DateTime(1900, 01, 01);
         private FinancialCategory[] _availableCategories = Enum.GetValues<FinancialCategory>();
         
-
         public string GetFilePathFromUserInput()
         {
             Console.WriteLine("Adjon meg egy fájlnevet: ");
@@ -91,7 +90,7 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
             }
             else
             {
-                return FinancialCategory.Other;
+                return FinancialCategory.Egyebkiadas;
             }
         }
         private bool IsValidYear(int year)
@@ -218,7 +217,6 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
                         case 7:
                             ExecuteMoneyRangeFilter();
                             break;
-
                     }
                 }
                 catch (FormatException exp)
@@ -281,17 +279,24 @@ namespace Q1EJTS.PersonalBudgetApp.UserInterface
         {
             Console.WriteLine("Add meg a kezdő(jelenlegi) egyenlegedet!");
             decimal initialBalanceAmount;
+
             while (!decimal.TryParse(Console.ReadLine(), out initialBalanceAmount))
             {
                 Console.WriteLine("Érvénytelen összeg. Kérjük, adjon meg egy pozitív összeget.");
             }
+
             _balanceManager = new DebitBalanceManager(new Money(initialBalanceAmount));
+
             while (true)
             {
                 DisplayMainMenu();
                 Console.Write("Válassz egy műveletet: ");
                 int choice;
-                int.TryParse(Console.ReadLine(), out choice);
+                if (!int.TryParse(Console.ReadLine(), out choice))
+                {
+                    Console.WriteLine("Érvénytelen művelet!");
+                    continue;
+                }
                 switch (choice)
                 {
                     case 0:

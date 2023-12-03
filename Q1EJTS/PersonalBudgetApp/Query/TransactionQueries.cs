@@ -48,8 +48,8 @@ namespace Q1EJTS.PersonalBudgetApp.Query
 
         public static Dictionary<string,decimal> GroupByIncomeAndOutcome()
         {
-            var income = TransactionManager.Transaction.Where(x => x.Category == FinancialCategory.Income).Sum(x => x.Total.Amount);
-            var outcome = TransactionManager.Transaction.Where(x => x.Category != FinancialCategory.Income).Sum(x => x.Total.Amount);
+            var income = TransactionManager.Transaction.Where(x => x.Category == FinancialCategory.Bevetel).Sum(x => x.Total.Amount);
+            var outcome = TransactionManager.Transaction.Where(x => x.Category != FinancialCategory.Bevetel).Sum(x => x.Total.Amount);
             Dictionary<string, decimal> groupByIncomeAndOutcome = new Dictionary<string, decimal>();
             groupByIncomeAndOutcome.Add("Income", income);
             groupByIncomeAndOutcome.Add("Outcome", outcome);
