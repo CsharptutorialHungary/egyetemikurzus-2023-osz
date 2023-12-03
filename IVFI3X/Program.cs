@@ -27,9 +27,7 @@ try
         {
             existingPlayers = new List<Player>();
             noPlayersSaved = true;
-
         }
-
     }
 }catch (FileNotFoundException)
 {
@@ -49,7 +47,7 @@ else
 
     existingPlayers.Add(player);
 
-    using (StreamWriter writer = new StreamWriter(path))
+    await using (StreamWriter writer = new StreamWriter(path))
     {
         serializer.Serialize(writer, existingPlayers);
     }
@@ -80,8 +78,8 @@ while (true)
                 Console.WriteLine("Choose the difficulty: easy,medium,hard");
                 PlayCell[,] playMap = await GeneratePlayingMapAsync(GetDifficuiltyInput());
 
-                Player myPlayer = existingPlayers.Find(p => p.Name == player.Name);
-                using StreamWriter writer = new StreamWriter(path);
+                Player myPlayer = existingPlayers.Find(p => p.Name == player.Name)!;
+                await using StreamWriter writer = new StreamWriter(path);
 
                 int score= PlayGame(playMap);
 
@@ -98,6 +96,7 @@ while (true)
             case 3:
                 Environment.Exit(0);
                 break;
+            //wrong input
             default:
                 Console.WriteLine("The number you imputed is not in the list");
                 break;
