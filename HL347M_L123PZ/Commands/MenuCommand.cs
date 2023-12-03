@@ -79,6 +79,18 @@ namespace StudentTerminal.Commands
                         Console.ReadKey();
                         await Menu();
                         return;
+                    case 4:
+                        double averageOfAverages = students.Select(item => item.Average).Average();
+                        string formattedAverage = averageOfAverages.ToString("0.00");
+                        var overallAverage = new
+                        {
+                            TanulokAtlaga = formattedAverage
+                        };
+                        StudentCommand.Write(new List<object> { overallAverage });
+                        Console.WriteLine("\nA folytatáshoz nyomj meg egy gombot!");
+                        Console.ReadKey();
+                        await Menu();
+                        return;
                     default:
                         Console.WriteLine("Nincs ilyen művelet!\nA folytatáshoz nyomj meg egy gombot!");
                         Console.ReadKey();
