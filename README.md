@@ -14,7 +14,7 @@
 | adat olvasása fájlból szerializáció segítségével (pl.: Adat betöltés és/vagy mentés JSON/XML fájlból/fájlba) | ✔
 |:------------------------------------------------------------------------------------------------------------:|:-:|
 | legyen benne saját immutable type (pl.: `record class`) | ✔
-| legyen benne LINQ segítségével: szűrés (`where`), csoportosítás (`group by`), rendezés (`order by`), agregáció (Pl.: `Min()`, `Max()`, `First()`, `FirstOrDefault`, `Average()`, stb...) közül legalább kettő | ❌
+| legyen benne LINQ segítségével: szűrés (`where`), csoportosítás (`group by`), rendezés (`order by`), agregáció (Pl.: `Min()`, `Max()`, `First()`, `FirstOrDefault`, `Average()`, stb...) közül legalább kettő | ✔
 | legyen benne generikus kollekció (pl.: `List<T>`, `Stack<T>`, stb...) | ✔
 | legyen benne aszinkron rész (`async` és `Task`) | ✔ | ✔
 
@@ -34,6 +34,11 @@
 |`True`|`True`|✔|
 
 ### TestThat_SaveStudentsToJSON_CreatesNewFile:
+| Érték | Elvárt eredmény | Megfelelt
+|:-----:|:---------------:|:-------:|
+|`True`|`True`|✔|
+
+### TestThat_LoadStudentsFromJson_LoadsStudents:
 | Érték | Elvárt eredmény | Megfelelt
 |:-----:|:---------------:|:-------:|
 |`True`|`True`|✔|
