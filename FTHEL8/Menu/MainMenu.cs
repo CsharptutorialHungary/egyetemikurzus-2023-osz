@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FTHEL8.Menu
+﻿namespace FTHEL8.Menu
 {
     public class MainMenu : Menu
     {
@@ -15,9 +9,11 @@ namespace FTHEL8.Menu
             Menu queryMenu = new QueryMenu();
             Menu deleteMenu = new DeleteMenu();
             Menu addMenu = new AddMenu();
+            Menu modifyMenu = new ModifyMenu();
 
             AddOption("Query Data", queryMenu.Display);
             AddOption("Add Data", addMenu.Display);
+            AddOption("Modify Data", modifyMenu.Display);
             AddOption("Delete Data", deleteMenu.Display);
             AddOption("Exit", Exit);
         }

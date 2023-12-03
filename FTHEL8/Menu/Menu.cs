@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FTHEL8.Menu
+﻿namespace FTHEL8.Menu
 {
     public abstract class Menu(string[] options, Action[] actions)
     {

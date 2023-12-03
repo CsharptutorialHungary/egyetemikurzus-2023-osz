@@ -1,8 +1,4 @@
-﻿using System.Data.SQLite;
-using System.Diagnostics;
-using FTHEL8.Data;
-using FTHEL8.Menu;
-using FTHEL8.Models;
+﻿using FTHEL8.Menu;
 
 namespace FTHEL8
 {

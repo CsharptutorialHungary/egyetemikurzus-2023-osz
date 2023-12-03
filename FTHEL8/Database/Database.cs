@@ -40,7 +40,7 @@ namespace FTHEL8.Data
                             Email = reader["email"].ToString(),
                             Position = reader["position"].ToString(),
                             Salary = Convert.ToInt32(reader["salary"]),
-                            Department = await DepartmentReaderAsync(reader["department"].ToString() ?? "")
+                            DepartmentName = reader["department"].ToString() ?? ""
                         };
 
                         employees.Add(employee);
@@ -212,7 +212,8 @@ namespace FTHEL8.Data
                                 PhoneNumber = reader["phone"].ToString(),
                                 Email = reader["email"].ToString(),
                                 Position = reader["position"].ToString(),
-                                Salary = Convert.ToInt32(reader["salary"])
+                                Salary = Convert.ToInt32(reader["salary"]),
+                                DepartmentName = reader["department"].ToString()
                             };
 
                             return employee;
@@ -506,6 +507,166 @@ namespace FTHEL8.Data
                 {
                     Console.WriteLine("Invalid employee ID or project name.");
                     return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public static async Task<bool> ModifyEmployee(string employeeId, string newName, string newPhoneNumber, string newEmail, string newPosition, int newSalary, string newDepartmentName)
+        {
+            try
+            {
+                Department? newDepartment = await DepartmentReaderAsync(newDepartmentName);
+
+                if (newDepartment != null)
+                {
+                    using (var connection = await CreateConnectionAsync())
+                    {
+                        using (var command = new SQLiteCommand(connection))
+                        {
+                            command.CommandText = "UPDATE employees SET name = @newName, phone = @newPhoneNumber, " +
+                                                  "email = @newEmail, position = @newPosition, salary = @newSalary, department = @newDepartmentName " +
+                                                  "WHERE employee_id = @employeeId";
+
+                            command.Parameters.AddWithValue("@newName", newName);
+                            command.Parameters.AddWithValue("@newPhoneNumber", newPhoneNumber);
+                            command.Parameters.AddWithValue("@newEmail", newEmail);
+                            command.Parameters.AddWithValue("@newPosition", newPosition);
+                            command.Parameters.AddWithValue("@newSalary", newSalary);
+                            command.Parameters.AddWithValue("@newDepartmentName", newDepartmentName);
+                            command.Parameters.AddWithValue("@employeeId", employeeId);
+
+                            await command.ExecuteNonQueryAsync();
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid department name.");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public static async Task<bool> ModifyClass(string className, string newTask, string newClassLeaderId)
+        {
+            try
+            {
+                Employee? newClassLeader = await EmployeeReaderAsync(newClassLeaderId);
+
+                if (newClassLeader != null)
+                {
+                    using (var connection = await CreateConnectionAsync())
+                    {
+                        using (var command = new SQLiteCommand(connection))
+                        {
+                            command.CommandText = "UPDATE classes SET task = @newTask, class_leader = @newClassLeaderId WHERE name = @className";
+                            command.Parameters.AddWithValue("@newTask", newTask);
+                            command.Parameters.AddWithValue("@newClassLeaderId", newClassLeaderId);
+                            command.Parameters.AddWithValue("@className", className);
+
+                            await command.ExecuteNonQueryAsync();
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Class Leader ID.");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public static async Task<bool> ModifyProject(string projectName, string newDescription, DateTime newDeadline, string newProjectLeaderId, string newClassName)
+        {
+            try
+            {
+                Employee? newProjectLeader = await EmployeeReaderAsync(newProjectLeaderId);
+
+                if (newProjectLeader != null)
+                {
+                    using (var connection = await CreateConnectionAsync())
+                    {
+                        using (var command = new SQLiteCommand(connection))
+                        {
+                            command.CommandText = "UPDATE projects SET description = @newDescription, deadline = @newDeadline, project_leader = @newProjectLeaderId, class_name = @newClassName WHERE name = @projectName";
+                            command.Parameters.AddWithValue("@newDescription", newDescription);
+                            command.Parameters.AddWithValue("@newDeadline", newDeadline);
+                            command.Parameters.AddWithValue("@newProjectLeaderId", newProjectLeaderId);
+                            command.Parameters.AddWithValue("@newClassName", newClassName);
+                            command.Parameters.AddWithValue("@projectName", projectName);
+
+                            await command.ExecuteNonQueryAsync();
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Project Leader ID.");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public static async Task<bool> ModifyProjectMembers(string projectName, List<string> newEmployeeIds)
+        {
+            try
+            {
+                List<Employee> newEmployees = new List<Employee>();
+                foreach (string employeeId in newEmployeeIds)
+                {
+                    Employee? employee = await EmployeeReaderAsync(employeeId);
+                    if (employee != null)
+                    {
+                        newEmployees.Add(employee);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Invalid Employee ID: {employeeId}");
+                        return false;
+                    }
+                }
+
+                using (var connection = await CreateConnectionAsync())
+                {
+                    using (var command = new SQLiteCommand(connection))
+                    {
+                        command.CommandText = "DELETE FROM project_members WHERE project_name = @projectName";
+                        command.Parameters.AddWithValue("@projectName", projectName);
+                        await command.ExecuteNonQueryAsync();
+
+                        foreach (Employee employee in newEmployees)
+                        {
+                            command.CommandText = "INSERT INTO project_members (project_name, employee_id) VALUES (@projectName, @employeeId)";
+                            command.Parameters.AddWithValue("@projectName", projectName);
+                            command.Parameters.AddWithValue("@employeeId", employee.EmployeeId);
+                            await command.ExecuteNonQueryAsync();
+                        }
+
+                        return true;
+                    }
                 }
             }
             catch (Exception ex)
