@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using IVFI3X.Cells;
 
-Console.WriteLine("Kerlek add meg a neved:");
+Console.WriteLine("Please input your name:");
 string name = Console.ReadLine();
 Player player = new Player(name);
 
@@ -14,7 +14,7 @@ string path = Path.Combine(projectDirectory, "player_data.xml");
 
 
 
-bool empty = false;
+bool noPlayersSaved = false;
 try
 {
     using (StreamReader reader = new StreamReader(path))
@@ -26,7 +26,7 @@ try
         catch (InvalidOperationException e)
         {
             existingPlayers = new List<Player>();
-            empty = true;
+            noPlayersSaved = true;
 
         }
 
@@ -39,7 +39,7 @@ try
 
 
 
-if (existingPlayers != null && existingPlayers.Any(p => p.Name == player.Name) && !empty)
+if (!noPlayersSaved && existingPlayers.Any(p => p.Name == player.Name)  )
 {
     player = existingPlayers.First(p => p.Name == player.Name);
     Console.WriteLine($"Player {player.Name} is already in the database. Best score: {player.BestScore}");
@@ -71,36 +71,36 @@ while (true)
 
     if (int.TryParse(numInput, out num))
     {
-        if (num == 1) // new game
+        switch (num)
         {
-            Console.WriteLine("Start a new game");
-            Console.WriteLine("Choose the difficulty: easy,medium,hard");
-            PlayCell[,] playMap = await GeneratePlayingMapAsync(GetDifficuiltyInput());
+            // new game
+            case 1:
+            {
+                Console.WriteLine("Start a new game");
+                Console.WriteLine("Choose the difficulty: easy,medium,hard");
+                PlayCell[,] playMap = await GeneratePlayingMapAsync(GetDifficuiltyInput());
 
-            Player foundPlayer = existingPlayers.Find(p => p.Name == player.Name);
-            using StreamWriter writer = new StreamWriter(path);
+                Player myPlayer = existingPlayers.Find(p => p.Name == player.Name);
+                using StreamWriter writer = new StreamWriter(path);
 
-            int score= PlayGame(playMap);
+                int score= PlayGame(playMap);
 
-            
-            foundPlayer?.TopScores.Add(score);
+                myPlayer.TopScores.Add(score);
 
-            
-            serializer.Serialize(writer, existingPlayers);
-
-        }
-        else if (num == 2) // show scores
-        {
-            Console.WriteLine("Look at my top scores");
-            ShowTopScores(player);
-        }
-        else if (num == 3) // exit
-        {
-            Environment.Exit(0);
-        }
-        else
-        {
-            Console.WriteLine("The number you imputed is not in the list");
+                serializer.Serialize(writer, existingPlayers);
+                break;
+            }
+            // show scores
+            case 2:
+                ShowTopScores(player);
+                break;
+            // exit
+            case 3:
+                Environment.Exit(0);
+                break;
+            default:
+                Console.WriteLine("The number you imputed is not in the list");
+                break;
         }
     }
     else
@@ -145,16 +145,7 @@ int PlayGame(PlayCell[,] playMap)
 
 int NonVisibleCount(PlayCell[,] playMap)
 {
-    int count = 0;
-    foreach (PlayCell cell in playMap)
-    {
-        if (!cell.IsVisible)
-        {
-            count++;
-        }
-    }
-
-    return count;
+    return playMap.Cast<PlayCell>().Count(cell => !cell.IsVisible);
 }
 
 
@@ -163,41 +154,50 @@ int[] GetNextStep()
     int[] nextStep = new int[3];
     Console.WriteLine("Enter your next step:");
     Console.Write("X coordinate (1-9)(sor): ");
-    string xInput = Console.ReadLine();
+   
     int x;
-    if (int.TryParse(xInput, out x) && x >= 1 && x <= 9)
+    while (true)
     {
-        nextStep[0] = x-1;
-    }
-    else
-    {
+        string xInput = Console.ReadLine();
+        if (int.TryParse(xInput, out x) && x is >= 1 and <= 9)
+        {
+            nextStep[0] = x - 1;
+            break;
+        }
         Console.WriteLine("Invalid input. Please enter a valid integer for X coordinate.");
-        return null;
+        
     }
+    
     Console.Write("Y coordinate (1-9)(oszlop): ");
-    string yInput = Console.ReadLine();
+   
     int y;
-    if (int.TryParse(yInput, out y) && y >= 1 && y <= 9)
+    while (true)
     {
-        nextStep[1] = y - 1;
-    }
-    else
-    {
+        string yInput = Console.ReadLine();
+        if (int.TryParse(yInput, out y) && y is >= 1 and <= 9)
+        {
+            nextStep[1] = y - 1;
+            break;
+        }
         Console.WriteLine("Invalid input. Please enter a valid integer for Y coordinate.");
-        return null;
     }
+    
     Console.Write("Value (1-9): ");
-    string valueInput = Console.ReadLine();
+   
     int value;
-    if (int.TryParse(valueInput, out value) && value >= 1 && value <= 9)
+    while (true)
     {
-        nextStep[2] = value;
-    }
-    else
-    {
+        string valueInput = Console.ReadLine();
+        if (int.TryParse(valueInput, out value) && value is >= 1 and <= 9)
+        {
+            nextStep[2] = value;
+            break;
+        }
         Console.WriteLine("Invalid input. Please enter a valid integer between 1 and 9 for the value.");
-        return null;
+            
+        
     }
+    
     return nextStep;
 }
 
@@ -208,7 +208,7 @@ string GetDifficuiltyInput()
     while (true)
     {
         difficulty = Console.ReadLine();
-        if (difficulty == "easy" || difficulty == "medium" || difficulty == "hard")
+        if (difficulty is "easy" or "medium" or "hard")
         {
             break;
         }
@@ -231,20 +231,17 @@ async Task<PlayCell[,]> GeneratePlayingMapAsync(string difficulty)
 
 
 
-    if (difficulty == "easy")
+    switch (difficulty)
     {
-        FillPlayMap(playMap, myMap, 0.95);
-        
-    }
-    else if (difficulty == "medium") 
-    {
-        FillPlayMap(playMap, myMap, 0.7);
-        
-    }
-    else if (difficulty == "hard")
-    {
-        FillPlayMap(playMap, myMap, 0.5);
-        
+        case "easy":
+            FillPlayMap(playMap, myMap, 0.95);
+            break;
+        case "medium":
+            FillPlayMap(playMap, myMap, 0.7);
+            break;
+        case "hard":
+            FillPlayMap(playMap, myMap, 0.5);
+            break;
     }
     
     return playMap;
@@ -345,21 +342,17 @@ int CrossDeleteValue(GenerateCell[,] myArray, int i, int j)
     
     for (int x = 0; x < myArray.GetLength(0); x++)
     {
-        if (myArray[x, j].Value!=0)
-        {
-            myArray[x, j].Value = 0;
-            count++;
-        }
-        
+        if (myArray[x, j].Value == 0) continue;
+        myArray[x, j].Value = 0;
+        count++;
+
     }
     
     for (int y = 0; y < myArray.GetLength(1); y++)
     {
-        if (myArray[i, y].Value != 0)
-        {
-            myArray[i, y].Value = 0;
-            count++;
-        }
+        if (myArray[i, y].Value == 0) continue;
+        myArray[i, y].Value = 0;
+        count++;
     }
 
     return count;
@@ -409,7 +402,7 @@ void ShowTopScores(Player player)
     for (var index = 0; index < player.TopScores.Count; index++)
     {
         var score = player.TopScores[index];
-        Console.WriteLine(index+1 + ". " + score);
+        Console.WriteLine(index+1 + ". " + score+"points");
         noScores = false;
     }
 
