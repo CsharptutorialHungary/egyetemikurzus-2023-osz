@@ -1,11 +1,6 @@
-﻿using StudentTerminal.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using StudentTerminal.Models;
 using System.Reflection;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace StudentTerminal.Commands
 {
