@@ -62,5 +62,16 @@ namespace StudentCommandTests
 
             Assert.That(result, Is.True);
         }
+        [Test]
+        public async Task TestThat_LoadStudentsFromJson_LoadsStudents()
+        {
+            int darab = 50;
+        
+            await StudentCommand.Initialize(darab);
+        
+            List<Student> students = await StudentCommand.LoadStudentsFromJson();
+        
+            Assert.That(students.Count == darab);
+        }
     }
 }
