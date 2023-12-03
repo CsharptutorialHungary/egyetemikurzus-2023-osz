@@ -1,9 +1,4 @@
-﻿using StudentTerminal.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StudentTerminal.Models;
 
 namespace StudentTerminal.Commands
 {
@@ -51,7 +46,7 @@ namespace StudentTerminal.Commands
                         await Menu();
                         return;
                     case 2:
-                        
+
                         Console.Write("Add meg a tanuló nevét: ");
                         string? selectedStudentName = Console.ReadLine();
                         Console.Clear();
@@ -75,18 +70,19 @@ namespace StudentTerminal.Commands
                         return;
                     case 3:
                         StudentCommand.Write(students.OrderByDescending(item => item.Average).ToList());
-                        Console.WriteLine("A folytatáshoz nyomj meg egy gombot!");
+                        Console.WriteLine("\nA folytatáshoz nyomj meg egy gombot!");
                         Console.ReadKey();
                         await Menu();
                         return;
                     case 4:
-                        double averageOfAverages = students.Select(item => item.Average).Average();
-                        string formattedAverage = averageOfAverages.ToString("0.00");
-                        var overallAverage = new
-                        {
-                            TanulokAtlaga = formattedAverage
-                        };
-                        StudentCommand.Write(new List<object> { overallAverage });
+                        Console.WriteLine($"Tanulók száma: {students.Count}");
+                        Console.WriteLine($"Tanulók összesített átlaga: {students.Average(item => item.Average).ToString("0.00")}");
+                        var bestStudent = students.OrderByDescending(item => item.Average).Select(item => new { item.Name, item.Average }).ToList()[0];
+                        Console.WriteLine($"Legjobb átlaggal rendelkező tanuló: [{bestStudent.Name}]({bestStudent.Average.ToString("0.00")})");
+                        var mostCoursesTakenStudent = students.OrderByDescending(item => item.Courses).Select(item => new { item.Name, item.Courses }).ToList()[0];
+                        Console.WriteLine($"Legtöbb kurzust felvett tanuló: [{mostCoursesTakenStudent.Name}]({mostCoursesTakenStudent.Courses})");
+                        var oldestStudent = students.OrderByDescending(item => item.Age).Select(item => new { item.Name, item.Age }).ToList()[0];
+                        Console.WriteLine($"Legidősebb tanuló: [{oldestStudent.Name}]({oldestStudent.Age} éves)");
                         Console.WriteLine("\nA folytatáshoz nyomj meg egy gombot!");
                         Console.ReadKey();
                         await Menu();
@@ -97,11 +93,3 @@ namespace StudentTerminal.Commands
                         await Menu();
                         return;
                 }
-            }
-
-            Console.WriteLine("Köszönjük, hogy a StudentTerminál alkalmazást használta!");
-
-            Console.ReadKey();
-        }
-    }
-}
