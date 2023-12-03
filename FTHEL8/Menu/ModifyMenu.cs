@@ -27,7 +27,7 @@ namespace FTHEL8.Menu
                 Console.WriteLine();
                 string className = Console.ReadLine() ?? "";
 
-                Class existingClass = classList.FirstOrDefault(x => x.Name == className);
+                Class existingClass = classList.FirstOrDefault(x => x.Name == className)!;
 
                 if (existingClass != null)
                 {
@@ -80,7 +80,7 @@ namespace FTHEL8.Menu
                 Console.WriteLine();
                 string projectName = Console.ReadLine() ?? "";
 
-                Project existingProject = projectList.FirstOrDefault(x => x.Name == projectName);
+                Project existingProject = projectList.FirstOrDefault(x => x.Name == projectName)!;
 
                 if (existingProject != null)
                 {
@@ -145,7 +145,7 @@ namespace FTHEL8.Menu
                 Console.WriteLine();
                 string projectName = Console.ReadLine() ?? "";
 
-                ProjectMembers existingProjectMembers = projectMembersList.FirstOrDefault(x => x.ProjectName?.Name == projectName);
+                ProjectMembers existingProjectMembers = projectMembersList.FirstOrDefault(x => x.ProjectName?.Name == projectName)!;
 
                 if (existingProjectMembers != null)
                 {
@@ -192,7 +192,7 @@ namespace FTHEL8.Menu
                 Console.WriteLine();
                 string employeeId = Console.ReadLine() ?? "";
 
-                Employee existingEmployee = Database.ReadEmployeesAsync().Result.FirstOrDefault(x => x.EmployeeId == employeeId);
+                Employee existingEmployee = Database.ReadEmployeesAsync().Result.FirstOrDefault(x => x.EmployeeId == employeeId)!;
 
                 if (existingEmployee != null)
                 {

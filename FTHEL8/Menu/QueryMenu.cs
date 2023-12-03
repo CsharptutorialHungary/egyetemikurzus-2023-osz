@@ -26,12 +26,12 @@ namespace FTHEL8.Menu
 
                 if (projectMembers.Count > 0)
                 {
-                    var projectWithMostWorkers = projectMembers.OrderByDescending(p => p.Employees.Count).FirstOrDefault();
+                    var projectWithMostWorkers = projectMembers.OrderByDescending(p => p.Employees!.Count).FirstOrDefault();
 
                     if (projectWithMostWorkers != null)
                     {
                         Console.WriteLine($"Project with the Most Workers: {projectWithMostWorkers.ProjectName?.Name}");
-                        Console.WriteLine($"Number of Workers: {projectWithMostWorkers.Employees.Count}");
+                        Console.WriteLine($"Number of Workers: {projectWithMostWorkers.Employees!.Count}");
                         string employeeNames = string.Join(", ", projectWithMostWorkers.Employees.Select(e => e.Name));
                         Console.WriteLine($"Workers: {employeeNames}");
                     }
@@ -59,7 +59,7 @@ namespace FTHEL8.Menu
 
                 if (employees.Count > 0)
                 {
-                    Employee highestPaidEmployee = employees.OrderByDescending(x => x.Salary).FirstOrDefault();
+                    Employee highestPaidEmployee = employees.OrderByDescending(x => x.Salary).FirstOrDefault()!;
 
                     if (highestPaidEmployee != null)
                     {
@@ -126,7 +126,7 @@ namespace FTHEL8.Menu
             List<ProjectMembers> projectMembers = await Database.ReadProjectMembersAsync();
             foreach (var member in projectMembers)
             {
-                string employeeNames = string.Join(", ", member.Employees.Select(e => e.Name));
+                string employeeNames = string.Join(", ", member.Employees!.Select(e => e.Name));
                 Console.WriteLine($"Project name: {member.ProjectName?.Name}, Employee: {employeeNames}");
             }
             Console.WriteLine();

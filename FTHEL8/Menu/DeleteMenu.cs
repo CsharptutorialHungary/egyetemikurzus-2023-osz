@@ -19,7 +19,7 @@ namespace FTHEL8.Menu
             try
             {
                 Console.Write("Enter Employee ID to delete: ");
-                string employeeId = Console.ReadLine();
+                string employeeId = Console.ReadLine() ?? "";
 
                 if (await Database.DeleteEmployeeAsync(employeeId))
                 {
@@ -32,7 +32,7 @@ namespace FTHEL8.Menu
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error deleting employee: {ex.Message}");
+                Console.Error.WriteLine($"Error deleting employee: {ex.Message}");
             }
         }
 
@@ -41,7 +41,7 @@ namespace FTHEL8.Menu
             try
             {
                 Console.Write("Enter Department Name to delete: ");
-                string departmentName = Console.ReadLine();
+                string departmentName = Console.ReadLine() ?? "";
                 if(await Database.DeleteDepartmentAsync(departmentName))
                 {
                     Console.WriteLine($"Department with Name {departmentName} deleted successfully.");
@@ -53,7 +53,7 @@ namespace FTHEL8.Menu
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error deleting department: {ex.Message}");
+                Console.Error.WriteLine($"Error deleting department: {ex.Message}");
             }
         }
 
@@ -62,7 +62,7 @@ namespace FTHEL8.Menu
             try
             {
                 Console.Write("Enter Project Name to delete: ");
-                string projectName = Console.ReadLine();
+                string projectName = Console.ReadLine() ?? "";
                 if (await Database.DeleteProjectAsync(projectName))
                 {
                     Console.WriteLine($"Project with Name {projectName} deleted successfully.");
@@ -74,7 +74,7 @@ namespace FTHEL8.Menu
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error deleting project: {ex.Message}");
+                Console.Error.WriteLine($"Error deleting project: {ex.Message}");
             }
         }
 
@@ -83,7 +83,7 @@ namespace FTHEL8.Menu
             try
             {
                 Console.Write("Enter Class Name to delete: ");
-                string className = Console.ReadLine();
+                string className = Console.ReadLine() ?? "";
                 if (await Database.DeleteClassAsync(className))
                 {
                     Console.WriteLine($"Class with Name {className} deleted successfully.");
@@ -95,7 +95,7 @@ namespace FTHEL8.Menu
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error deleting class: {ex.Message}");
+                Console.Error.WriteLine($"Error deleting class: {ex.Message}");
             }
         }
 

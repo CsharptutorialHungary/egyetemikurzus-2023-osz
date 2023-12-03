@@ -157,7 +157,7 @@ namespace FTHEL8.Data
                             ProjectMembers projectMember = new ProjectMembers
                             {
                                 ProjectName = await ProjectReaderAsync(reader["ProjectName"].ToString() ?? ""),
-                                Employees = employees
+                                Employees = employees!
                             };
 
                             projectmembers.Add(projectMember);
@@ -281,52 +281,84 @@ namespace FTHEL8.Data
 
         public static async Task<bool> DeleteEmployeeAsync(string employeeId)
         {
-            using (var connection = await CreateConnectionAsync())
+            try
             {
-                using (var command = new SQLiteCommand($"DELETE FROM employees WHERE employee_id = '{employeeId}'", connection))
+                using (var connection = await CreateConnectionAsync())
                 {
-                    int rowsAffected = await command.ExecuteNonQueryAsync();
-
-                    return rowsAffected > 0;
+                    using (var command = new SQLiteCommand($"DELETE FROM employees WHERE employee_id = '{employeeId}'", connection))
+                    {
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+                        return rowsAffected > 0;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error deleting employee: {ex.Message}");
+                return false;
             }
         }
 
         public static async Task<bool> DeleteClassAsync(string className)
         {
-            using (var connection = await CreateConnectionAsync())
+            try
             {
-                using (var command = new SQLiteCommand($"DELETE FROM classes WHERE name = '{className}'", connection))
+                using (var connection = await CreateConnectionAsync())
                 {
-                    int rowsAffected = await command.ExecuteNonQueryAsync();
-                    return rowsAffected > 0;
+                    using (var command = new SQLiteCommand($"DELETE FROM classes WHERE name = '{className}'", connection))
+                    {
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+                        return rowsAffected > 0;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error deleting class: {ex.Message}");
+                return false;
             }
         }
 
         public static async Task<bool> DeleteDepartmentAsync(string departmentName)
         {
-            using (var connection = await CreateConnectionAsync())
+            try
             {
-                using (var command = new SQLiteCommand($"DELETE FROM departments WHERE name = '{departmentName}'", connection))
+                using (var connection = await CreateConnectionAsync())
                 {
-                    int rowsAffected = await command.ExecuteNonQueryAsync();
-                    return rowsAffected > 0;
+                    using (var command = new SQLiteCommand($"DELETE FROM departments WHERE name = '{departmentName}'", connection))
+                    {
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+                        return rowsAffected > 0;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error deleting department: {ex.Message}");
+                return false;
             }
         }
 
         public static async Task<bool> DeleteProjectAsync(string projectName)
         {
-            using (var connection = await CreateConnectionAsync())
+            try
             {
-                using (var command = new SQLiteCommand($"DELETE FROM projects WHERE name = '{projectName}'", connection))
+                using (var connection = await CreateConnectionAsync())
                 {
-                    int rowsAffected = await command.ExecuteNonQueryAsync();
-                    return rowsAffected > 0;
+                    using (var command = new SQLiteCommand($"DELETE FROM projects WHERE name = '{projectName}'", connection))
+                    {
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+                        return rowsAffected > 0;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error deleting project: {ex.Message}");
+                return false;
+            }
         }
+
 
         public static async Task<bool> AddEmployeeAsync(string employeeId, string name, string phoneNumber, string email, string position, int salary, string departmentName)
         {
