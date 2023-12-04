@@ -1,0 +1,92 @@
+[
+    {
+        "department": "Department1",
+        "email": "emp1@example.com",
+        "employee_id": "emp1",
+        "name": "Employee 1",
+        "phone": "123456789",
+        "position": "Position 1",
+        "salary": 50000
+    },
+    {
+        "department": "Department2",
+        "email": "emp2@example.com",
+        "employee_id": "emp2",
+        "name": "Employee 2",
+        "phone": "234567890",
+        "position": "Position 2",
+        "salary": 55000
+    },
+    {
+        "department": "Department3",
+        "email": "emp3@example.com",
+        "employee_id": "emp3",
+        "name": "Employee 3",
+        "phone": "345678901",
+        "position": "Position 3",
+        "salary": 60000
+    },
+    {
+        "department": "Department4",
+        "email": "emp4@example.com",
+        "employee_id": "emp4",
+        "name": "Employee 4",
+        "phone": "456789012",
+        "position": "Position 4",
+        "salary": 65000
+    },
+    {
+        "department": "Department5",
+        "email": "emp5@example.com",
+        "employee_id": "emp5",
+        "name": "Employee 5",
+        "phone": "567890123",
+        "position": "Position 5",
+        "salary": 70000
+    },
+    {
+        "department": "Department6",
+        "email": "emp6@example.com",
+        "employee_id": "emp6",
+        "name": "Employee 6",
+        "phone": "678901234",
+        "position": "Position 6",
+        "salary": 75000
+    },
+    {
+        "department": "Department7",
+        "email": "emp7@example.com",
+        "employee_id": "emp7",
+        "name": "Employee 7",
+        "phone": "789012345",
+        "position": "Position 7",
+        "salary": 80000
+    },
+    {
+        "department": "Department8",
+        "email": "emp8@example.com",
+        "employee_id": "emp8",
+        "name": "Employee 8",
+        "phone": "890123456",
+        "position": "Position 8",
+        "salary": 85000
+    },
+    {
+        "department": "Department9",
+        "email": "emp9@example.com",
+        "employee_id": "emp9",
+        "name": "Employee 9",
+        "phone": "901234567",
+        "position": "Position 9",
+        "salary": 90000
+    },
+    {
+        "department": "Department10",
+        "email": "emp10@example.com",
+        "employee_id": "emp10",
+        "name": "Employee 10",
+        "phone": "012345678",
+        "position": "Position 10",
+        "salary": 95000
+    }
+]

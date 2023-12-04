@@ -4,8 +4,8 @@
     {
         public required string Name { get; set; }
         public string? Task { get; set; }
-        public Employee? DepartmentLeader {  get; set; }
-        public Class? ClassName { get; set; }
+        public string? DepartmentLeader {  get; set; }
+        public string? ClassName { get; set; }
 
     }
 }

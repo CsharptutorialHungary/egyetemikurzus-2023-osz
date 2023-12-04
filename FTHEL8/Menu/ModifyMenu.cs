@@ -5,6 +5,7 @@ namespace FTHEL8.Menu
 {
     public class ModifyMenu : Menu
     {
+        private bool taskCompleted = true;
         public ModifyMenu() : base([], [])
         {
             AddOption("Modify an employee", ModifyEmployee);
@@ -14,12 +15,12 @@ namespace FTHEL8.Menu
             AddOption("Back", Back);
         }
 
-        private async void ModifyClass()
+        private void ModifyClass()
         {
             try
             {
                 Console.WriteLine("Enter the Class Name to modify: ");
-                List<Class> classList = await Database.ReadClassesAsync();
+                List<Class> classList = Database.ReadClassesAsync().Result;
                 foreach (Class class_ in classList)
                 {
                     Console.Write(class_.Name + " ");
@@ -37,7 +38,7 @@ namespace FTHEL8.Menu
                     string newTask = Console.ReadLine() ?? "";
 
                     Console.WriteLine("Enter new Class Leader ID from the list: ");
-                    List<Employee> employeeList = await Database.ReadEmployeesAsync();
+                    List<Employee> employeeList = Database.ReadEmployeesAsync().Result;
                     foreach (Employee employee in employeeList)
                     {
                         Console.Write(employee.EmployeeId + " ");
@@ -45,25 +46,29 @@ namespace FTHEL8.Menu
                     Console.WriteLine();
                     string newClassLeaderId = Console.ReadLine() ?? "";
 
-                    bool success = await Database.ModifyClass(className, newTask, newClassLeaderId);
+                    bool success = Database.ModifyClass(className, newTask, newClassLeaderId).Result;
 
                     if (success)
                     {
                         Console.WriteLine("Class modified successfully!");
+                        taskCompleted = true;
                     }
                     else
                     {
                         Console.WriteLine("Failed to modify class. Please check your input.");
+                        taskCompleted = true;
                     }
                 }
                 else
                 {
                     Console.WriteLine("Class not found.");
+                    taskCompleted = true;
                 }
             }
             catch (Exception ex)
             {
                 Console.Error.WriteLine(ex.Message);
+                taskCompleted = true;
             }
         }
 
@@ -140,16 +145,16 @@ namespace FTHEL8.Menu
                 List<ProjectMembers> projectMembersList = await Database.ReadProjectMembersAsync();
                 foreach (ProjectMembers projectMember in projectMembersList)
                 {
-                    Console.Write(projectMember.ProjectName?.Name + " ");
+                    Console.Write(projectMember.ProjectName + " ");
                 }
                 Console.WriteLine();
                 string projectName = Console.ReadLine() ?? "";
 
-                ProjectMembers existingProjectMembers = projectMembersList.FirstOrDefault(x => x.ProjectName?.Name == projectName)!;
+                ProjectMembers existingProjectMembers = projectMembersList.FirstOrDefault(x => x.ProjectName == projectName)!;
 
                 if (existingProjectMembers != null)
                 {
-                    Console.WriteLine($"Project members found for: {existingProjectMembers.ProjectName?.Name}");
+                    Console.WriteLine($"Project members found for: {existingProjectMembers.ProjectName}");
 
                     Console.WriteLine("Enter new Employee IDs separated by commas: ");
                     string newEmployeeIds = Console.ReadLine() ?? "";

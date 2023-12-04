@@ -2,7 +2,7 @@
 {
     public class ProjectMembers
     {
-        public Project? ProjectName { get; set; }
-        public List<Employee>? Employees { get; set; }
+        public string? ProjectName { get; set; }
+        public List<string>? Employees { get; set; }
     }
 }

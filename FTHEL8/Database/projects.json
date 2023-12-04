@@ -1,0 +1,72 @@
+[
+    {
+        "class_name": "Class1",
+        "deadline": "2023-10-31",
+        "description": "Project 1 Description",
+        "name": "Project1",
+        "project_leader": "emp1"
+    },
+    {
+        "class_name": "Class2",
+        "deadline": "2023-10-31",
+        "description": "Project 2 Description",
+        "name": "Project2",
+        "project_leader": "emp2"
+    },
+    {
+        "class_name": "Class3",
+        "deadline": "2023-10-31",
+        "description": "Project 3 Description",
+        "name": "Project3",
+        "project_leader": "emp3"
+    },
+    {
+        "class_name": "Class4",
+        "deadline": "2023-10-31",
+        "description": "Project 4 Description",
+        "name": "Project4",
+        "project_leader": "emp4"
+    },
+    {
+        "class_name": "Class5",
+        "deadline": "2023-10-31",
+        "description": "Project 5 Description",
+        "name": "Project5",
+        "project_leader": "emp5"
+    },
+    {
+        "class_name": "Class6",
+        "deadline": "2023-12-31",
+        "description": "Project 6 Description",
+        "name": "Project6",
+        "project_leader": "emp6"
+    },
+    {
+        "class_name": "Class7",
+        "deadline": "2023-12-31",
+        "description": "Project 7 Description",
+        "name": "Project7",
+        "project_leader": "emp7"
+    },
+    {
+        "class_name": "Class8",
+        "deadline": "2023-12-31",
+        "description": "Project 8 Description",
+        "name": "Project8",
+        "project_leader": "emp8"
+    },
+    {
+        "class_name": "Class9",
+        "deadline": "2023-12-31",
+        "description": "Project 9 Description",
+        "name": "Project9",
+        "project_leader": "emp9"
+    },
+    {
+        "class_name": "Class10",
+        "deadline": "2023-12-31",
+        "description": "Project 10 Description",
+        "name": "Project10",
+        "project_leader": "emp10"
+    }
+]

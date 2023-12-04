@@ -17,6 +17,7 @@
 
         public void Display()
         {
+            Console.WriteLine("Display lefutott");
             bool shouldExit = false;
 
             do

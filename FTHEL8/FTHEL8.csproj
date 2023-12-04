@@ -8,11 +8,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Database\Database.db" />
+    <None Remove="Database\classes.json" />
+    <None Remove="Database\departments.json" />
+    <None Remove="Database\employees.json" />
+    <None Remove="Database\projects.json" />
+    <None Remove="Database\project_members.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Database\Database.db">
+    <Content Include="Database\classes.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database\departments.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database\employees.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database\projects.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database\project_members.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

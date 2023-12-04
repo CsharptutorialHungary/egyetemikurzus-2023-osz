@@ -5,19 +5,23 @@ namespace FTHEL8.Menu
 {
     public class MainMenu : Menu
     {
+        private QueryMenu queryMenu;
+        private DeleteMenu deleteMenu;
+        private AddMenu addMenu;
+        private ModifyMenu modifyMenu;
         public MainMenu() : base([], [])
         {
             Console.WriteLine();
             Console.Write("Which functionality do you want to use?");
-            Menu queryMenu = new QueryMenu();
-            Menu deleteMenu = new DeleteMenu();
-            Menu addMenu = new AddMenu();
-            Menu modifyMenu = new ModifyMenu();
+            queryMenu = new QueryMenu();
+            deleteMenu = new DeleteMenu();
+            addMenu = new AddMenu();
+            modifyMenu = new ModifyMenu();
 
             AddOption("Query Data", queryMenu.Display);
             AddOption("Add Data", addMenu.Display);
             AddOption("Modify Data", modifyMenu.Display);
-            AddOption("Delete Data", deleteMenu.Display);
+            AddOption("Delete Data",deleteMenu.Display);
             AddOption("Make a backup save of the data", BackupToJson);
             AddOption("Exit", Exit);
         }
