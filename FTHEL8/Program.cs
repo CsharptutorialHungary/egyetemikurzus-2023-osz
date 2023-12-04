@@ -4,14 +4,10 @@ namespace FTHEL8
 {
     class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
             MainMenu mainMenu = new MainMenu();
-
-            while (true)
-            {
-                mainMenu.Display();
-            }
+            mainMenu.Display();
         }
     }
 }

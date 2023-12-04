@@ -5,14 +5,8 @@ namespace FTHEL8.Menu
 {
     public class AddMenu : Menu
     {
-        public AddMenu() : base([], [])
+        public AddMenu()
         {
-            AddOption("Add an employee", AddEmployee);
-            AddOption("Add a department", AddDepartment);
-            AddOption("Add a class", AddClass);
-            AddOption("Add a project", AddProject);
-            AddOption("Add an employee to a project", AddEmployeeToProject);
-            AddOption("Back", Back);
         }
 
         private async void AddEmployeeToProject()
@@ -233,5 +227,20 @@ namespace FTHEL8.Menu
             }
         }
 
+        public Task Display()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Menu GetNextMenu()
+        {
+            Console.WriteLine("Going back to Main Menu.");
+            return new MainMenu();
+        }
+
+        public Menu GetPreviousMenu()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

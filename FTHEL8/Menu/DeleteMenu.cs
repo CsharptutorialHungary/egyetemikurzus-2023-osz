@@ -4,14 +4,9 @@ namespace FTHEL8.Menu
 {
     public class DeleteMenu : Menu
     {
-        public DeleteMenu() : base([], [])
+        public DeleteMenu()
         {
             Console.WriteLine();
-            AddOption("Delete an employee", DeleteEmployee);
-            AddOption("Delete a department", DeleteDepartment);
-            AddOption("Delete a project", DeleteProject);
-            AddOption("Delete a class", DeleteClass);
-            AddOption("Back", Back);
         }
 
         private async void DeleteEmployee()
@@ -99,5 +94,20 @@ namespace FTHEL8.Menu
             }
         }
 
+        public Task Display()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Menu GetNextMenu()
+        {
+            Console.WriteLine("Going back to Main Menu.");
+            return new MainMenu();
+        }
+
+        public Menu GetPreviousMenu()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

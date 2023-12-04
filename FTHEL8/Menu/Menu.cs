@@ -1,55 +1,45 @@
-﻿namespace FTHEL8.Menu
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace FTHEL8.Menu
 {
-    public abstract class Menu(string[] options, Action[] actions)
+    public abstract class Menu
     {
-        private string[] options = options;
-        private Action[] actions = actions;
+        private List<Option> Options { get; set; }
 
-        protected void AddOption(string option, Action action)
+        public Menu()
         {
-            int index = options.Length;
-            Array.Resize(ref options, index + 1);
-            Array.Resize(ref actions, index + 1);
-
-            options[index] = $"{index + 1}. {option}";
-            actions[index] = action;
+            Options = new List<Option>();
         }
 
-        public void Display()
+        public virtual void Display()
         {
-            Console.WriteLine("Display lefutott");
-            bool shouldExit = false;
-
-            do
+            try
             {
-                Console.WriteLine();
-                Console.WriteLine("Choose an option:");
-                for (int i = 0; i < options.Length; i++)
+                while (true)
                 {
-                    Console.WriteLine(options[i]);
-                }
-                Console.WriteLine();
+                    for (int i = 0; i < Options.Count; i++)
+                    {
+                        Console.WriteLine("{0}. {1}", i + 1, Options[i].Name);
+                    }
+                    int choice = GetUserChoice();
 
-                int choice = GetChoice();
+                    Options[choice - 1].Callback();
 
-                if (choice >= 1 && choice <= actions.Length)
-                {
-                    actions[choice - 1]?.Invoke();
+                    Task.Delay(125).Wait();
                 }
-
-                try
-                {
-                    shouldExit = actions[choice - 1] == Back;
-                }catch (IndexOutOfRangeException)
-                {
-                    Console.WriteLine("There is no option with that number!");
-                }
-                
-            } while (!shouldExit);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Console.WriteLine("Not available choice. Please try again!");
+            }
         }
 
-        private static int GetChoice()
+        private static int GetUserChoice()
         {
+            Console.WriteLine();
+            Console.Write("Enter your choice: ");
             int choice;
             while (!int.TryParse(Console.ReadLine(), out choice))
             {
@@ -58,9 +48,21 @@
             return choice;
         }
 
-        protected static void Back()
+        public Menu Add(string option, Action callback)
         {
-            Console.WriteLine("Going back to the previous menu.");
+            return Add(new Option(option, callback));
         }
+
+        public Menu Add(Option option)
+        {
+            Options.Add(option);
+            return this;
+        }
+
+        public bool Contains(string option)
+        {
+            return Options.FirstOrDefault((op) => op.Name.Equals(option)) != null;
+        }
+
     }
 }

@@ -5,63 +5,45 @@ namespace FTHEL8.Menu
 {
     public class MainMenu : Menu
     {
-        private QueryMenu queryMenu;
-        private DeleteMenu deleteMenu;
-        private AddMenu addMenu;
-        private ModifyMenu modifyMenu;
-        public MainMenu() : base([], [])
+        public MainMenu() : base()
         {
-            Console.WriteLine();
-            Console.Write("Which functionality do you want to use?");
-            queryMenu = new QueryMenu();
-            deleteMenu = new DeleteMenu();
-            addMenu = new AddMenu();
-            modifyMenu = new ModifyMenu();
-
-            AddOption("Query Data", queryMenu.Display);
-            AddOption("Add Data", addMenu.Display);
-            AddOption("Modify Data", modifyMenu.Display);
-            AddOption("Delete Data",deleteMenu.Display);
-            AddOption("Make a backup save of the data", BackupToJson);
-            AddOption("Exit", Exit);
+            InitializeOptions();
         }
 
-        private void AddData()
+        private void InitializeOptions()
         {
-            Console.WriteLine("Selected: Add Data");
+            Add("QueryMenu",ShowQueryMenu);
+            Add("AddMenu", ShowAddMenu);
+            Add("DeleteMenu", ShowDeleteMenu);
+            Add("ModifyMenu", ShowModifyMenu);
+            Add("Exit", Exit);
         }
 
         private void Exit()
         {
-            Console.WriteLine("Exiting the program.");
-
-            BackupToJson();
-
+            Console.WriteLine("Exiting application...");
             Environment.Exit(0);
         }
 
-        private void BackupToJson()
+        private void ShowAddMenu()
         {
-            var employees = Database.ReadEmployeesAsync().Result;
-            var departments = Database.ReadDepartmentsAsync().Result;
-            var classes = Database.ReadClassesAsync().Result;
-            var projects = Database.ReadProjectsAsync().Result;
-            var projectMembers = Database.ReadProjectMembersAsync().Result;
+            Console.WriteLine("AddMenu selected");
+        }
 
-            var employeesBackupPath = "employees_backup.json";
-            var departmentsBackupPath = "departments_backup.json";
-            var classesBackupPath = "classes_backup.json";
-            var projectsBackupPath = "projects_backup.json";
-            var projectMembersBackupPath = "projectMembers_backup.json";
+        private void ShowQueryMenu()
+        {
+            QueryMenu querymenu = new QueryMenu(this);
+            querymenu.Display();
+        }
 
+        private void ShowDeleteMenu()
+        {
+            Console.WriteLine("DeleteMenu selected");
+        }
 
-            File.WriteAllText(employeesBackupPath, JsonConvert.SerializeObject(employees, Formatting.Indented));
-            File.WriteAllText(departmentsBackupPath, JsonConvert.SerializeObject(departments, Formatting.Indented));
-            File.WriteAllText(classesBackupPath, JsonConvert.SerializeObject(classes, Formatting.Indented));
-            File.WriteAllText(projectsBackupPath, JsonConvert.SerializeObject(projects, Formatting.Indented));
-            File.WriteAllText(projectMembersBackupPath, JsonConvert.SerializeObject(projectMembers, Formatting.Indented));
-
-            Console.WriteLine("Backup created successfully:");
+        private void ShowModifyMenu()
+        {
+            Console.WriteLine("ModifyMenu selected");
         }
     }
 }

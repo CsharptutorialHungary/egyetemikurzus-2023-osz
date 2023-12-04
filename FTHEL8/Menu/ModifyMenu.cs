@@ -5,14 +5,8 @@ namespace FTHEL8.Menu
 {
     public class ModifyMenu : Menu
     {
-        private bool taskCompleted = true;
-        public ModifyMenu() : base([], [])
+        public ModifyMenu()
         {
-            AddOption("Modify an employee", ModifyEmployee);
-            AddOption("Modify a class", ModifyClass);
-            AddOption("Modify a project", ModifyProject);
-            AddOption("Modify project members", ModifyProjectMembers);
-            AddOption("Back", Back);
         }
 
         private void ModifyClass()
@@ -51,24 +45,20 @@ namespace FTHEL8.Menu
                     if (success)
                     {
                         Console.WriteLine("Class modified successfully!");
-                        taskCompleted = true;
                     }
                     else
                     {
                         Console.WriteLine("Failed to modify class. Please check your input.");
-                        taskCompleted = true;
                     }
                 }
                 else
                 {
                     Console.WriteLine("Class not found.");
-                    taskCompleted = true;
                 }
             }
             catch (Exception ex)
             {
                 Console.Error.WriteLine(ex.Message);
-                taskCompleted = true;
             }
         }
 
@@ -248,6 +238,22 @@ namespace FTHEL8.Menu
             {
                 Console.Error.WriteLine(ex.Message);
             }
+        }
+
+        public Task Display()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Menu GetNextMenu()
+        {
+            Console.WriteLine("Going back to Main Menu.");
+            return new MainMenu();
+        }
+
+        public Menu GetPreviousMenu()
+        {
+            throw new NotImplementedException();
         }
     }
 }

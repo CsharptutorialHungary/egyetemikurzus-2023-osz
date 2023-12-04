@@ -6,24 +6,25 @@ namespace FTHEL8.Menu
 {
     public class QueryMenu : Menu
     {
-        public QueryMenu() : base([], [])
+        private readonly MainMenu mainMenu;
+        public QueryMenu(MainMenu mainMenu)
         {
-            Console.WriteLine();
-            AddOption("Get employees data", GetEmployeesData);
-            AddOption("Get classes data", GetClassesData);
-            AddOption("Get departments data", GetDepartmentsData);
-            AddOption("Get projects data", GetProjectsData);
-            AddOption("Get project members data", GetProjectMembersData);
-            AddOption("Get highest paid employee's data", GetHighestPaidEmployeesData);
-            AddOption("Get the project that has the most workers", GetProjectThatHasTheMostWorkers);
-            AddOption("Back", Back);
+            this.mainMenu = mainMenu;
+            Add("Get Project with the Most Workers", async () => await GetProjectThatHasTheMostWorkersAsync());
+            Add("Get Highest Paid Employees Data", async () => await GetHighestPaidEmployeesDataAsync());
+            Add("Back to Main Menu", GetPreviousMenu);
         }
 
-        private void GetProjectThatHasTheMostWorkers()
+        public void GetPreviousMenu()
+        {
+            mainMenu.Display();
+        }
+
+        private async Task GetProjectThatHasTheMostWorkersAsync()
         {
             try
             {
-                List<ProjectMembers> projectMembers = Database.ReadProjectMembersAsync().Result;
+                List<ProjectMembers> projectMembers = await Database.ReadProjectMembersAsync();
 
                 if (projectMembers.Count > 0)
                 {
@@ -31,6 +32,7 @@ namespace FTHEL8.Menu
 
                     if (projectWithMostWorkers != null)
                     {
+                        Console.WriteLine();
                         Console.WriteLine($"Project with the Most Workers: {projectWithMostWorkers.ProjectName}");
                         Console.WriteLine($"Number of Workers: {projectWithMostWorkers.Employees!.Count}");
                         string employeeNames = string.Join(", ", projectWithMostWorkers.Employees);
@@ -50,13 +52,14 @@ namespace FTHEL8.Menu
             {
                 Console.Error.WriteLine(ex.Message);
             }
+
         }
 
-        private void GetHighestPaidEmployeesData()
+        private async Task GetHighestPaidEmployeesDataAsync()
         {
             try
             {
-                List<Employee> employees = Database.ReadEmployeesAsync().Result;
+                List<Employee> employees = await Database.ReadEmployeesAsync();
 
                 if (employees.Count > 0)
                 {
@@ -137,6 +140,5 @@ namespace FTHEL8.Menu
             }
             Console.WriteLine();
         }
-
     }
 }
