@@ -15,7 +15,8 @@ namespace NW8AV7.Logika
                     "1 - Felhasználó kiválasztása",
                     "2 - Felhasználó létrehozása",
                     "3 - Felhasználó törlése",
-                    "4 - Felhasználó módosítása"
+                    "4 - Felhasználó módosítása",
+                    "5 - Kilépés"
                 });
 
             int valasztottFunkcio = konzolKezeles.SzamBeolvasas();
@@ -34,6 +35,8 @@ namespace NW8AV7.Logika
                 case 4:
                     FelhasznaloModosit();
                     break;
+                case 5:
+                    return;
                 default:
                     konzolKezeles.HibaMutatasa("Helytelen számot adtál meg.");
                     Fooldal();
