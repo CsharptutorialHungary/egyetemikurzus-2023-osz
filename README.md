@@ -1,52 +1,51 @@
-# SZTE egyetemi kurzus, 2023 őszi félév házi feleadat repó
+## Követelmények:
 
-Git gyorstalpaló: https://github.com/CsharptutorialHungary/egyetemikurzus-2023-osz/blob/main/GitTutorial/README.md
+### Technikai követelmények
+| .NET 6 | ✔
+|:------:|:-:|
+| Konzolos alkalmazás | ✔
 
-## Követelmények
+### Nem kihagyható elemek:
+| Legyen benne kivételkezelés (`try-catch`) | ✔
+|-------------------------------------------|---|
+| Legalább a képenyőre írjon ki hibaüzeneteket | ✔
 
-Írj egy tetszőleges témájú programot, ami megfelel az alábbi technológiai követelményeknek a tanultak alapján:
+### Kötelezelő elemek
+| adat olvasása fájlból szerializáció segítségével (pl.: Adat betöltés és/vagy mentés JSON/XML fájlból/fájlba) | ✔
+|:------------------------------------------------------------------------------------------------------------:|:-:|
+| legyen benne saját immutable type (pl.: `record class`) | ✔
+| legyen benne LINQ segítségével: szűrés (`where`), csoportosítás (`group by`), rendezés (`order by`), agregáció (Pl.: `Min()`, `Max()`, `First()`, `FirstOrDefault`, `Average()`, stb...) közül legalább kettő | ✔
+| legyen benne generikus kollekció (pl.: `List<T>`, `Stack<T>`, stb...) | ✔
+| legyen benne aszinkron rész (`async` és `Task`) | ✔ | ✔
 
-**Nem kihagyható elemek:**
-* Legyen benne kivételkezelés (`try-catch`)
-* Legalább a képenyőre írjon ki hibaüzeneteket
+---
+# Unit tesztek
+---
+## SaveStudentsToJSON Tesztek:
 
-**Kötelezelő elemek** - Ezek közül egy kihagyható vagy cserélhető, ha Unit és/vagy Integration tesztek tartoznak a projekthez:
+### TestThat_SaveStudentsToJSON_Runs:
+| Érték | Elvárt eredmény | Megfelelt
+|:-----:|:---------------:|:-------:|
+|`True`|`True`|✔|
 
-* adat olvasása fájlból szerializáció segítségével (pl.: Adat betöltés és/vagy mentés JSON/XML fájlból/fájlba)
-* legyen benne saját immutable type (pl.: `record class`)
-* legyen benne LINQ segítségével: szűrés (`where`), csoportosítás (`group by`), rendezés (`order by`), agregáció (Pl.: `Min()`, `Max()`, `First()`, `FirstOrDefault`, `Average()`, stb...) közül legalább kettő
-* legyen benne generikus kollekció (pl.: `List<T>`, `Stack<T>`, stb...)
-* legyen benne aszinkron rész (`async` és `Task`)
+### TestThat_SaveStudentsToJSON_CreatesNewFolder:
+| Érték | Elvárt eredmény | Megfelelt
+|:-----:|:---------------:|:-------:|
+|`True`|`True`|✔|
 
-## Technikai követelmények
+### TestThat_SaveStudentsToJSON_CreatesNewFile:
+| Érték | Elvárt eredmény | Megfelelt
+|:-----:|:---------------:|:-------:|
+|`True`|`True`|✔|
 
-* .NET 6
-* Konzolos alkalmazás
+### TestThat_LoadStudentsFromJson_LoadsStudents:
+| Érték | Elvárt eredmény | Megfelelt
+|:-----:|:---------------:|:-------:|
+|`0`|`0`|✔|
+|`10`|`10`|✔|
+|`20`|`20`|✔|
+|`30`|`30`|✔|
+|`40`|`40`|✔|
+|`50`|`50`|✔|
+|`165`|`165`|✔|
 
-## Értékelés
-
-Az értékelés utolsó órán védéssel fog zárulni.
-
-* **Két ember dolgozhat egy alkalmazáson, de akkor a Unit tesztek megléte kötelező és nem opcionális!**
-* **Kódot fogom nézni, nem a program működését főként**, de ez nem azt jelenti, hogy a kódnak nem kell fordulnia! (Unit teszt ha van, akkor az bukhat, de indokot várok ebben az esetben, hogy miért bukik a teszt.)
-* **A karakterek ingyen vannak.** Legyen normálisan elnevezve minden. Nem akarok látni `asd`, `a`, `b`, `c` meg semmit mondó metódus, tulajdonság és változó neveket.
-* **Folyamatos munkát várok**, nem egy giga maratonban kommitolást => másolást feltételezek
-
-## Konzultáció
-
-* Óra után személyesen
-* Github issue formában itt.
-
-## Beadás menete
-
-1. Regisztrálsz github-ra, ha még nem tetted volna meg.
-2. Ezen repó fork gombjával készítesz egy fork-ot erről a repóról.
-3. A forkot repót checkoutolod, csinálsz egy mappát, ami a kódod tartalmazza. A mappa neve a neptun kódod legyen. Ha ketten dolgoztok, akkor a kettőtök neve `_` karakterrel elválasztva.
-4. A `hazifeladatok.sln`-be vedd fel a projektedet, így a CI-CD futni fog rá.
-4. Elkészítitek a beadandót, folyamatos commitokkal.
-5. A végén, amikor be akarjátok adni, akkor készítetek egy pull request-et erre a repóra.
-
-## Ajánlott olvasmányok
-
-* [Git tutorial](https://docs.github.com/en/get-started/quickstart)
-* [C# tutorial](https://csharptutorial.hu/)
