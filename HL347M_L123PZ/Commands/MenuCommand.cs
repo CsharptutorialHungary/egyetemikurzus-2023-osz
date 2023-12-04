@@ -58,7 +58,8 @@ namespace StudentTerminal.Commands
                         }
                         else
                         {
-                            StudentCommand.Write(students.Select(item => new {
+                            StudentCommand.Write(students.Select(item => new
+                            {
                                 item.Name,
                                 item.Age,
                                 item.Average,
@@ -69,7 +70,11 @@ namespace StudentTerminal.Commands
                         await Menu();
                         return;
                     case 3:
-                        StudentCommand.Write(students.OrderByDescending(item => item.Average).ToList());
+                        StudentCommand.Write(students.OrderByDescending(item => item.Average).Select(item => new
+                        {
+                            item.Name,
+                            item.Average,
+                        }).ToList());
                         Console.WriteLine("\nA folytatáshoz nyomj meg egy gombot!");
                         Console.ReadKey();
                         await Menu();
@@ -93,3 +98,7 @@ namespace StudentTerminal.Commands
                         await Menu();
                         return;
                 }
+            }
+        }
+    }
+}
