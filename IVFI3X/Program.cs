@@ -77,15 +77,14 @@ while (true)
                 {
                     Console.WriteLine("Start a new game");
                     Console.WriteLine("Choose the difficulty: easy,medium,hard");
-                    PlayCell[,] playMap = await GeneratePlayingMapAsync(GetDifficuiltyInput());
-
-                    Player myPlayer = existingPlayers.Find(p => p.Name == player.Name)!;
-                    await using StreamWriter writer = new StreamWriter(path);
-
+                    PlayCell[,] playMap = GeneratePlayingMap(GetDifficuiltyInput());
+  
                     int score = PlayGame(playMap);
 
+                    Player myPlayer = existingPlayers.Find(p => p.Name == player.Name)!;
                     myPlayer.AddScore(score);
 
+                    using StreamWriter writer = new StreamWriter(path);
                     serializer.Serialize(writer, existingPlayers);
                     break;
                 }
@@ -145,7 +144,7 @@ int PlayGame(PlayCell[,] playMap)
 
 int NonVisibleCount(PlayCell[,] playMap)
 {
-    return playMap.Cast<PlayCell>().Count(cell => !cell.IsVisible);
+    return playMap.Cast<PlayCell>().AsParallel().Count(cell => !cell.IsVisible);
 }
 
 
@@ -221,7 +220,7 @@ string GetDifficuiltyInput()
     return difficulty;
 }
 
-async Task<PlayCell[,]> GeneratePlayingMapAsync(string difficulty)
+PlayCell[,] GeneratePlayingMap(string difficulty)
 {
 
     GenerateCell[,] myMap = new GenerateCell[9, 9];
@@ -265,14 +264,15 @@ void GenerateMap(GenerateCell[,] myArray)
     Random random = new Random();
     int filled = 0;
 
-    for (int i = 0; i < myArray.GetLength(0); i++)
+    Parallel.For(0, myArray.GetLength(0), i =>
     {
-        for (int j = 0; j < myArray.GetLength(1); j++)
+        Parallel.For(0, myArray.GetLength(0), j =>
         {
             myArray[i, j] = new GenerateCell(i, j, 0);
-        }
-    }
+        });
+    });
 
+    
 
 
     while (filled != 81)
@@ -402,7 +402,7 @@ void ShowTopScores(Player player)
     for (var index = 0; index < player.TopScores.Count; index++)
     {
         var score = player.TopScores[index];
-        Console.WriteLine(index + 1 + ". " + score + "points");
+        Console.WriteLine(index + 1 + ". " + score + " points");
         noScores = false;
     }
 

@@ -2,6 +2,8 @@
 <ArrayOfPlayer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Player>
     <Name>mark</Name>
-    <TopScores />
+    <TopScores>
+      <int>3</int>
+    </TopScores>
   </Player>
 </ArrayOfPlayer>
