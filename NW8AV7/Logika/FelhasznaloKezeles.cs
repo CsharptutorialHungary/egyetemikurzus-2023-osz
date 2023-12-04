@@ -1,29 +1,26 @@
 ﻿using NW8AV7.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NW8AV7.Logika
 {
     internal class FelhasznaloKezeles
     {
+        private KonzolKezeles konzolKezeles = new KonzolKezeles();
+
         public void Fooldal()
         {
-            Console.WriteLine("--------------------------------------------");
-            Console.WriteLine("----------------KEZDOOLDAL------------------");
-            Console.WriteLine("--------------------------------------------");
-            Console.WriteLine("Kérlek válassz az alábbi lehetőségek közül:");
-            Console.WriteLine("1 - Felhasználó kiválasztása");
-            Console.WriteLine("2 - Felhasználó létrehozása");
-            Console.WriteLine("3 - Felhasználó törlése");
-            Console.WriteLine("4 - Felhasználó módosítása");
+            konzolKezeles.FejlecMutatasa("Főoldal");
+            konzolKezeles.InstrukcioaAdas("Kérlek válassz az alábbi lehetőségek közül:",
+                new string[]
+                {
+                    "1 - Felhasználó kiválasztása",
+                    "2 - Felhasználó létrehozása",
+                    "3 - Felhasználó törlése",
+                    "4 - Felhasználó módosítása"
+                });
 
-            int ertek = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine();
+            int valasztottFunkcio = konzolKezeles.SzamBeolvasas();
 
-            switch (ertek)
+            switch (valasztottFunkcio)
             {
                 case 1:
                     FelhasznaloKivalasztas();
@@ -37,34 +34,39 @@ namespace NW8AV7.Logika
                 case 4:
                     FelhasznaloModosit();
                     break;
+                default:
+                    konzolKezeles.HibaMutatasa("Helytelen számot adtál meg.");
+                    Fooldal();
+                    break;
             }
         }
 
         private void FelhasznaloKivalasztas()
         {
-            Console.WriteLine("--------------------------------------------");
-            Console.WriteLine("-----------FELHASZNALÓ VÁLASZTÁS------------");
-            Console.WriteLine("--------------------------------------------");
-            int azonosito = FelhasznaloValasztas();
+            konzolKezeles.FejlecMutatasa("Felhasználó kiválasztása");
+            konzolKezeles.InstrukcioaAdas("Kérlek válassz az alábbi felhasználók közül:", MemoriaModel.Instance.Felhasznalok.ToFormattedString());
 
+            int azonosito = konzolKezeles.SzamBeolvasas();
             Felhasznalo valasztottFelhasznalo = FelhasznaloKeres(azonosito);
 
-            Console.WriteLine("Te a "+valasztottFelhasznalo.Nev+" választottad.");
-            Console.WriteLine();
+            if (valasztottFelhasznalo == null)
+            {
+                konzolKezeles.HibaMutatasa("Helytelen számot adtál meg. Próbáld újra!\n");
+                FelhasznaloKivalasztas();
+                return;
+            }
 
-            // Teendő lista kezelés főoldalát kell meghívni
-            Fooldal();
+            konzolKezeles.InformacioMutatasa("Te a "+valasztottFelhasznalo.Nev+" választottad.");
+
+            new TeendoKezeles(valasztottFelhasznalo).Fooldal();
         }
 
         private void FelhasznaloLetrehozas()
         {
-            Console.WriteLine("--------------------------------------------");
-            Console.WriteLine("----------FELHASZNALÓ LÉTREHOZÁSA-----------");
-            Console.WriteLine("--------------------------------------------");
-            Console.WriteLine("Kérem a felhasznaló nevét: ");
-            String nev = Console.ReadLine();
+            konzolKezeles.FejlecMutatasa("Felhasználó létrehozása");
+            konzolKezeles.InstrukcioaAdas("Kérem a felhasznaló nevét: ");
 
-            Console.WriteLine();
+            String nev = konzolKezeles.SzovegBeolvasas();
 
             Felhasznalo ujFelhasznalo = new Felhasznalo(nev, new List<Teendo>()); 
             MemoriaModel.Instance.Felhasznalok.Add(ujFelhasznalo);
@@ -74,69 +76,38 @@ namespace NW8AV7.Logika
 
         private void FelhasznaloTorles()
         {
-            Console.WriteLine("--------------------------------------------");
-            Console.WriteLine("------------FELHASZNALÓ TÖRLÉSE-------------");
-            Console.WriteLine("--------------------------------------------");
-            int azonosito = FelhasznaloValasztas();
+            konzolKezeles.FejlecMutatasa("Felhasználó törlése");
+            konzolKezeles.InstrukcioaAdas("Kérlek válassz az alábbi felhasználók közül:", MemoriaModel.Instance.Felhasznalok.ToFormattedString());
 
+            int azonosito = konzolKezeles.SzamBeolvasas();
             Felhasznalo valasztottFelhasznalo = FelhasznaloKeres(azonosito);
 
             MemoriaModel.Instance.Felhasznalok.Remove(valasztottFelhasznalo);
 
-            Console.WriteLine(valasztottFelhasznalo.Nev+" törölve lett!");
-            Console.WriteLine();
+            konzolKezeles.InformacioMutatasa(valasztottFelhasznalo.Nev+" törölve lett!");
 
             Fooldal();
         }
 
         private void FelhasznaloModosit()
         {
-            Console.WriteLine("--------------------------------------------");
-            Console.WriteLine("-----------FELHASZNALÓ MÓDOSÍTAS------------");
-            Console.WriteLine("--------------------------------------------");
-            int azonosito = FelhasznaloValasztas();
+            konzolKezeles.FejlecMutatasa("Felhasználó módosítása");
+            konzolKezeles.InstrukcioaAdas("Kérlek válassz az alábbi felhasználók közül:", MemoriaModel.Instance.Felhasznalok.ToFormattedString());
 
+            int azonosito = konzolKezeles.SzamBeolvasas();
             Felhasznalo valasztottFelhasznalo = FelhasznaloKeres(azonosito);
 
-            Console.WriteLine("Kérem az új nevét a "+valasztottFelhasznalo.Nev+" felhasználónak: ");
-            
-            String nev = Console.ReadLine();
-
-            Console.WriteLine();
+            konzolKezeles.InstrukcioaAdas("Kérem az új nevét a "+valasztottFelhasznalo.Nev+" felhasználónak: ");
+            String nev = konzolKezeles.SzovegBeolvasas();
 
             valasztottFelhasznalo.Nev = nev;
 
             Fooldal();
         }
 
-        private int FelhasznaloValasztas()
-        {
-            Console.WriteLine("Kérlek válassz az alábbi felhasználók közül:");
-
-            int azonosito = 0;
-            foreach (var felhasznalo in MemoriaModel.Instance.Felhasznalok)
-            {
-                azonosito++;
-                Console.WriteLine(azonosito + " - " + felhasznalo.Nev);
-            }
-
-            return Convert.ToInt32(Console.ReadLine());
-        }
-
         private Felhasznalo FelhasznaloKeres(int sorszam)
         {
-            Felhasznalo valasztottFelhasznalo = null;
-            int azonosito = 0;
-            foreach (var felhasznalo in MemoriaModel.Instance.Felhasznalok)
-            {
-                azonosito++;
-                if (sorszam == azonosito)
-                {
-                    valasztottFelhasznalo = felhasznalo;
-
-                }
-            }
-            return valasztottFelhasznalo;
+            return MemoriaModel.Instance.Felhasznalok.ElementAtOrDefault(sorszam - 1);
         }
     }
 }

@@ -36,5 +36,6 @@ namespace NW8AV7.Model
             string jsonString = JsonSerializer.Serialize(Felhasznalok);
             File.WriteAllText(utvonal, jsonString);
         }
+
     }
 }
