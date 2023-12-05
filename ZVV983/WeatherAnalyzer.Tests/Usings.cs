@@ -1,0 +1,12 @@
+global using NUnit.Framework;
+global using WeatherAnalyzer.Cli;
+global using WeatherAnalyzer.Geocode;
+global using WeatherAnalyzer.Geocode.Api;
+global using WeatherAnalyzer.Geocode.Api.File;
+global using WeatherAnalyzer.Geocode.Api.Gps;
+global using WeatherAnalyzer.Geocode.Api.OpenMeteo;
+global using WeatherAnalyzer.Util;
+global using WeatherAnalyzer.Weather;
+global using WeatherAnalyzer.Weather.Api;
+global using WeatherAnalyzer.Weather.Api.File;
+global using WeatherAnalyzer.Weather.Api.OpenMeteo;
