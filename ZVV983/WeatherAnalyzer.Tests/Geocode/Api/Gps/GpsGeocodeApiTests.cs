@@ -1,6 +1,3 @@
-using WeatherAnalyzer.Geocode;
-using WeatherAnalyzer.Geocode.Api.Gps;
-
 namespace WeatherAnalyzer.Tests.Geocode.Api.Gps;
 
 public class GpsGeocodeApiTests

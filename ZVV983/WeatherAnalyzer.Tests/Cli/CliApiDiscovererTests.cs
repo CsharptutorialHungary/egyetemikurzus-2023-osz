@@ -1,12 +1,4 @@
 using Microsoft.Extensions.Configuration;
-using WeatherAnalyzer.Cli;
-using WeatherAnalyzer.Geocode.Api;
-using WeatherAnalyzer.Geocode.Api.File;
-using WeatherAnalyzer.Geocode.Api.Gps;
-using WeatherAnalyzer.Geocode.Api.OpenMeteo;
-using WeatherAnalyzer.Weather.Api;
-using WeatherAnalyzer.Weather.Api.File;
-using WeatherAnalyzer.Weather.Api.OpenMeteo;
 
 namespace WeatherAnalyzer.Tests.Cli;
 

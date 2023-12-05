@@ -1,11 +1,4 @@
 using System.CommandLine.IO;
-using WeatherAnalyzer.Geocode;
-using WeatherAnalyzer.Geocode.Api;
-using WeatherAnalyzer.Geocode.Api.File;
-using WeatherAnalyzer.Util;
-using WeatherAnalyzer.Weather;
-using WeatherAnalyzer.Weather.Api;
-using WeatherAnalyzer.Weather.Api.File;
 
 namespace WeatherAnalyzer.Tests;
 
