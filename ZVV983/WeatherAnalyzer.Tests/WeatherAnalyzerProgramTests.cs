@@ -1,10 +1,11 @@
 using System.CommandLine.IO;
+using System.Text.Json;
 
 namespace WeatherAnalyzer.Tests;
 
 public class WeatherAnalyzerProgramTests
 {
-    [Test, Order(1)]
+    [Test]
     public async Task DownloadWeatherForecastsAsync_InMemory_CreatesOutputFile()
     {
         var geocodeApi = new TestGeocodeApi();
@@ -19,19 +20,43 @@ public class WeatherAnalyzerProgramTests
         Assert.That(outputFile, Has.Property(nameof(FileInfo.Exists)).True);
     }
 
-    [Test, Order(2)]
+    [Test]
     public async Task AnalyzeWeatherForecastAsync_LocalFile_WritesToConsoleOut()
     {
         var geocodeApi = new FileGeocodeApi();
         var weatherForecastApi = new FileWeatherForecastApi();
         var console = new TestConsole();
         var program = new WeatherAnalyzerProgram(geocodeApi, weatherForecastApi, ChooseFirstCity, console);
-        const string location = $"{nameof(DownloadWeatherForecastsAsync_InMemory_CreatesOutputFile)}.json";
+        const string location = $"{nameof(AnalyzeWeatherForecastAsync_LocalFile_WritesToConsoleOut)}.json";
+        await PrepareWeatherForecastFile();
 
         await program.AnalyzeWeatherForecastAsync(location);
         var stdout = console.Out.ToString();
 
         Assert.That(stdout, Is.Not.Empty);
+
+        return;
+
+        async Task PrepareWeatherForecastFile()
+        {
+            const string cityName = "Arcaria";
+            var city = new City(
+                cityName,
+                "TST",
+                "Test Environment",
+                new Location(4.2f, 42f),
+                default
+            );
+
+            await using var file = new FileStream(location, FileMode.Create, FileAccess.Write);
+            await JsonSerializer.SerializeAsync(
+                file,
+                new StoredWeatherForecast(
+                    city,
+                    new TestWeatherForecastApi().GetWeatherForecastsAsync(city)
+                )
+            );
+        }
     }
 
     [Test]
