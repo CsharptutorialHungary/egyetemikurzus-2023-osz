@@ -32,7 +32,7 @@ namespace FTHEL8.Menu
                         Options[choice - 1]?.Callback();
                     }
 
-                    Task.Delay(125).Wait();
+                    Task.Delay(200).Wait();
                 }
             }
             catch (Exception ex)
