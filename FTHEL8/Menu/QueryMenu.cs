@@ -10,6 +10,11 @@ namespace FTHEL8.Menu
         public QueryMenu(MainMenu mainMenu)
         {
             this.mainMenu = mainMenu;
+            Add("Get Employees Data", async () => await GetEmployeesDataAsync());
+            Add("Get Classes Data", async () => await GetClassesDataAsync());
+            Add("Get Projects Data", async () => await GetProjectsDataAsync());
+            Add("Get Departments Data", async () => await GetDepartmentsDataAsync());
+            Add("Get Project Members Data", async () => await GetProjectMembersDataAsync());
             Add("Get Project with the Most Workers", async () => await GetProjectThatHasTheMostWorkersAsync());
             Add("Get Highest Paid Employees Data", async () => await GetHighestPaidEmployeesDataAsync());
             Add("Back to Main Menu", GetPreviousMenu);
@@ -67,16 +72,19 @@ namespace FTHEL8.Menu
 
                     if (highestPaidEmployee != null)
                     {
+                        Console.WriteLine();
                         Console.WriteLine("Employee with the Highest Salary:");
                         Console.WriteLine($"Employee ID: {highestPaidEmployee.EmployeeId}, Name: {highestPaidEmployee.Name}, Phone: {highestPaidEmployee.PhoneNumber}, Email: {highestPaidEmployee.Email}, Position: {highestPaidEmployee.Position}, Salary: {highestPaidEmployee.Salary}, Department: {highestPaidEmployee.DepartmentName}");
                     }
                     else
                     {
+                        Console.WriteLine();
                         Console.WriteLine("No employees found.");
                     }
                 }
                 else
                 {
+                    Console.WriteLine();
                     Console.WriteLine("No employees found.");
                 }
             }
@@ -86,20 +94,20 @@ namespace FTHEL8.Menu
             }
         }
 
-        private void GetEmployeesData()
+        private async Task GetEmployeesDataAsync()
         {
-            List<Employee> employees = Database.ReadEmployeesAsync().Result;
+            List<Employee> employees = await Database.ReadEmployeesAsync();
+            Console.WriteLine();
             Console.WriteLine("All employees data:");
             foreach (Employee employee in employees)
             {
                 Console.WriteLine($"Employee ID: {employee.EmployeeId}, Name: {employee.Name}, Phone number: {employee.PhoneNumber}, Email: {employee.Email}, Position: {employee.Position}, Salary: {employee.Salary}, Department: {employee.DepartmentName}");
             }
-            Console.WriteLine();
         }
 
-        private void GetClassesData()
+        private async Task GetClassesDataAsync()
         {
-            List<Class> classes = Database.ReadClassesAsync().Result;
+            List<Class> classes = await Database.ReadClassesAsync();
             Console.WriteLine("All classes data:");
             foreach (Class class_ in classes)
             {
@@ -108,9 +116,9 @@ namespace FTHEL8.Menu
             Console.WriteLine();
         }
 
-        private void GetProjectsData()
+        private async Task GetProjectsDataAsync()
         {
-            List<Project> projects = Database.ReadProjectsAsync().Result;
+            List<Project> projects = await Database.ReadProjectsAsync();
             Console.WriteLine("All projects data:");
             foreach (Project project in projects)
             {
@@ -119,9 +127,9 @@ namespace FTHEL8.Menu
             Console.WriteLine();
         }
 
-        private void GetDepartmentsData()
+        private async Task GetDepartmentsDataAsync()
         {
-            List<Department> departments = Database.ReadDepartmentsAsync().Result;
+            List<Department> departments = await Database.ReadDepartmentsAsync();
             Console.WriteLine("All departments data:");
             foreach (Department department in departments)
             {
@@ -129,9 +137,9 @@ namespace FTHEL8.Menu
             }
         }
 
-        private void GetProjectMembersData()
+        private async Task GetProjectMembersDataAsync()
         {
-            List<ProjectMembers> projectMembers = Database.ReadProjectMembersAsync().Result;
+            List<ProjectMembers> projectMembers = await Database.ReadProjectMembersAsync();
             Console.WriteLine("All project members data:");
             foreach (var member in projectMembers)
             {

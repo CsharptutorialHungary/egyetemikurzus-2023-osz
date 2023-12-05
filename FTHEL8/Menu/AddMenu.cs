@@ -5,41 +5,65 @@ namespace FTHEL8.Menu
 {
     public class AddMenu : Menu
     {
-        public AddMenu()
+        private readonly MainMenu mainMenu;
+        public AddMenu(MainMenu mainMenu)
         {
+            this.mainMenu = mainMenu;
+            Add("Add Employee", AddEmployee);
+            Add("Add Department", AddDepartment);
+            Add("Add Class", AddClass);
+            Add("Add Project", AddProject);
+            Add("Add Employee to Project", AddEmployeeToProject);
+            Add("Back to Main Menu", GetPreviousMenu);
         }
 
-        private async void AddEmployeeToProject()
+        public void GetPreviousMenu()
+        {
+            mainMenu.Display();
+        }
+
+        private void AddEmployeeToProject()
         {
             try
             {
-                Console.WriteLine("Enter Employee ID from the list: ");
-                List<Employee> employees = await Database.ReadEmployeesAsync();
+                List<Employee> employees = Database.ReadEmployeesAsync().Result;
                 foreach (Employee employee in employees)
                 {
                     Console.Write(employee.EmployeeId + " ");
                 }
                 Console.WriteLine();
+                Console.Write("Enter Employee ID from the list: ");
                 string employeeId = Console.ReadLine() ?? "";
 
-                Console.WriteLine("Enter Project Name from the list: ");
-                List<Project> projectList = await Database.ReadProjectsAsync();
+                List<Project> projectList = Database.ReadProjectsAsync().Result;
                 foreach (Project project in projectList)
                 {
                     Console.Write(project.Name + " ");
                 }
                 Console.WriteLine();
+                Console.Write("Enter Project Name from the list: ");
+
                 string projectName = Console.ReadLine() ?? "";
 
-                bool success = await Database.AddEmployeeToProjectAsync(employeeId, projectName);
+                bool validEmployee = employees.Any(e => e.EmployeeId == employeeId);
+                bool validProject = projectList.Any(p => p.Name == projectName);
 
-                if (success)
+                if (validEmployee && validProject)
                 {
-                    Console.WriteLine("Employee added to project successfully!");
+                    bool success = Database.AddEmployeeToProjectAsync(employeeId, projectName).Result;
+
+                    if (success)
+                    {
+                        Console.WriteLine("Employee added to project successfully!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to add employee to project. Please check your input.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Failed to add employee to project. Please check your input.");
+                    Console.WriteLine("Invalid Employee ID or Project Name. Please enter valid values.");
                 }
             }
             catch (Exception ex)
@@ -48,43 +72,59 @@ namespace FTHEL8.Menu
             }
         }
 
-        private async void AddDepartment()
+        private void AddDepartment()
         {
             try
             {
-                Console.WriteLine("Enter Department Name: ");
+                Console.Write("Enter Department Name: ");
                 string departmentName = Console.ReadLine() ?? "";
+                bool isNotValidDepartmentName = Database.ReadDepartmentsAsync().Result.Any(d => d.Name == departmentName);
+                if (isNotValidDepartmentName && string.IsNullOrWhiteSpace(departmentName))
+                {
+                    Console.WriteLine("This department name is already in the database or can't be added!");
+                    return;
+                }
 
-                Console.WriteLine("Enter Task: ");
+                Console.Write("Enter Task: ");
                 string task = Console.ReadLine() ?? "";
 
-                Console.WriteLine("Enter Department Leader from the list: ");
-                List<Employee> employees = await Database.ReadEmployeesAsync();
+                List<Employee> employees = Database.ReadEmployeesAsync().Result;
                 foreach (Employee employee in employees)
                 {
                     Console.Write(employee.EmployeeId + " ");
                 }
                 Console.WriteLine();
+                Console.Write("Enter Department Leader from the list: ");
                 string departmentLeaderId = Console.ReadLine() ?? "";
-
-                Console.WriteLine("Enter Class Leader from the list: ");
-                List<Class> classList = await Database.ReadClassesAsync();
+                List<Class> classList = Database.ReadClassesAsync().Result;
                 foreach (Class class_ in classList)
                 {
                     Console.Write(class_.Name + " ");
                 }
                 Console.WriteLine();
+
+                Console.Write("Enter Class Leader from the list: ");
                 string classLeaderName = Console.ReadLine() ?? "";
 
-                bool success = await Database.AddDepartmentAsync(departmentName, task, departmentLeaderId, classLeaderName);
+                bool validDepartmentLeader = employees.Any(e => e.EmployeeId == departmentLeaderId);
+                bool validClassLeader = classList.Any(c => c.Name == classLeaderName);
 
-                if (success)
+                if (validDepartmentLeader && validClassLeader)
                 {
-                    Console.WriteLine("Department added successfully!");
+                    bool success = Database.AddDepartmentAsync(departmentName, task, departmentLeaderId, classLeaderName).Result;
+
+                    if (success)
+                    {
+                        Console.WriteLine("Department added successfully!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to add department. Please check your input.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Failed to add department. Please check your input.");
+                    Console.WriteLine("Invalid Department Leader or Class Leader. Please enter valid values.");
                 }
             }
             catch (Exception ex)
@@ -93,34 +133,49 @@ namespace FTHEL8.Menu
             }
         }
 
-        private async void AddClass()
+        private void AddClass()
         {
             try
             {
-                Console.WriteLine("Enter Class Name: ");
+                Console.Write("Enter Class Name: ");
                 string className = Console.ReadLine() ?? "";
+                bool isNotValidClassName = Database.ReadClassesAsync().Result.Any(c => c.Name == className);
+                if (isNotValidClassName && string.IsNullOrWhiteSpace(className))
+                {
+                    Console.WriteLine("This class name is already in the database or can't be added!");
+                    return;
+                }
 
-                Console.WriteLine("Enter Task: ");
+                Console.Write("Enter Task: ");
                 string task = Console.ReadLine() ?? "";
 
-                Console.WriteLine("Enter Class Leader: ");
-                List<Employee> employees = await Database.ReadEmployeesAsync();
+                List<Employee> employees = Database.ReadEmployeesAsync().Result;
                 foreach (Employee employee in employees)
                 {
                     Console.Write(employee.EmployeeId + " ");
                 }
                 Console.WriteLine();
+                Console.Write("Enter Class Leader from the list: ");
                 string classLeaderId = Console.ReadLine() ?? "";
 
-                bool success = await Database.AddClassAsync(className, task, classLeaderId);
+                bool validClassLeader = employees.Any(e => e.EmployeeId == classLeaderId);
 
-                if (success)
+                if (validClassLeader)
                 {
-                    Console.WriteLine("Class added successfully!");
+                    bool success = Database.AddClassAsync(className, task, classLeaderId).Result;
+
+                    if (success)
+                    {
+                        Console.WriteLine("Class added successfully!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to add class. Please check your input.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Failed to add class. Please check your input.");
+                    Console.WriteLine("Invalid Class Leader. Please enter a valid value.");
                 }
             }
             catch (Exception ex)
@@ -129,46 +184,63 @@ namespace FTHEL8.Menu
             }
         }
 
-        private async void AddProject()
+        private void AddProject()
         {
             try
             {
-                Console.WriteLine("Enter Project Name: ");
+                Console.Write("Enter Project Name: ");
                 string projectName = Console.ReadLine() ?? "";
+                bool isNotValidProject = Database.ReadProjectsAsync().Result.Any(p => p.Name == projectName);
+                if(isNotValidProject && string.IsNullOrWhiteSpace(projectName))
+                {
+                    Console.WriteLine("This project name is already in the database or can't be added!");
+                    return;
+                }
 
-                Console.WriteLine("Enter Deadline (yyyy-MM-dd): ");
+                Console.Write("Enter Deadline (yyyy-MM-dd): ");
                 DateTime deadline = DateTime.Parse(Console.ReadLine() ?? "");
 
-                Console.WriteLine("Enter Description: ");
+                Console.Write("Enter Description: ");
                 string description = Console.ReadLine() ?? "";
 
-                Console.WriteLine("Enter Project Leader: ");
-                List<Employee> employees = await Database.ReadEmployeesAsync();
+                List<Employee> employees = Database.ReadEmployeesAsync().Result;
                 foreach (Employee employee in employees)
                 {
                     Console.Write(employee.EmployeeId + " ");
                 }
                 Console.WriteLine();
-                string projectLeaderId = Console.ReadLine() ?? "";
 
-                Console.WriteLine("Enter Class Name: ");
-                List<Class> classList = await Database.ReadClassesAsync();
+                Console.Write("Enter Project Leader from the list: ");
+                string projectLeaderId = Console.ReadLine() ?? "";
+                List<Class> classList = Database.ReadClassesAsync().Result;
                 foreach (Class class_ in classList)
                 {
                     Console.Write(class_.Name + " ");
                 }
                 Console.WriteLine();
+
+                Console.Write("Enter Class Name from the list: ");
                 string className = Console.ReadLine() ?? "";
 
-                bool success = await Database.AddProjectAsync(projectName, description, deadline, projectLeaderId, className);
+                bool validProjectLeader = employees.Any(e => e.EmployeeId == projectLeaderId);
+                bool validClass = classList.Any(c => c.Name == className);
 
-                if (success)
+                if (validProjectLeader && validClass)
                 {
-                    Console.WriteLine("Project added successfully!");
+                    bool success = Database.AddProjectAsync(projectName, description, deadline, projectLeaderId, className).Result;
+
+                    if (success)
+                    {
+                        Console.WriteLine("Project added successfully!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to add project. Please check your input.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Failed to add project. Please check your input.");
+                    Console.WriteLine("Invalid Project Leader or Class Name. Please enter valid values.");
                 }
             }
             catch (Exception ex)
@@ -177,70 +249,71 @@ namespace FTHEL8.Menu
             }
         }
 
-        private async void AddEmployee()
+        private void AddEmployee()
         {
             try
             {
-                Console.WriteLine("Enter Employee ID: ");
+                Console.Write("Enter Employee ID: ");
                 string employeeId = Console.ReadLine() ?? "";
+                bool isNotValidEmployeeId = Database.ReadEmployeesAsync().Result.Any(e => e.Name == employeeId);
+                if (isNotValidEmployeeId && string.IsNullOrWhiteSpace(employeeId))
+                {
+                    Console.WriteLine("This employee ID is already in the database or can't be added!");
+                    return;
+                }
 
-                Console.WriteLine("Enter Name: ");
+                Console.Write("Enter Name: ");
                 string name = Console.ReadLine() ?? "";
 
-                Console.WriteLine("Enter Phone Number: ");
+                Console.Write("Enter Phone Number: ");
                 string phoneNumber = Console.ReadLine() ?? "";
 
-                Console.WriteLine("Enter Email: ");
+                Console.Write("Enter Email: ");
                 string email = Console.ReadLine() ?? "";
 
-                Console.WriteLine("Enter Position: ");
+                Console.Write("Enter Position: ");
                 string position = Console.ReadLine() ?? "";
 
-                Console.WriteLine("Enter Salary, must be a number: ");
+                Console.Write("Enter Salary, must be a number: ");
                 int salary = int.Parse(Console.ReadLine() ?? "");
 
-                Console.WriteLine("Enter a valid Department from the list: ");
                 List<Department> departmentList = new List<Department>();
-                departmentList = await Database.ReadDepartmentsAsync();
+                departmentList = Database.ReadDepartmentsAsync().Result;
                 foreach (Department department in departmentList)
                 {
                     Console.Write(department.Name + " ");
                 }
                 Console.WriteLine();
 
+                Console.Write("Enter a valid Department from the list: ");
+
 
                 string departmentName = Console.ReadLine() ?? "";
 
-                bool success = await Database.AddEmployeeAsync(employeeId, name, phoneNumber, email, position, salary, departmentName);
+                bool validDepartment = departmentList.Any(d => d.Name == departmentName);
 
-                if (success)
+                if (validDepartment)
                 {
-                    Console.WriteLine("Employee added successfully!");
+                    bool success = Database.AddEmployeeAsync(employeeId, name, phoneNumber, email, position, salary, departmentName).Result;
+
+                    if (success)
+                    {
+                        Console.WriteLine("Employee added successfully!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to add employee. Please check your input.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Failed to add employee. Please check your input.");
+                    Console.WriteLine("Invalid Department. Please enter a valid value.");
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.Error.WriteLine(ex.Message);
             }
-        }
-
-        public Task Display()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Menu GetNextMenu()
-        {
-            Console.WriteLine("Going back to Main Menu.");
-            return new MainMenu();
-        }
-
-        public Menu GetPreviousMenu()
-        {
-            throw new NotImplementedException();
         }
     }
 }

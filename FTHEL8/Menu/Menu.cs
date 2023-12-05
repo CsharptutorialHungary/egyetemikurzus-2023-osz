@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,39 +14,56 @@ namespace FTHEL8.Menu
             Options = new List<Option>();
         }
 
-        public virtual void Display()
+        public void Display()
         {
             try
             {
                 while (true)
                 {
+                    Console.WriteLine();
                     for (int i = 0; i < Options.Count; i++)
                     {
                         Console.WriteLine("{0}. {1}", i + 1, Options[i].Name);
                     }
                     int choice = GetUserChoice();
 
-                    Options[choice - 1].Callback();
+                    if(choice != -1)
+                    {
+                        Options[choice - 1]?.Callback();
+                    }
 
                     Task.Delay(125).Wait();
                 }
             }
-            catch (ArgumentOutOfRangeException)
+            catch (Exception ex)
             {
-                Console.WriteLine("Not available choice. Please try again!");
+                Console.Error.WriteLine(ex.Message);
             }
         }
 
-        private static int GetUserChoice()
+        private int GetUserChoice()
         {
             Console.WriteLine();
             Console.Write("Enter your choice: ");
-            int choice;
-            while (!int.TryParse(Console.ReadLine(), out choice))
+            string input = Console.ReadLine()!;
+
+            if (int.TryParse(input, out int choice))
             {
-                Console.WriteLine("Invalid input. Please enter a number.");
+                if (choice >= 1 && choice <= Options.Count)
+                {
+                    return choice;
+                }
+                else
+                {
+                    Console.WriteLine("There is no option with that number!");
+                }
             }
-            return choice;
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid number.");
+            }
+
+            return -1;
         }
 
         public Menu Add(string option, Action callback)
@@ -57,11 +75,6 @@ namespace FTHEL8.Menu
         {
             Options.Add(option);
             return this;
-        }
-
-        public bool Contains(string option)
-        {
-            return Options.FirstOrDefault((op) => op.Name.Equals(option)) != null;
         }
 
     }

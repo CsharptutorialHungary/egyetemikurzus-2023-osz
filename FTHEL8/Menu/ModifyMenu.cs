@@ -5,21 +5,33 @@ namespace FTHEL8.Menu
 {
     public class ModifyMenu : Menu
     {
-        public ModifyMenu()
+        private readonly MainMenu mainMenu;
+        public ModifyMenu(MainMenu mainMenu)
         {
+            this.mainMenu = mainMenu;
+            Add("Modify Class", ModifyClass);
+            Add("Modify Project", ModifyProject);
+            Add("Modify Project Members", ModifyProjectMembers);
+            Add("Modify Employee", ModifyEmployee);
+            Add("Back to Main Menu", GetPreviousMenu);
+        }
+
+        public void GetPreviousMenu()
+        {
+            mainMenu.Display();
         }
 
         private void ModifyClass()
         {
             try
             {
-                Console.WriteLine("Enter the Class Name to modify: ");
                 List<Class> classList = Database.ReadClassesAsync().Result;
                 foreach (Class class_ in classList)
                 {
                     Console.Write(class_.Name + " ");
                 }
                 Console.WriteLine();
+                Console.Write("Enter the Class Name to modify from the list: ");
                 string className = Console.ReadLine() ?? "";
 
                 Class existingClass = classList.FirstOrDefault(x => x.Name == className)!;
@@ -28,27 +40,36 @@ namespace FTHEL8.Menu
                 {
                     Console.WriteLine($"Class found: {existingClass.Name}");
 
-                    Console.WriteLine("Enter new Task: ");
+                    Console.Write("Enter new Task: ");
                     string newTask = Console.ReadLine() ?? "";
 
-                    Console.WriteLine("Enter new Class Leader ID from the list: ");
                     List<Employee> employeeList = Database.ReadEmployeesAsync().Result;
                     foreach (Employee employee in employeeList)
                     {
                         Console.Write(employee.EmployeeId + " ");
                     }
                     Console.WriteLine();
+                    Console.Write("Enter new Class Leader ID from the list: ");
                     string newClassLeaderId = Console.ReadLine() ?? "";
 
-                    bool success = Database.ModifyClass(className, newTask, newClassLeaderId).Result;
+                    bool validClassLeader = employeeList.Any(e => e.EmployeeId == newClassLeaderId);
 
-                    if (success)
+                    if (validClassLeader)
                     {
-                        Console.WriteLine("Class modified successfully!");
+                        bool success = Database.ModifyClass(className, newTask, newClassLeaderId).Result;
+
+                        if (success)
+                        {
+                            Console.WriteLine("Class modified successfully!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Failed to modify class. Please check your input.");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("Failed to modify class. Please check your input.");
+                        Console.WriteLine("Failed to add class. Please check your input.");
                     }
                 }
                 else
@@ -62,17 +83,17 @@ namespace FTHEL8.Menu
             }
         }
 
-        private async void ModifyProject()
+        private void ModifyProject()
         {
             try
             {
-                Console.WriteLine("Enter the Project Name to modify: ");
-                List<Project> projectList = await Database.ReadProjectsAsync();
+                List<Project> projectList = Database.ReadProjectsAsync().Result;
                 foreach (Project project in projectList)
                 {
                     Console.Write(project.Name + " ");
                 }
                 Console.WriteLine();
+                Console.Write("Enter the Project Name to modify from the list: ");
                 string projectName = Console.ReadLine() ?? "";
 
                 Project existingProject = projectList.FirstOrDefault(x => x.Name == projectName)!;
@@ -81,39 +102,50 @@ namespace FTHEL8.Menu
                 {
                     Console.WriteLine($"Project found: {existingProject.Name}");
 
-                    Console.WriteLine("Enter new Description: ");
+                    Console.Write("Enter new Description: ");
                     string newDescription = Console.ReadLine() ?? "";
 
-                    Console.WriteLine("Enter new Deadline (yyyy-MM-dd): ");
+                    Console.Write("Enter new Deadline (yyyy-MM-dd): ");
                     DateTime newDeadline = DateTime.Parse(Console.ReadLine() ?? "");
 
-                    Console.WriteLine("Enter the new Project Leader ID from the list: ");
-                    List<Employee> employeeList = await Database.ReadEmployeesAsync();
+                    List<Employee> employeeList = Database.ReadEmployeesAsync().Result;
                     foreach (Employee employee in employeeList)
                     {
                         Console.Write(employee.EmployeeId + " ");
                     }
                     Console.WriteLine();
+                    Console.Write("Enter the new Project Leader ID from the list: ");
                     string newProjectLeaderId = Console.ReadLine() ?? "";
 
-                    Console.WriteLine("Enter the new Class Name from the list: ");
-                    List<Class> classList = await Database.ReadClassesAsync();
+                    List<Class> classList = Database.ReadClassesAsync().Result;
                     foreach (Class class_ in classList)
                     {
                         Console.Write(class_.Name + " ");
                     }
                     Console.WriteLine();
+                    Console.Write("Enter the new Class Name from the list: ");
                     string newClassName = Console.ReadLine() ?? "";
 
-                    bool success = await Database.ModifyProject(projectName, newDescription, newDeadline, newProjectLeaderId, newClassName);
+                    bool validProjectLeader = employeeList.Any(e => e.EmployeeId == newProjectLeaderId);
+                    bool validClass = classList.Any(c => c.Name == newClassName);
 
-                    if (success)
+                    if (validProjectLeader && validClass)
                     {
-                        Console.WriteLine("Project modified successfully!");
+
+                        bool success = Database.ModifyProject(projectName, newDescription, newDeadline, newProjectLeaderId, newClassName).Result;
+
+                        if (success)
+                        {
+                            Console.WriteLine("Project modified successfully!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Failed to modify project. Please check your input.");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("Failed to modify project. Please check your input.");
+                        Console.WriteLine("Invalid Project Leader or Class Name. Please enter valid values.");
                     }
                 }
                 else
@@ -127,39 +159,53 @@ namespace FTHEL8.Menu
             }
         }
 
-        private async void ModifyProjectMembers()
+        private void ModifyProjectMembers()
         {
             try
             {
-                Console.WriteLine("Enter the Project Name to modify members: ");
-                List<ProjectMembers> projectMembersList = await Database.ReadProjectMembersAsync();
+                List<ProjectMembers> projectMembersList = Database.ReadProjectMembersAsync().Result;
                 foreach (ProjectMembers projectMember in projectMembersList)
                 {
                     Console.Write(projectMember.ProjectName + " ");
                 }
                 Console.WriteLine();
+                Console.Write("Enter the Project Name to modify members: ");
                 string projectName = Console.ReadLine() ?? "";
 
                 ProjectMembers existingProjectMembers = projectMembersList.FirstOrDefault(x => x.ProjectName == projectName)!;
 
                 if (existingProjectMembers != null)
                 {
-                    Console.WriteLine($"Project members found for: {existingProjectMembers.ProjectName}");
+                    Console.Write($"Project members found for: {existingProjectMembers.ProjectName}");
+                    Console.WriteLine();
 
-                    Console.WriteLine("Enter new Employee IDs separated by commas: ");
+                    List<Employee> employeeList = Database.ReadEmployeesAsync().Result;
+                    foreach (Employee employee in employeeList)
+                    {
+                        Console.Write(employee.EmployeeId + " ");
+                    }
+                    Console.WriteLine();
+                    Console.Write("Enter new Employee IDs separated by commas: ");
                     string newEmployeeIds = Console.ReadLine() ?? "";
 
                     List<string> newEmployeeIdList = newEmployeeIds.Split(',').Select(s => s.Trim()).ToList();
 
-                    bool success = await Database.ModifyProjectMembers(projectName, newEmployeeIdList);
-
-                    if (success)
+                    if (newEmployeeIdList.All(id => employeeList.Any(e => e.EmployeeId == id)))
                     {
-                        Console.WriteLine("Project members modified successfully!");
+                        bool success = Database.ModifyProjectMembers(projectName, newEmployeeIdList).Result;
+
+                        if (success)
+                        {
+                            Console.WriteLine("Project members modified successfully!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Failed to modify project members. Please check your input.");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("Failed to modify project members. Please check your input.");
+                        Console.WriteLine("One or more entered Employee IDs do not exist in the employees list. Please check your input.");
                     }
                 }
                 else
@@ -174,17 +220,17 @@ namespace FTHEL8.Menu
         }
 
 
-        private async void ModifyEmployee()
+        private void ModifyEmployee()
         {
             try
             {
-                Console.WriteLine("Enter the Employee ID to modify: ");
-                List<Employee> employeeList = await Database.ReadEmployeesAsync();
+                List<Employee> employeeList = Database.ReadEmployeesAsync().Result;
                 foreach (Employee employee in employeeList)
                 {
                     Console.Write(employee.EmployeeId + " ");
                 }
                 Console.WriteLine();
+                Console.Write("Enter the Employee ID to modify: ");
                 string employeeId = Console.ReadLine() ?? "";
 
                 Employee existingEmployee = Database.ReadEmployeesAsync().Result.FirstOrDefault(x => x.EmployeeId == employeeId)!;
@@ -193,40 +239,48 @@ namespace FTHEL8.Menu
                 {
                     Console.WriteLine($"Employee found: {existingEmployee.Name}");
 
-                    Console.WriteLine("Enter new Name: ");
+                    Console.Write("Enter new Name: ");
                     string newName = Console.ReadLine() ?? "";
 
-                    Console.WriteLine("Enter new Phone Number: ");
+                    Console.Write("Enter new Phone Number: ");
                     string newPhoneNumber = Console.ReadLine() ?? "";
 
-                    Console.WriteLine("Enter new Email: ");
+                    Console.Write("Enter new Email: ");
                     string newEmail = Console.ReadLine() ?? "";
 
-                    Console.WriteLine("Enter new Position: ");
+                    Console.Write("Enter new Position: ");
                     string newPosition = Console.ReadLine() ?? "";
 
-                    Console.WriteLine("Enter new Salary, must be a number: ");
+                    Console.Write("Enter new Salary, must be a number: ");
                     int newSalary = int.Parse(Console.ReadLine() ?? "");
-
-                    Console.WriteLine("Enter a valid Department from the list: ");
-                    List<Department> departmentList = await Database.ReadDepartmentsAsync();
+                    List<Department> departmentList = Database.ReadDepartmentsAsync().Result;
                     foreach (Department department in departmentList)
                     {
                         Console.Write(department.Name + " ");
                     }
                     Console.WriteLine();
+                    Console.Write("Enter a valid Department from the list: ");
 
                     string newDepartmentName = Console.ReadLine() ?? "";
 
-                    bool success = await Database.ModifyEmployee(employeeId, newName, newPhoneNumber, newEmail, newPosition, newSalary, newDepartmentName);
+                    bool validDepartment = departmentList.Any(d => d.Name == newDepartmentName);
 
-                    if (success)
+                    if (validDepartment)
                     {
-                        Console.WriteLine("Employee modified successfully!");
+                        bool success = Database.ModifyEmployee(employeeId, newName, newPhoneNumber, newEmail, newPosition, newSalary, newDepartmentName).Result;
+
+                        if (success)
+                        {
+                            Console.WriteLine("Employee modified successfully!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Failed to modify employee. Please check your input.");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("Failed to modify employee. Please check your input.");
+                        Console.WriteLine("Invalid Department. Please enter a valid value.");
                     }
                 }
                 else
@@ -238,22 +292,6 @@ namespace FTHEL8.Menu
             {
                 Console.Error.WriteLine(ex.Message);
             }
-        }
-
-        public Task Display()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Menu GetNextMenu()
-        {
-            Console.WriteLine("Going back to Main Menu.");
-            return new MainMenu();
-        }
-
-        public Menu GetPreviousMenu()
-        {
-            throw new NotImplementedException();
         }
     }
 }

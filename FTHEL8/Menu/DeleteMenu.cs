@@ -1,22 +1,40 @@
 ﻿using FTHEL8.Data;
+using FTHEL8.Models;
 
 namespace FTHEL8.Menu
 {
     public class DeleteMenu : Menu
     {
-        public DeleteMenu()
+        private readonly MainMenu mainMenu;
+        public DeleteMenu(MainMenu mainMenu)
         {
-            Console.WriteLine();
+            this.mainMenu = mainMenu;
+            Add("Delete an employee", DeleteEmployee);
+            Add("Delete a department", DeleteDepartment);
+            Add("Delete a project", DeleteProject);
+            Add("Delete a class", DeleteClass);
+            Add("Back to the main menu", GetPreviousMenu);
         }
 
-        private async void DeleteEmployee()
+        public void GetPreviousMenu()
+        {
+            mainMenu.Display();
+        }
+
+        private void DeleteEmployee()
         {
             try
             {
+                List<Employee> employeeList = Database.ReadEmployeesAsync().Result;
+                foreach (Employee employee in employeeList)
+                {
+                    Console.Write(employee.EmployeeId + " ");
+                }
+                Console.WriteLine();
                 Console.Write("Enter Employee ID to delete: ");
                 string employeeId = Console.ReadLine() ?? "";
 
-                if (await Database.DeleteEmployeeAsync(employeeId))
+                if (Database.DeleteEmployeeAsync(employeeId).Result)
                 {
                     Console.WriteLine($"Employee with ID {employeeId} deleted successfully.");
                 }
@@ -31,13 +49,19 @@ namespace FTHEL8.Menu
             }
         }
 
-        private async void DeleteDepartment()
+        private void DeleteDepartment()
         {
             try
             {
+                List<Department> departmentList = Database.ReadDepartmentsAsync().Result;
+                foreach (Department department in departmentList)
+                {
+                    Console.Write(department.Name + " ");
+                }
+                Console.WriteLine();
                 Console.Write("Enter Department Name to delete: ");
                 string departmentName = Console.ReadLine() ?? "";
-                if(await Database.DeleteDepartmentAsync(departmentName))
+                if(Database.DeleteDepartmentAsync(departmentName).Result)
                 {
                     Console.WriteLine($"Department with Name {departmentName} deleted successfully.");
                 }
@@ -52,13 +76,19 @@ namespace FTHEL8.Menu
             }
         }
 
-        private async void DeleteProject()
+        private void DeleteProject()
         {
             try
             {
+                List<Project> projectList = Database.ReadProjectsAsync().Result;
+                foreach (Project project in projectList)
+                {
+                    Console.Write(project.Name + " ");
+                }
+                Console.WriteLine();
                 Console.Write("Enter Project Name to delete: ");
                 string projectName = Console.ReadLine() ?? "";
-                if (await Database.DeleteProjectAsync(projectName))
+                if (Database.DeleteProjectAsync(projectName).Result)
                 {
                     Console.WriteLine($"Project with Name {projectName} deleted successfully.");
                 }
@@ -73,13 +103,19 @@ namespace FTHEL8.Menu
             }
         }
 
-        private async void DeleteClass()
+        private void DeleteClass()
         {
             try
             {
+                List<Class> classList = Database.ReadClassesAsync().Result;
+                foreach (Class class_ in classList)
+                {
+                    Console.Write(class_.Name + " ");
+                }
+                Console.WriteLine();
                 Console.Write("Enter Class Name to delete: ");
                 string className = Console.ReadLine() ?? "";
-                if (await Database.DeleteClassAsync(className))
+                if (Database.DeleteClassAsync(className).Result)
                 {
                     Console.WriteLine($"Class with Name {className} deleted successfully.");
                 }
@@ -94,20 +130,5 @@ namespace FTHEL8.Menu
             }
         }
 
-        public Task Display()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Menu GetNextMenu()
-        {
-            Console.WriteLine("Going back to Main Menu.");
-            return new MainMenu();
-        }
-
-        public Menu GetPreviousMenu()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

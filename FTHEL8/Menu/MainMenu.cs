@@ -12,10 +12,10 @@ namespace FTHEL8.Menu
 
         private void InitializeOptions()
         {
-            Add("QueryMenu",ShowQueryMenu);
-            Add("AddMenu", ShowAddMenu);
-            Add("DeleteMenu", ShowDeleteMenu);
-            Add("ModifyMenu", ShowModifyMenu);
+            Add("Go to the query menu",ShowQueryMenu);
+            Add("Go to the add menu", ShowAddMenu);
+            Add("Go to the modify menu", ShowModifyMenu);
+            Add("Go to the delete menu", ShowDeleteMenu);
             Add("Exit", Exit);
         }
 
@@ -27,23 +27,26 @@ namespace FTHEL8.Menu
 
         private void ShowAddMenu()
         {
-            Console.WriteLine("AddMenu selected");
+            AddMenu addMenu = new AddMenu(this);
+            addMenu.Display();
         }
 
         private void ShowQueryMenu()
         {
-            QueryMenu querymenu = new QueryMenu(this);
-            querymenu.Display();
+            QueryMenu queryMenu = new QueryMenu(this);
+            queryMenu.Display();
         }
 
         private void ShowDeleteMenu()
         {
-            Console.WriteLine("DeleteMenu selected");
+            DeleteMenu deleteMenu = new DeleteMenu(this);
+            deleteMenu.Display();
         }
 
         private void ShowModifyMenu()
         {
-            Console.WriteLine("ModifyMenu selected");
+            ModifyMenu modifyMenu = new ModifyMenu(this);
+            modifyMenu.Display();
         }
     }
 }

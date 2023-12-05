@@ -16,10 +16,5 @@ namespace FTHEL8.Menu
             Name = name;
             Callback = callback;
         }
-
-        public override string ToString()
-        {
-            return Name;
-        }
     }
 }
