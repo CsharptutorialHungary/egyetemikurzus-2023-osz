@@ -1,0 +1,92 @@
+﻿[
+  {
+    "EmployeeId": "emp1",
+    "Name": "Employee 1",
+    "PhoneNumber": "123456789",
+    "Email": "emp1@example.com",
+    "Position": "Position 1",
+    "Salary": 50000,
+    "DepartmentName": "Department1"
+  },
+  {
+    "EmployeeId": "emp2",
+    "Name": "Employee 2",
+    "PhoneNumber": "234567890",
+    "Email": "emp2@example.com",
+    "Position": "Position 2",
+    "Salary": 55000,
+    "DepartmentName": "Department2"
+  },
+  {
+    "EmployeeId": "emp3",
+    "Name": "Employee 3",
+    "PhoneNumber": "345678901",
+    "Email": "emp3@example.com",
+    "Position": "Position 3",
+    "Salary": 60000,
+    "DepartmentName": "Department3"
+  },
+  {
+    "EmployeeId": "emp4",
+    "Name": "Employee 4",
+    "PhoneNumber": "456789012",
+    "Email": "emp4@example.com",
+    "Position": "Position 4",
+    "Salary": 65000,
+    "DepartmentName": "Department4"
+  },
+  {
+    "EmployeeId": "emp5",
+    "Name": "Employee 5",
+    "PhoneNumber": "567890123",
+    "Email": "emp5@example.com",
+    "Position": "Position 5",
+    "Salary": 70000,
+    "DepartmentName": "Department5"
+  },
+  {
+    "EmployeeId": "emp6",
+    "Name": "Employee 6",
+    "PhoneNumber": "678901234",
+    "Email": "emp6@example.com",
+    "Position": "Position 6",
+    "Salary": 75000,
+    "DepartmentName": "Department6"
+  },
+  {
+    "EmployeeId": "emp7",
+    "Name": "Employee 7",
+    "PhoneNumber": "789012345",
+    "Email": "emp7@example.com",
+    "Position": "Position 7",
+    "Salary": 80000,
+    "DepartmentName": "Department7"
+  },
+  {
+    "EmployeeId": "emp8",
+    "Name": "Employee 8",
+    "PhoneNumber": "890123456",
+    "Email": "emp8@example.com",
+    "Position": "Position 8",
+    "Salary": 85000,
+    "DepartmentName": "Department8"
+  },
+  {
+    "EmployeeId": "emp9",
+    "Name": "Employee 9",
+    "PhoneNumber": "901234567",
+    "Email": "emp9@example.com",
+    "Position": "Position 9",
+    "Salary": 90000,
+    "DepartmentName": "Department9"
+  },
+  {
+    "EmployeeId": "emp10",
+    "Name": "Employee 10",
+    "PhoneNumber": "012345678",
+    "Email": "emp10@example.com",
+    "Position": "Position 10",
+    "Salary": 95000,
+    "DepartmentName": "Department10"
+  }
+]

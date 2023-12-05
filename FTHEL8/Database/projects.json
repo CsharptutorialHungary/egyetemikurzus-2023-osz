@@ -1,0 +1,72 @@
+﻿[
+  {
+    "Name": "Project1",
+    "Description": "Darab",
+    "Deadline": "2000-12-27T00:00:00",
+    "ProjectLeader": "emp5",
+    "ClassName": "Class5"
+  },
+  {
+    "Name": "Project2",
+    "Description": "Project 2 Description",
+    "Deadline": "2023-10-31T00:00:00",
+    "ProjectLeader": "emp2",
+    "ClassName": "Class2"
+  },
+  {
+    "Name": "Project3",
+    "Description": "Project 3 Description",
+    "Deadline": "2023-10-31T00:00:00",
+    "ProjectLeader": "emp3",
+    "ClassName": "Class3"
+  },
+  {
+    "Name": "Project4",
+    "Description": "Project 4 Description",
+    "Deadline": "2023-10-31T00:00:00",
+    "ProjectLeader": "emp4",
+    "ClassName": "Class4"
+  },
+  {
+    "Name": "Project5",
+    "Description": "Project 5 Description",
+    "Deadline": "2023-10-31T00:00:00",
+    "ProjectLeader": "emp5",
+    "ClassName": "Class5"
+  },
+  {
+    "Name": "Project6",
+    "Description": "Project 6 Description",
+    "Deadline": "2023-12-31T00:00:00",
+    "ProjectLeader": "emp6",
+    "ClassName": "Class6"
+  },
+  {
+    "Name": "Project7",
+    "Description": "Project 7 Description",
+    "Deadline": "2023-12-31T00:00:00",
+    "ProjectLeader": "emp7",
+    "ClassName": "Class7"
+  },
+  {
+    "Name": "Project8",
+    "Description": "Project 8 Description",
+    "Deadline": "2023-12-31T00:00:00",
+    "ProjectLeader": "emp8",
+    "ClassName": "Class8"
+  },
+  {
+    "Name": "Project9",
+    "Description": "Project 9 Description",
+    "Deadline": "2023-12-31T00:00:00",
+    "ProjectLeader": "emp9",
+    "ClassName": "Class9"
+  },
+  {
+    "Name": "Project10",
+    "Description": "Project 10 Description",
+    "Deadline": "2023-12-31T00:00:00",
+    "ProjectLeader": "emp10",
+    "ClassName": "Class10"
+  }
+]
