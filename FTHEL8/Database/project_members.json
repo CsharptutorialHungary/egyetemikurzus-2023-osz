@@ -1,82 +1,70 @@
-[
-    {
-        "employee_id": "emp1",
-        "project_name": "Project1"
-    },
-    {
-        "employee_id": "emp2",
-        "project_name": "Project1"
-    },
-    {
-        "employee_id": "emp3",
-        "project_name": "Project2"
-    },
-    {
-        "employee_id": "emp4",
-        "project_name": "Project2"
-    },
-    {
-        "employee_id": "emp5",
-        "project_name": "Project3"
-    },
-    {
-        "employee_id": "emp6",
-        "project_name": "Project3"
-    },
-    {
-        "employee_id": "emp7",
-        "project_name": "Project4"
-    },
-    {
-        "employee_id": "emp8",
-        "project_name": "Project4"
-    },
-    {
-        "employee_id": "emp9",
-        "project_name": "Project5"
-    },
-    {
-        "employee_id": "emp10",
-        "project_name": "Project5"
-    },
-    {
-        "employee_id": "emp1",
-        "project_name": "Project2"
-    },
-    {
-        "employee_id": "emp2",
-        "project_name": "Project3"
-    },
-    {
-        "employee_id": "emp3",
-        "project_name": "Project4"
-    },
-    {
-        "employee_id": "emp4",
-        "project_name": "Project5"
-    },
-    {
-        "employee_id": "emp5",
-        "project_name": "Project6"
-    },
-    {
-        "employee_id": "emp6",
-        "project_name": "Project7"
-    },
-    {
-        "employee_id": "emp7",
-        "project_name": "Project8"
-    },
-    {
-        "employee_id": "emp8",
-        "project_name": "Project9"
-    },
-    {
-        "employee_id": "emp9",
-        "project_name": "Project10"
-    },
-    {
-        "employee_id": "emp10",
-        "project_name": "Project1"
-    }
+﻿[
+  {
+    "ProjectName": "Project1",
+    "Employees": [
+      "emp1",
+      "emp2",
+      "emp3",
+      "emp4"
+    ]
+  },
+  {
+    "ProjectName": "Project2",
+    "Employees": [
+      "emp3",
+      "emp4"
+    ]
+  },
+  {
+    "ProjectName": "Project3",
+    "Employees": [
+      "emp5",
+      "emp6"
+    ]
+  },
+  {
+    "ProjectName": "Project4",
+    "Employees": [
+      "emp7",
+      "emp8",
+      "emp1"
+    ]
+  },
+  {
+    "ProjectName": "Project5",
+    "Employees": [
+      "emp9",
+      "emp10"
+    ]
+  },
+  {
+    "ProjectName": "Project6",
+    "Employees": [
+      "emp1"
+    ]
+  },
+  {
+    "ProjectName": "Project7",
+    "Employees": [
+      "emp2"
+    ]
+  },
+  {
+    "ProjectName": "Project8",
+    "Employees": [
+      "emp3"
+    ]
+  },
+  {
+    "ProjectName": "Project9",
+    "Employees": [
+      "emp4"
+    ]
+  },
+  {
+    "ProjectName": "Project10",
+    "Employees": [
+      "emp5"
+    ]
+  }
 ]

@@ -1,62 +1,62 @@
-[
-    {
-        "class_name": "Class1",
-        "department_leader": "emp1",
-        "name": "Department1",
-        "task": "Department 1 Task"
-    },
-    {
-        "class_name": "Class2",
-        "department_leader": "emp2",
-        "name": "Department2",
-        "task": "Department 2 Task"
-    },
-    {
-        "class_name": "Class3",
-        "department_leader": "emp3",
-        "name": "Department3",
-        "task": "Department 3 Task"
-    },
-    {
-        "class_name": "Class4",
-        "department_leader": "emp4",
-        "name": "Department4",
-        "task": "Department 4 Task"
-    },
-    {
-        "class_name": "Class5",
-        "department_leader": "emp5",
-        "name": "Department5",
-        "task": "Department 5 Task"
-    },
-    {
-        "class_name": "Class6",
-        "department_leader": "emp6",
-        "name": "Department6",
-        "task": "Department 6 Task"
-    },
-    {
-        "class_name": "Class7",
-        "department_leader": "emp7",
-        "name": "Department7",
-        "task": "Department 7 Task"
-    },
-    {
-        "class_name": "Class8",
-        "department_leader": "emp8",
-        "name": "Department8",
-        "task": "Department 8 Task"
-    },
-    {
-        "class_name": "Class9",
-        "department_leader": "emp9",
-        "name": "Department9",
-        "task": "Department 9 Task"
-    },
-    {
-        "class_name": "Class10",
-        "department_leader": "emp10",
-        "name": "Department10",
-        "task": "Department 10 Task"
-    }
+﻿[
+  {
+    "Name": "Department1",
+    "Task": "Department 1 Task",
+    "DepartmentLeader": "emp1",
+    "ClassName": "Class1"
+  },
+  {
+    "Name": "Department2",
+    "Task": "Department 2 Task",
+    "DepartmentLeader": "emp2",
+    "ClassName": "Class2"
+  },
+  {
+    "Name": "Department3",
+    "Task": "Department 3 Task",
+    "DepartmentLeader": "emp3",
+    "ClassName": "Class3"
+  },
+  {
+    "Name": "Department4",
+    "Task": "Department 4 Task",
+    "DepartmentLeader": "emp4",
+    "ClassName": "Class4"
+  },
+  {
+    "Name": "Department5",
+    "Task": "Department 5 Task",
+    "DepartmentLeader": "emp5",
+    "ClassName": "Class5"
+  },
+  {
+    "Name": "Department6",
+    "Task": "Department 6 Task",
+    "DepartmentLeader": "emp6",
+    "ClassName": "Class6"
+  },
+  {
+    "Name": "Department7",
+    "Task": "Department 7 Task",
+    "DepartmentLeader": "emp7",
+    "ClassName": "Class7"
+  },
+  {
+    "Name": "Department8",
+    "Task": "Department 8 Task",
+    "DepartmentLeader": "emp8",
+    "ClassName": "Class8"
+  },
+  {
+    "Name": "Department9",
+    "Task": "Department 9 Task",
+    "DepartmentLeader": "emp9",
+    "ClassName": "Class9"
+  },
+  {
+    "Name": "Department10",
+    "Task": "Department 10 Task",
+    "DepartmentLeader": "emp10",
+    "ClassName": "Class10"
+  }
 ]

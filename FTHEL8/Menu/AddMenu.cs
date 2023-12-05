@@ -9,12 +9,12 @@ namespace FTHEL8.Menu
         public AddMenu(MainMenu mainMenu)
         {
             this.mainMenu = mainMenu;
-            Add("Add Employee", AddEmployee);
-            Add("Add Department", AddDepartment);
-            Add("Add Class", AddClass);
-            Add("Add Project", AddProject);
-            Add("Add Employee to Project", AddEmployeeToProject);
-            Add("Back to Main Menu", GetPreviousMenu);
+            Add("Add an employee", AddEmployee);
+            Add("Add a department", AddDepartment);
+            Add("Add a class", AddClass);
+            Add("Add a project", AddProject);
+            Add("Add employee to a project", AddEmployeeToProject);
+            Add("Back to main menu", GetPreviousMenu);
         }
 
         public void GetPreviousMenu()

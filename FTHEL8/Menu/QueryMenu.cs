@@ -17,7 +17,7 @@ namespace FTHEL8.Menu
             Add("Get Project Members Data", async () => await GetProjectMembersDataAsync());
             Add("Get Project with the Most Workers", async () => await GetProjectThatHasTheMostWorkersAsync());
             Add("Get Highest Paid Employees Data", async () => await GetHighestPaidEmployeesDataAsync());
-            Add("Back to Main Menu", GetPreviousMenu);
+            Add("Back to main menu", GetPreviousMenu);
         }
 
         public void GetPreviousMenu()

@@ -9,11 +9,11 @@ namespace FTHEL8.Menu
         public ModifyMenu(MainMenu mainMenu)
         {
             this.mainMenu = mainMenu;
-            Add("Modify Class", ModifyClass);
-            Add("Modify Project", ModifyProject);
-            Add("Modify Project Members", ModifyProjectMembers);
-            Add("Modify Employee", ModifyEmployee);
-            Add("Back to Main Menu", GetPreviousMenu);
+            Add("Modify a class", ModifyClass);
+            Add("Modify a project", ModifyProject);
+            Add("Modify project members", ModifyProjectMembers);
+            Add("Modify an employee", ModifyEmployee);
+            Add("Back to main menu", GetPreviousMenu);
         }
 
         public void GetPreviousMenu()

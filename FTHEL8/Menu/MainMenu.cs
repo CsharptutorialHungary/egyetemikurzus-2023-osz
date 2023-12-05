@@ -7,12 +7,7 @@ namespace FTHEL8.Menu
     {
         public MainMenu() : base()
         {
-            InitializeOptions();
-        }
-
-        private void InitializeOptions()
-        {
-            Add("Go to the query menu",ShowQueryMenu);
+            Add("Go to the query menu", ShowQueryMenu);
             Add("Go to the add menu", ShowAddMenu);
             Add("Go to the modify menu", ShowModifyMenu);
             Add("Go to the delete menu", ShowDeleteMenu);
