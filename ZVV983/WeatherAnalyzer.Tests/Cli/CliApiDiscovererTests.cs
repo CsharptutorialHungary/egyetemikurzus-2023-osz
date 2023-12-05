@@ -10,15 +10,15 @@ public class CliApiDiscovererTests
         var config = new ConfigurationBuilder().Build();
         var discoverer = new CliApiDiscoverer<IGeocodeApi>(config);
 
-        var impls = discoverer.LoadImplementations();
+        var implementations = discoverer.LoadImplementations();
 
         Assert.Multiple(() =>
         {
-            foreach (var (name, impl) in impls)
+            foreach (var (implementationName, geocodeApi) in implementations)
             {
-                Assert.That(impl,
+                Assert.That(geocodeApi,
                     Is.InstanceOf<ICliDiscoverableApi>().And.Property(nameof(ICliDiscoverableApi.CliName))
-                        .EqualTo(name));
+                        .EqualTo(implementationName));
             }
         });
     }
@@ -29,15 +29,15 @@ public class CliApiDiscovererTests
         var config = new ConfigurationBuilder().Build();
         var discoverer = new CliApiDiscoverer<IWeatherForecastApi>(config);
 
-        var impls = discoverer.LoadImplementations();
+        var implementations = discoverer.LoadImplementations();
 
         Assert.Multiple(() =>
         {
-            foreach (var (name, impl) in impls)
+            foreach (var (implementationName, weatherForecastApi) in implementations)
             {
-                Assert.That(impl,
+                Assert.That(weatherForecastApi,
                     Is.InstanceOf<ICliDiscoverableApi>().And.Property(nameof(ICliDiscoverableApi.CliName))
-                        .EqualTo(name));
+                        .EqualTo(implementationName));
             }
         });
     }
