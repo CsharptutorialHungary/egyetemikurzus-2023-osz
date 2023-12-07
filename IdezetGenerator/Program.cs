@@ -1,61 +1,57 @@
 ﻿using System.Text;
-
+record Quote(string Mood, string Text);
 class Program
 {
-    static void Main()
+    static async Task Main()
     {
-     
-        string csvFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"idezetek.csv");
-
-        Console.WriteLine(csvFilePath);
-
-        if (!File.Exists(csvFilePath))
+        try
         {
-            Console.WriteLine("Hiba: A CSV fájl nem található.");
-            return;
+            var quotes = await GetQuote("idezetek.csv");
+
+            Console.Write("Szia! Hogy hívnak:");
+            string name = Console.ReadLine();
+            Console.Write("Szia " + name + "! Milyen kedved van ma?(boldog, szomorú, mérges, unalom, irigy, ideges, semleges):");
+            string mood = Console.ReadLine()?.ToLower();
+            var res = quotes.Where(q => q.Mood == mood).OrderBy(q => q.Text);
+            if (res.Any())
+            {
+                Random random = new Random();
+                var randomQuote=res.ElementAt(random.Next(res.Count()));
+                Console.WriteLine("Az idézet: " + randomQuote.Text);
+            }
+            else
+            {
+                Console.WriteLine("Nincs idézet a megadott kedvre.");
+            }
         }
-
-        Console.Write("Szia! Hogy hívnak:");
-        string name = Console.ReadLine();
-        Console.Write("Szia "+name+"! Milyen kedved van ma?(boldog, szomorú, mérges, unalom, irigy, ideges, semleges):");
-        string kedv = Console.ReadLine();
-
-        string quotes= GetQuote(csvFilePath, kedv);
-
-        if (quotes != null)
+        catch(Exception ex)
         {
-            Console.WriteLine("Az idézet: " + quotes);
-        }
-        else
-        {
-            Console.WriteLine("Nincs idézet a megadott kedvre.");
+            Console.WriteLine("Hiba történt: " + ex.Message);
         }
     }
 
-    static string GetQuote(string filePath, string kedv)
+
+    static async Task<List<Quote>> GetQuote(string filePath)
     {
     
         string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
 
-        List<string> quotes = new List<string>();
+        List<Quote> quotes = new List<Quote>();
 
-        foreach (var line in lines)
+        using (var streamReader = new StreamReader(filePath))
         {
-            string[] parts = line.Split(';');
-
-            if (parts.Length >= 2 && parts[0].Trim().Equals(kedv, StringComparison.OrdinalIgnoreCase))
+            string line;
+            while((line= await streamReader.ReadLineAsync()) != null)
             {
-                quotes.Add(parts[1].Trim());
+                var parts= line.Split(';');
+                if (parts.Length == 2)
+                {
+                    quotes.Add(new Quote(parts[0], parts[1]));
+                }
             }
         }
 
-        if (quotes.Count > 0)
-        {
-            Random random = new Random();
-            int randomIndex = random.Next(quotes.Count);
-            return quotes[randomIndex];
-        }
+        return quotes;
 
-        return null;
     }
 }
