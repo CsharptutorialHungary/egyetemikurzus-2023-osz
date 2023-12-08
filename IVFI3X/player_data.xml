@@ -3,6 +3,7 @@
   <Player>
     <Name>mark</Name>
     <TopScores>
+      <int>5</int>
       <int>3</int>
     </TopScores>
   </Player>
