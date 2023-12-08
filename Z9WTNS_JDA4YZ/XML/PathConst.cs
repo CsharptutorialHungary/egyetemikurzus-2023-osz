@@ -1,6 +1,6 @@
 ﻿namespace Z9WTNS_JDA4YZ.Xml
 {
-    internal static class PathConst
+    public  static class PathConst
     {
         private static string ProgramPath { get => AppContext.BaseDirectory; }
 

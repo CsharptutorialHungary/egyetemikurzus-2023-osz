@@ -5,8 +5,10 @@ using Z9WTNS_JDA4YZ.Xml;
 
 namespace Z9WTNS_JDA4YZ
 {
-    internal static class AccountHandler
-    {
+    public static class AccountHandler
+    {       
+
+        
         internal static User? Login()
         {
             List<User> users = XmlHandler.ReadObjectsFromXml<User>(PathConst.UsersPath);
@@ -37,7 +39,7 @@ namespace Z9WTNS_JDA4YZ
             return null;
         }
 
-        internal static User? Register()
+        public static User? Register()
         {
             Console.Clear();
             Console.WriteLine("Most a regisztrációs menü sorban vagy!");
@@ -159,7 +161,7 @@ namespace Z9WTNS_JDA4YZ
             Console.WriteLine();
         }
 
-        private static decimal CalculateNetIncome(decimal grossIncome, User user)
+        public static decimal CalculateNetIncome(decimal grossIncome, User user)
         {
             if (user.isUnder25 == true)
                 return grossIncome / 1.226993865m;
@@ -167,7 +169,7 @@ namespace Z9WTNS_JDA4YZ
             return grossIncome / 1.5037593398m;
         }
 
-        private static decimal SavedMoney(decimal grossIncome, User user)
+        public static decimal SavedMoney(decimal grossIncome, User user)
         {
             User tempOver25 = new()
             {
