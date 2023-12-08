@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="idezetek.csv">
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="idezetek.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
