@@ -15,6 +15,7 @@ namespace ToDoListApplication.Commands
         }
         public void Run()
         {
+            RunOptionsCommandOnceAtStart();
             while (true)
             {
                 Console.Write("Command:");
@@ -33,6 +34,18 @@ namespace ToDoListApplication.Commands
                         Console.WriteLine($"This command doesn't exist: {userInput}");
                     }
                 }
+            }
+        }
+
+        private void RunOptionsCommandOnceAtStart()
+        {
+            var optionsCommand = _cmdloader.Commands
+                .Where(command => command.Name == "options")
+                .FirstOrDefault();
+
+            if (optionsCommand != null)
+            {
+                optionsCommand.Execute();
             }
         }
     }

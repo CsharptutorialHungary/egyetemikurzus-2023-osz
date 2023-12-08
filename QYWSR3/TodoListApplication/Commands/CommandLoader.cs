@@ -12,7 +12,7 @@ namespace ToDoListApplication.Commands
         public CommandLoader(IHost host, TodoList? todoList = null)
         {
             _host = host;
-            _todoList = todoList ?? new TodoList();
+            _todoList = todoList ?? new TodoList(_host);
             LoadCommands();
         }
 

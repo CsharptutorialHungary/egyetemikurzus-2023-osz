@@ -11,8 +11,11 @@ namespace ToDoListApplication.TODOlist
 
         private int nextTaskId = 1;
 
-        public TodoList()
+        private readonly IHost _host;
+
+        public TodoList(IHost host)
         {
+            _host = host;
             tasks = new List<TodoTask>();
         }
 
@@ -27,42 +30,43 @@ namespace ToDoListApplication.TODOlist
                 }
                 else
                 {
-                    Console.WriteLine("Couldn't add task. The due time should be after the actual time!");
+                    _host.WriteLine("Couldn't add task. The due time should be after the actual time!");
                 }
             }
             else
             {
-                Console.WriteLine("Couldn't add task due to incorrect date format!");
+                _host.WriteLine("Couldn't add task due to incorrect date format!");
             }
         }
 
-        public void RemoveTask(int taskId)
+        public async void RemoveTask(int taskId)
         {
             TodoTask taskToRemove = tasks.Find(task => task.Id == taskId);
 
             if (taskToRemove != null && tasks.Remove(taskToRemove))
             {
-                Console.WriteLine($"Task with ID {taskId} removed successfully.");
+                await ReorganizeTasksIds();
+                _host.WriteLine($"Task with ID {taskId} removed successfully.");
             }
             else
             {
-                Console.WriteLine($"Task with ID {taskId} not found.");
+                _host.WriteLine($"Task with ID {taskId} not found.");
             }
         }
 
         public void DisplayTasks()
         {
-            Console.WriteLine("Tasks in the to-do list:");
+            _host.WriteLine("Tasks in the to-do list:");
 
             if (tasks.Count == 0)
             {
-                Console.WriteLine("No tasks found.");
+                _host.WriteLine("No tasks found.");
             }
             else
             {
                 foreach (var task in tasks)
                 {
-                    Console.WriteLine($"ID: {task.Id}, Task: {task.Description} DueTime: {task.DueTime}");
+                    _host.WriteLine($"ID: {task.Id}, Task: {task.Description} DueTime: {task.DueTime}");
                 }
             }
         }
@@ -82,11 +86,11 @@ namespace ToDoListApplication.TODOlist
                     }
                 }
 
-                Console.WriteLine($"Tasks updated!");
+                _host.WriteLine($"Tasks updated!");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error updating tasks to file: {ex.Message}");
+                _host.WriteLine($"Error updating tasks to file: {ex.Message}");
             }
         }
 
@@ -111,21 +115,22 @@ namespace ToDoListApplication.TODOlist
                     if (loadedTasks != null)
                     {
                         tasks = loadedTasks;
-                        Console.WriteLine($"Tasks loaded successfully from {path}!");
+                        nextTaskId = tasks.Count + 1;
+                        _host.WriteLine($"Tasks loaded successfully from {path}!");
                     }
                     else
                     {
-                        Console.WriteLine($"Error loading tasks from {path}. JSON data is invalid.");
+                        _host.WriteLine($"Error loading tasks from {path}. JSON data is invalid.");
                     }
                 }
                 else
                 {
-                    Console.WriteLine($"File {fileName} not found. No tasks loaded.");
+                    _host.WriteLine($"File {fileName} not found. No tasks loaded.");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading tasks from file: {ex.Message}");
+                _host.WriteLine($"Error loading tasks from file: {ex.Message}");
             }
         }
 
@@ -134,11 +139,12 @@ namespace ToDoListApplication.TODOlist
             if (confirmation == "yes")
             {
                 tasks.Clear();
-                Console.WriteLine("TodoList deleted!");
+                nextTaskId = 1;
+                _host.WriteLine("TodoList deleted!");
             }
             else
             {
-                Console.WriteLine("Delete, canceled!");
+                _host.WriteLine("Delete, canceled!");
             }
         }
 
@@ -164,11 +170,11 @@ namespace ToDoListApplication.TODOlist
 
         public void DisplayTasksByDueTime()
         {
-            Console.WriteLine("Tasks in the to-do list sorted by DueTime:");
+            _host.WriteLine("Tasks in the to-do list sorted by DueTime:");
 
             if (tasks.Count == 0)
             {
-                Console.WriteLine("No tasks found.");
+                _host.WriteLine("No tasks found.");
             }
             else
             {
@@ -178,13 +184,22 @@ namespace ToDoListApplication.TODOlist
 
                 foreach (var group in groupedTasks)
                 {
-                    Console.WriteLine($"DueTimeDay: {group.Key:yyyy. MM. dd.}");
+                    _host.WriteLine($"DueTimeDay: {group.Key:yyyy. MM. dd.}");
 
                     foreach (var task in group)
                     {
-                        Console.WriteLine($"  ID: {task.Id}, Task: {task.Description}   DueHour: {task.DueTime:HH}h");
+                        _host.WriteLine($"  ID: {task.Id}, Task: {task.Description}   DueHour: {task.DueTime:HH}h");
                     }
                 }
+            }
+        }
+
+        private async Task ReorganizeTasksIds()
+        {
+            nextTaskId = 1;
+            foreach (var task in tasks)
+            {
+                task.Id = nextTaskId++;
             }
         }
     }
