@@ -1,72 +1,67 @@
-using System;
-using System.IO;
-using NUnit.Framework;
 using Z9WTNS_JDA4YZ.DataClasses;
-using Z9WTNS_JDA4YZ.Xml;
-using Z9WTNS_JDA4YZ;
 
 namespace Z9WTNS_JDA4YZ.Test
 {
     [TestFixture]
     internal class AccountHandlerTests
     {
-
         [Test]
         public void CalculateNetIncome_Under25_ReturnsCorrectNetIncome()
         {
-       
             decimal grossIncome = 50000m;
             User under25User = new User { isUnder25 = true };
 
-       
             decimal netIncome = AccountHandler.CalculateNetIncome(grossIncome, under25User);
-
-      
             decimal expectedNetIncome = grossIncome / 1.226993865m;
-            Assert.AreEqual(expectedNetIncome, netIncome, "Net income calculation is incorrect for users under 25.");
+
+            Assert.That(netIncome, Is.EqualTo(expectedNetIncome).Within(.0001));
         }
 
         [Test]
         public void CalculateNetIncome_Above25_ReturnsCorrectNetIncome()
         {
-      
             decimal grossIncome = 70000m;
             User above25User = new User { isUnder25 = false };
 
-       
             decimal netIncome = AccountHandler.CalculateNetIncome(grossIncome, above25User);
-
-        
             decimal expectedNetIncome = grossIncome / 1.5037593398m;
-            Assert.AreEqual(expectedNetIncome, netIncome, "Net income calculation is incorrect for users above 25.");
+
+            Assert.That(netIncome, Is.EqualTo(expectedNetIncome).Within(.0001));
         }
+
         [Test]
         public void SavedMoney_CalculatesNonNegativeSavings()
         {
-
             decimal grossIncome = 60000m;
             User under25User = new User { isUnder25 = true };
 
             decimal savings = AccountHandler.SavedMoney(grossIncome, under25User);
-            Assert.GreaterOrEqual(savings, 0m, "The calculated savings should not be negative.");
+
+            Assert.That(savings, Is.GreaterThanOrEqualTo(0));
         }
 
         [Test]
-        public void SavedMoney_CalculatesCorrectSavings()
+        public void SavedMoney_CorrectInput_CalculatesCorrectSavings()
         {
-      
             decimal grossIncome = 80000m;
-            User under25User = new User { isUnder25 = true };
-
+            User under25User = new() { isUnder25 = true };
+            User over25User = new() { isUnder25 = false };
 
             decimal actualSavings = AccountHandler.SavedMoney(grossIncome, under25User);
+            decimal expectedSavings = AccountHandler.CalculateNetIncome(grossIncome, under25User) - AccountHandler.CalculateNetIncome(grossIncome, over25User);
 
-            User tempOver25 = new User { isUnder25 = false };
-            decimal expectedSavings = AccountHandler.CalculateNetIncome(grossIncome, under25User) - AccountHandler.CalculateNetIncome(grossIncome, tempOver25);
-                                      
+            Assert.That(actualSavings, Is.EqualTo(expectedSavings).Within(0.0001m));
+        }
 
-            Assert.That(actualSavings, Is.EqualTo(expectedSavings).Within(0.0001m),
-                "The calculated savings do not match the expected value within the acceptable tolerance.");
+        [Test]
+        public void CalculateNetExpense_CorrectInput_CalculatesCorrectExpenseAmount()
+        {
+            decimal grossExpense = 80000m;
+
+            decimal netExpense = AccountHandler.CalculateNetExpense(grossExpense);
+            decimal actualNetExpense = grossExpense / 1.5037593398m;
+
+            Assert.That(netExpense, Is.EqualTo(actualNetExpense).Within(0.0001m));
         }
     }
 }

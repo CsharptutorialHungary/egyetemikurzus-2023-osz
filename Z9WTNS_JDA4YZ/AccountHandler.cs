@@ -7,8 +7,6 @@ namespace Z9WTNS_JDA4YZ
 {
     public static class AccountHandler
     {       
-
-        
         internal static User? Login()
         {
             List<User> users = XmlHandler.ReadObjectsFromXml<User>(PathConst.UsersPath);
@@ -179,7 +177,7 @@ namespace Z9WTNS_JDA4YZ
             return CalculateNetIncome(grossIncome, user) - CalculateNetIncome(grossIncome, tempOver25);
         }
 
-        private static decimal CalculateNetExpense(decimal grossExpense)
+        public static decimal CalculateNetExpense(decimal grossExpense)
         {
             return grossExpense / 1.5037593398m;
         }
