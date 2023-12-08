@@ -1,7 +1,6 @@
 ﻿using IdezetGenerator.Modell;
 using Newtonsoft.Json;
 using System.Text;
-using System.Text.Json;
 
 class Program
 {
@@ -15,6 +14,13 @@ class Program
             Console.Write("Szia! Hogy hívnak:");
             Console.ResetColor();
             string name = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("Kérlek, adj meg egy érvényes nevet!");
+                Console.ResetColor();
+                name = Console.ReadLine();
+            }
 
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("Szia " + name + "! Szeretnél egy új idézetet létrehozni?(igen/nem)");
@@ -22,7 +28,9 @@ class Program
             string wantANewQuote = Console.ReadLine()?.ToLower();
             if (wantANewQuote == "igen")
             {
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Console.Write("Kérlek, add meg az új idézet hangulatát: ");
+                Console.ResetColor();
                 string newMood = Console.ReadLine()?.ToLower();
                 while(string.IsNullOrWhiteSpace(newMood) || !existingMood(newMood))
                 {
@@ -32,15 +40,15 @@ class Program
                     newMood = Console.ReadLine()?.ToLower();
                 }
 
-
-
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Console.Write("Kérlek, írd be az új idézet szövegét: ");
+                Console.ResetColor();
                 string newText = Console.ReadLine();
 
                 while (string.IsNullOrWhiteSpace(newText))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("Kérlek, adj meg egy érvényes hangulatot!");
+                    Console.Write("Kérlek, adj meg egy tényleges idézetet!");
                     Console.ResetColor();
                     newText = Console.ReadLine()?.ToLower();
                 }
@@ -49,14 +57,6 @@ class Program
                 await saveQuotes("idezetek.json", quotes);
             }
            
-
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Kérlek, adj meg egy érvényes nevet!");
-                Console.ResetColor();
-                return;
-            }
 
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("Milyen kedved van ma?(boldog, szomorú, mérges, unalom, irigy, ideges, semleges):");
@@ -67,9 +67,9 @@ class Program
             if (string.IsNullOrWhiteSpace(mood) || !existingMood(mood))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Kérlek, adj meg egy érvényes hangulatot!");
+                Console.Write("Kérlek, adj meg egy érvényes hangulatot!");
                 Console.ResetColor();
-                return;
+                mood = Console.ReadLine()?.ToLower();
             }
 
             var res = quotes.Where(q => q.mood == mood).OrderBy(q => q.text);
