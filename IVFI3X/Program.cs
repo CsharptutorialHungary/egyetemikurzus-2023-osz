@@ -7,7 +7,7 @@ string name = Console.ReadLine();
 Player player = new Player(name);
 
 XmlSerializer serializer = new XmlSerializer(typeof(List<Player>));
-List<Player>? existingPlayers = null;
+List<Player> existingPlayers = null;
 
 string projectDirectory = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..\\..\\..\\"));
 string path = Path.Combine(projectDirectory, "player_data.xml");
@@ -21,9 +21,9 @@ try
     {
         try
         {
-            existingPlayers = serializer.Deserialize(reader) as List<Player>;
+            existingPlayers = (List<Player>)serializer.Deserialize(reader);
         }
-        catch (InvalidOperationException)
+        catch (InvalidOperationException e)
         {
             existingPlayers = new List<Player>();
             noPlayersSaved = true;
@@ -48,7 +48,7 @@ else
 
     existingPlayers.Add(player);
 
-    using (StreamWriter writer = new StreamWriter(path))
+    await using (StreamWriter writer = new StreamWriter(path))
     {
         serializer.Serialize(writer, existingPlayers);
     }
@@ -144,7 +144,7 @@ int PlayGame(PlayCell[,] playMap)
 
 int NonVisibleCount(PlayCell[,] playMap)
 {
-    return playMap.Cast<PlayCell>().AsParallel().Count(cell => cell.IsVisible);
+    return playMap.Cast<PlayCell>().AsParallel().Count(cell => !cell.IsVisible);
 }
 
 
