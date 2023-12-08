@@ -1,0 +1,1 @@
+[{"Id":1,"Description":"f\u0171ny\u00EDr\u00E1ss","DueTime":"2023-12-08T20:00:00"},{"Id":2,"Description":"hajmos\u00E1s","DueTime":"2023-12-09T07:00:00"},{"Id":3,"Description":"reggeli","DueTime":"2023-12-09T06:00:00"},{"Id":4,"Description":"mos\u00E1s","DueTime":"2023-12-10T12:00:00"},{"Id":1,"Description":"falm\u00E1sz\u00E1s","DueTime":"2023-12-08T22:00:00"}]
