@@ -16,7 +16,9 @@ namespace ToDoListApplication.Commands
 
         public override async void Execute()
         {
-            Host.WriteLine("Type in the name of the TODO list you want to update! It must be .json!");
+            Host.WriteLine("Type in the filename of your TODO-list to update it!");
+            Host.WriteLine("If your TODO-list isnt in a file yet, dont worry. I will save it.");
+            Host.WriteLine("It must be .json! (example: alma.json)");
             Host.Write("Input:");
             string fileNAME = Host.ReadLine();
             await todoList.UpdateTODO(fileNAME);

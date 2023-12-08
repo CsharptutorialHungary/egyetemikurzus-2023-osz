@@ -75,18 +75,22 @@ namespace ToDoListApplication.TODOlist
         {
             try
             {
-                string path = await combineDesktopPathToFileName(fileName);
-                string jsonString = JsonSerializer.Serialize(tasks);
-
-                using (FileStream fs = File.Open(path, FileMode.Create, FileAccess.Write))
+                if (IsJsonFile(fileName))
                 {
-                    using (StreamWriter sw = new StreamWriter(fs))
+                    string path = await combineDesktopPathToFileName(fileName);
+                    string jsonString = JsonSerializer.Serialize(tasks);
+                    using (FileStream fs = File.Open(path, FileMode.Create, FileAccess.Write))
                     {
-                        sw.Write(jsonString);
+                        using (StreamWriter sw = new StreamWriter(fs))
+                        {
+                            sw.Write(jsonString);
+                        }
                     }
-                }
 
-                _host.WriteLine($"Tasks updated!");
+                    _host.WriteLine($"Tasks updated!");
+                } else {
+                    _host.WriteLine("Error: Your file isn't JSON!");
+                       }
             }
             catch (Exception ex)
             {
@@ -106,26 +110,32 @@ namespace ToDoListApplication.TODOlist
         {
             try
             {
-                string path = await combineDesktopPathToFileName(fileName);
-                if (File.Exists(path))
+                if (IsJsonFile(fileName))
                 {
-                    string jsonString = File.ReadAllText(path);
-                    List<TodoTask> loadedTasks = JsonSerializer.Deserialize<List<TodoTask>>(jsonString);
-
-                    if (loadedTasks != null)
+                    string path = await combineDesktopPathToFileName(fileName);
+                    if (File.Exists(path))
                     {
-                        tasks = loadedTasks;
-                        nextTaskId = tasks.Count + 1;
-                        _host.WriteLine($"Tasks loaded successfully from {path}!");
+                        string jsonString = File.ReadAllText(path);
+                        List<TodoTask> loadedTasks = JsonSerializer.Deserialize<List<TodoTask>>(jsonString);
+
+                        if (loadedTasks != null)
+                        {
+                            tasks = loadedTasks;
+                            nextTaskId = tasks.Count + 1;
+                            _host.WriteLine($"Tasks loaded successfully from {path}!");
+                        }
+                        else
+                        {
+                            _host.WriteLine($"Error loading tasks from {path}. JSON data is invalid.");
+                        }
                     }
                     else
                     {
-                        _host.WriteLine($"Error loading tasks from {path}. JSON data is invalid.");
+                        _host.WriteLine($"File {fileName} not found. No tasks loaded.");
                     }
-                }
-                else
+                } else
                 {
-                    _host.WriteLine($"File {fileName} not found. No tasks loaded.");
+                    _host.WriteLine("Error: Your file isn't JSON!");
                 }
             }
             catch (Exception ex)
@@ -201,6 +211,11 @@ namespace ToDoListApplication.TODOlist
             {
                 task.Id = nextTaskId++;
             }
+        }
+
+        private bool IsJsonFile(string fileName)
+        {
+            return Path.GetExtension(fileName).Equals(".json", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

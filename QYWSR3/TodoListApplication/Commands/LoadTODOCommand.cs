@@ -16,7 +16,7 @@ namespace ToDoListApplication.Commands
 
         public override async void Execute()
         {
-            Host.WriteLine("Load your own TODO list in! Give me the name of your file, it must be .json!");
+            Host.WriteLine("Load your own TODO-list in! Give me the name of your file, it must be .json!");
             Host.Write("Input:");
             string fileNAME = Host.ReadLine();
             await todoList.LoadTODO(fileNAME);

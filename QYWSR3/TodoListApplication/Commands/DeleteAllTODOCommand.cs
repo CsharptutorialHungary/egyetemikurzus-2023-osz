@@ -16,7 +16,7 @@ namespace ToDoListApplication.Commands
 
         public override void Execute()
         {
-            Host.WriteLine("If you want to delete every TODO type in 'yes' !");
+            Host.WriteLine("If you want to delete every task from you TODO-list type in 'yes' !");
             Host.Write("Input:");
             string confirmation = Host.ReadLine();
             todoList.DeleteAllTODO(confirmation);

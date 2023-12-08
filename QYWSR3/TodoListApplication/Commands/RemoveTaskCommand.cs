@@ -16,6 +16,7 @@ namespace ToDoListApplication.Commands
 
         public override void Execute()
         {
+            Host.WriteLine("To see your tasks ID use the 'view' command");
             Host.WriteLine("Give task's ID to remove task!");
             Host.Write("Input:");
 
@@ -25,7 +26,7 @@ namespace ToDoListApplication.Commands
             }
             else
             {
-                Host.WriteLine("Invalid input. Please enter a valid ID.");
+                Host.WriteLine("Invalid input. Please enter a valid ID next time.");
             }
         }
     }

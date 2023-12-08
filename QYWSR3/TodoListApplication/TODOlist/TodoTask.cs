@@ -7,7 +7,6 @@ namespace ToDoListApplication.TODOlist
         public int Id { get; set; }
         public string Description { get; init; }
         public DateTime DueTime { get; set; }
-
         public TodoTask(int id, string description, DateTime dueTime)
         {
             Id = id;
