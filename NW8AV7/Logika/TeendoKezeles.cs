@@ -55,11 +55,39 @@ namespace NW8AV7.Logika
         private void TeendoModosit()
         {
             konzolKezeles.FejlecMutatasa(felhasznalo.Nev + " - Teendő módosítása");
+            konzolKezeles.InstrukcioaAdas("Kérlek válassz az alábbi teendők közül:", felhasznalo.Teendok.ToFormattedString());
+
+            int azonosito = konzolKezeles.SzamBeolvasas();
+            Teendo valasztottTeendo = TeendoKeres(azonosito);
+
+            konzolKezeles.InstrukcioaAdas("Kérem az új nevét a (" + valasztottTeendo.Nev + ") teendőnek: ");
+            String nev = konzolKezeles.SzovegBeolvasas();
+            valasztottTeendo.Nev = nev;
+
+            konzolKezeles.InstrukcioaAdas("Kérem az új leírasat a (" + valasztottTeendo.Leiras + ") teendőnek: ");
+            String leiras = konzolKezeles.SzovegBeolvasas();
+            valasztottTeendo.Leiras = leiras;
+
+            konzolKezeles.InstrukcioaAdas("Kérem az új prioritasat a (" + valasztottTeendo.Prioritas + ") teendőnek: ");
+            int prioritas = konzolKezeles.SzamBeolvasas();
+            valasztottTeendo.Prioritas = prioritas;
+
+            Fooldal();
         }
 
         private void TeendoTorles()
         {
             konzolKezeles.FejlecMutatasa(felhasznalo.Nev + " - Teendő törlése");
+            konzolKezeles.InstrukcioaAdas("Kérlek válassz az alábbi teendők közül:", felhasznalo.Teendok.ToFormattedString());
+
+            int azonosito = konzolKezeles.SzamBeolvasas();
+            Teendo valasztottTeendo = TeendoKeres(azonosito);
+
+            felhasznalo.Teendok.Remove(valasztottTeendo);
+
+            konzolKezeles.InformacioMutatasa(valasztottTeendo.ToString() + " törölve lett!");
+
+            Fooldal();
         }
 
         private void TeendoLetrehozas()
@@ -160,6 +188,11 @@ namespace NW8AV7.Logika
             }
 
             Fooldal();
+        }
+
+        private Teendo TeendoKeres(int sorszam)
+        {
+            return felhasznalo.Teendok.ElementAtOrDefault(sorszam - 1);
         }
     }
 }
