@@ -1,0 +1,362 @@
+[
+  {
+    "kerdes": "Mi a Dependency Injection (Függőséginjektálás) célja a szoftvertervezésben?",
+    "valaszA": "Elősegíti a kód újrafelhasználhatóságát.",
+    "valaszB": "Csökkenti az alkalmazás méretét.",
+    "valaszC": "Automatizálja a tesztelést.",
+    "valaszD": "Segít csökkenteni az osztályok közötti szoros kapcsolatot.",
+    "helyes": 4,
+    "tema": "programozás"
+  },
+  {
+    "kerdes": "Mi az a currying a funkcionális programozásban?",
+    "valaszA": "Egy kódbázis automatikus kiértékelése.",
+    "valaszB": "Egy függvény több bemeneti paramétere helyett egy paramétert vár, majd visszaad egy új függvényt, amely a maradék paramétereket várja.",
+    "valaszC": "Egy objektumorientált tervezési elv.",
+    "valaszD": "Egy technika, amely a memóriakezelést optimalizálja.",
+    "helyes": 3,
+    "tema": "programozás"
+  },
+  {
+    "kerdes": "Mi a 'Tail Call Optimization' célja a funkcionális programozásban?",
+    "valaszA": "Az egyszerű függvények teljesítményének optimalizálása.",
+    "valaszB": "Az öröklődés egyszerűsítése.",
+    "valaszC": "A rekurzív függvények hatékonyabbá tétele.",
+    "valaszD": "Az absztrakciós rétegek eltávolítása a kódból.",
+    "helyes": 3,
+    "tema": "programozás"
+  },
+  {
+    "kerdes": "Mi a 'Thunk' a funkcionális programozásban?",
+    "valaszA": "Egy összetett függvény.",
+    "valaszB": "Egy részlegesen alkalmazott függvény.",
+    "valaszC": "Egy időzített függvényhívás.",
+    "valaszD": "Egy ciklusfeltétel az algoritmikus kódban.",
+    "helyes": 2,
+    "tema": "programozás"
+  },
+  {
+    "kerdes": "Mi a CQRS (Command Query Responsibility Segregation) tervezési elve?",
+    "valaszA": "Az osztályok felelősségeit tisztán elválasztja, az egyik felelős a parancsokért, a másik a lekérdezésekért.",
+    "valaszB": "Az öröklődési hierarchiát optimalizálja.",
+    "valaszC": "A függvényeket szekvenciális sorrendben végrehajtó kódot tartalmaz.",
+    "valaszD": "Az objektumok számának minimalizálását célozza.",
+    "helyes": 1,
+    "tema": "programozás"
+  },
+  {
+    "kerdes": "Mi a 'MapReduce' szerepe a nagy adathalmazok feldolgozásában?",
+    "valaszA": "Az adatok összekapcsolása és kapcsolódásuk vizsgálata.",
+    "valaszB": "Az adatok párhuzamos feldolgozása és aggregálása.",
+    "valaszC": "Az adatok élettartamának kezelése.",
+    "valaszD": "Az adatok szervezése és indexelése a tárolás során.",
+    "helyes": 2,
+    "tema": "programozás"
+  },
+  {
+    "kerdes": "Mi a 'CAP theorem' alapelv és milyen választásokat kínál?",
+    "valaszA": "A biztonság, teljesítmény és elérhetőség kiegyensúlyozott kombinációja.",
+    "valaszB": "A konzisztencia, elérhetőség és hibatűrés kiegyensúlyozott kombinációja.",
+    "valaszC": "A kód, adat és interfész kiegyensúlyozott kombinációja.",
+    "valaszD": "A kódolás, optimalizálás és dokumentáció kiegyensúlyozott kombinációja.",
+    "helyes": 2,
+    "tema": "programozás"
+  },
+  {
+    "kerdes": "Mi a 'Memoization' célja az algoritmikus kódokban?",
+    "valaszA": "Az adatok tömörítése.",
+    "valaszB": "Az algoritmusok lefordítása a gépi kódba.",
+    "valaszC": "Az előzőleg kiszámított értékek gyorsított újrafelhasználása a későbbi műveletek során.",
+    "valaszD": "A memória rendszeres tisztítása.",
+    "helyes": 3,
+    "tema": "programozás"
+  },
+  {
+    "kerdes": "Mi a 'Docker' és mi a szerepe a konténerizációban?",
+    "valaszA": "Egy programnyelv a webfejlesztéshez.",
+    "valaszB": "Egy operációs rendszer.",
+    "valaszC": "Egy konténerizációs technológia, amely segít az alkalmazások és függőségeik izolálásában és könnyű hordozhatóságában.",
+    "valaszD": "Egy adatbázis-kezelő rendszer.",
+    "helyes": 3,
+    "tema": "programozás"
+  },
+  {
+    "kerdes": "Mi a 'Design by Contract' tervezési elv?",
+    "valaszA": "Az osztályokat olyan módon tervezi meg, hogy könnyen örökölhetők legyenek.",
+    "valaszB": "Egy olyan tervezési elv, amely hangsúlyozza a kód szépítését és egyszerűsítését.",
+    "valaszC": "Az interfészek és absztrakt osztályok közötti szigorú kapcsolat.",
+    "valaszD": "Egy olyan módszer, amely meghatározza az előfeltételeket és az utófeltételeket a függvényeknél és az osztályoknál.",
+    "helyes": 4,
+    "tema": "programozás"
+  },
+  {
+    "kerdes": "Ki volt az Amerikai Függetlenségi Háború vezéralakja?",
+    "valaszA": "Benjamin Franklin",
+    "valaszB": "George Washington",
+    "valaszC": "Thomas Jefferson",
+    "valaszD": "John Adams",
+    "helyes": 2,
+    "tema": "töri"
+  },
+  {
+    "kerdes": "Melyik évben kezdődött az első világháború?",
+    "valaszA": "1912",
+    "valaszB": "1914",
+    "valaszC": "1916",
+    "valaszD": "1918",
+    "helyes": 2,
+    "tema": "töri"
+  },
+  {
+    "kerdes": "Ki volt a világ első női miniszterelnöke?",
+    "valaszA": "Margaret Thatcher",
+    "valaszB": "Angela Merkel",
+    "valaszC": "Golda Meir",
+    "valaszD": "Indira Gandhi",
+    "helyes": 3,
+    "tema": "töri"
+  },
+  {
+    "kerdes": "Hol volt a D-Day partraszállás?",
+    "valaszA": "Normandia",
+    "valaszB": "Írország",
+    "valaszC": "Szardínia",
+    "valaszD": "Korzika",
+    "helyes": 1,
+    "tema": "töri"
+  },
+  {
+    "kerdes": "Melyik évben kezdődött az amerikai polgárháború?",
+    "valaszA": "1850",
+    "valaszB": "1861",
+    "valaszC": "1870",
+    "valaszD": "1885",
+    "helyes": 2,
+    "tema": "töri"
+  },
+  {
+    "kerdes": "Ki volt az első római császár?",
+    "valaszA": "Julius Caesar",
+    "valaszB": "Augustus",
+    "valaszC": "Nero",
+    "valaszD": "Caligula",
+    "helyes": 2,
+    "tema": "töri"
+  },
+  {
+    "kerdes": "Melyik évben alakult meg az ENSZ (Egyesült Nemzetek Szervezete)?",
+    "valaszA": "1945",
+    "valaszB": "1919",
+    "valaszC": "1936",
+    "valaszD": "1955",
+    "helyes": 1,
+    "tema": "töri"
+  },
+  {
+    "kerdes": "Ki volt a francia forradalom vezető alakja?",
+    "valaszA": "Marie Antoinette",
+    "valaszB": "Napoleon Bonaparte",
+    "valaszC": "Maximilien Robespierre",
+    "valaszD": "Louis XVI",
+    "helyes": 3,
+    "tema": "töri"
+  },
+  {
+    "kerdes": "Melyik évben égett le a római Colosseum?",
+    "valaszA": "64",
+    "valaszB": "79",
+    "valaszC": "110",
+    "valaszD": "145",
+    "helyes": 2,
+    "tema": "töri"
+  },
+  {
+    "kerdes": "Ki volt az első nő, aki megnyerte a Nobel-békedíjat?",
+    "valaszA": "Mother Teresa",
+    "valaszB": "Malala Yousafzai",
+    "valaszC": "Wangari Maathai",
+    "valaszD": "Marie Curie",
+    "helyes": 4,
+    "tema": "töri"
+  },
+  {
+    "kerdes": "Melyik a világ legnagyobb folyója?",
+    "valaszA": "Amazon",
+    "valaszB": "Nílus",
+    "valaszC": "Duna",
+    "valaszD": "Mississippi",
+    "helyes": 1,
+    "tema": "földrajz"
+  },
+  {
+    "kerdes": "Hol található a világ legmagasabb hegycsúcsa?",
+    "valaszA": "Mont Blanc",
+    "valaszB": "Mount Everest",
+    "valaszC": "Kilimandzsáró",
+    "valaszD": "Aconcagua",
+    "helyes": 2,
+    "tema": "földrajz"
+  },
+  {
+    "kerdes": "Melyik országban található a Taj Mahal?",
+    "valaszA": "India",
+    "valaszB": "Kína",
+    "valaszC": "Törökország",
+    "valaszD": "Japán",
+    "helyes": 1,
+    "tema": "földrajz"
+  },
+  {
+    "kerdes": "Melyik óceán határolja Észak-Amerikát északról?",
+    "valaszA": "Atlanti-óceán",
+    "valaszB": "Csendes-óceán",
+    "valaszC": "Északi jégóceán",
+    "valaszD": "Indiai-óceán",
+    "helyes": 3,
+    "tema": "földrajz"
+  },
+  {
+    "kerdes": "Mi a legnagyobb sivatag a világon?",
+    "valaszA": "Gobi-sivatag",
+    "valaszB": "Szahara",
+    "valaszC": "Atacama-sivatag",
+    "valaszD": "Mojave-sivatag",
+    "helyes": 2,
+    "tema": "földrajz"
+  },
+  {
+    "kerdes": "Melyik kontinensen található az Amazonas-medence?",
+    "valaszA": "Afrika",
+    "valaszB": "Dél-Amerika",
+    "valaszC": "Ázsia",
+    "valaszD": "Ausztrália",
+    "helyes": 2,
+    "tema": "földrajz"
+  },
+  {
+    "kerdes": "Hol helyezkedik el a Skalnaté pleso?",
+    "valaszA": "Svédország",
+    "valaszB": "Szlovákia",
+    "valaszC": "Olaszország",
+    "valaszD": "Norvégia",
+    "helyes": 2,
+    "tema": "földrajz"
+  },
+  {
+    "kerdes": "Melyik ország az Andok hegység legnagyobb részén terül el?",
+    "valaszA": "Chile",
+    "valaszB": "Argentína",
+    "valaszC": "Peru",
+    "valaszD": "Kolumbia",
+    "helyes": 1,
+    "tema": "földrajz"
+  },
+  {
+    "kerdes": "Mi a legnagyobb tavunk a Földön?",
+    "valaszA": "Kapszi-tenger",
+    "valaszB": "Vajda-tó",
+    "valaszC": "Északi-sarki-tenger",
+    "valaszD": "Fekete-tenger",
+    "helyes": 1,
+    "tema": "földrajz"
+  },
+  {
+    "kerdes": "Melyik város a Föld legnépesebb városa?",
+    "valaszA": "Peking",
+    "valaszB": "Delhi",
+    "valaszC": "Tokió",
+    "valaszD": "Mumbai",
+    "helyes": 1,
+    "tema": "földrajz"
+  },
+  {
+    "kerdes": "Melyik évben született Nikola Tesla, a világhírű szerb-amerikai feltaláló és mérnök?",
+    "valaszA": "1845",
+    "valaszB": "1856",
+    "valaszC": "1873",
+    "valaszD": "1901",
+    "helyes": 2,
+    "tema": "egyéb"
+  },
+  {
+    "kerdes": "Melyik városban található a világ legnagyobb épülete, a Burj Khalifa?",
+    "valaszA": "Párizs",
+    "valaszB": "New York",
+    "valaszC": "Dubai",
+    "valaszD": "Peking",
+    "helyes": 3,
+    "tema": "egyéb"
+  },
+  {
+    "kerdes": "Melyik évben találták fel a televíziót?",
+    "valaszA": "1888",
+    "valaszB": "1927",
+    "valaszC": "1945",
+    "valaszD": "1970",
+    "helyes": 2,
+    "tema": "egyéb"
+  },
+  {
+    "kerdes": "Melyik film nyerte el az 'Év Filmje' díjat a 2020-as Oscar-gálán?",
+    "valaszA": "1917",
+    "valaszB": "Joker",
+    "valaszC": "Once Upon a Time in Hollywood",
+    "valaszD": "Parasite",
+    "helyes": 4,
+    "tema": "egyéb"
+  },
+  {
+    "kerdes": "Melyik évben született az internet?",
+    "valaszA": "1990",
+    "valaszB": "1983",
+    "valaszC": "1969",
+    "valaszD": "2001",
+    "helyes": 3,
+    "tema": "egyéb"
+  },
+  {
+    "kerdes": "Melyik számítógépes program nyerte el először a sakkvilágbajnokságot?",
+    "valaszA": "AlphaGo",
+    "valaszB": "Deep Blue",
+    "valaszC": "DeepMind",
+    "valaszD": "Watson",
+    "helyes": 2,
+    "tema": "egyéb"
+  },
+  {
+    "kerdes": "Ki volt a világ első milliárdos üzletembere?",
+    "valaszA": "Andrew Carnegie",
+    "valaszB": "Henry Ford",
+    "valaszC": "John D. Rockefeller",
+    "valaszD": "Bill Gates",
+    "helyes": 3,
+    "tema": "egyéb"
+  },
+  {
+    "kerdes": "Ki volt az a fényképész, aki dokumentálta a Nagy Gazdasági Depressziót az Egyesült Államokban?",
+    "valaszA": "Ansel Adams",
+    "valaszB": "Walker Evans",
+    "valaszC": "Gordon Parks",
+    "valaszD": "Richard Avedon",
+    "helyes": 2,
+    "tema": "egyéb"
+  },
+  {
+    "kerdes": "Ki volt az első nő, aki átszelte az Atlanti-óceánt repülőgéppel egyedül?",
+    "valaszA": "Amelia Earhart",
+    "valaszB": "Bessie Coleman",
+    "valaszC": "Harriet Quimby",
+    "valaszD": "Jacqueline Cochran",
+    "helyes": 1,
+    "tema": "egyéb"
+  },
+  {
+    "kerdes": "Mi a legkeményebb természetes anyag a Földön?",
+    "valaszA": "Bórnitrid",
+    "valaszB": "Arany",
+    "valaszC": "Platina",
+    "valaszD": "Gyémánt",
+    "helyes": 4,
+    "tema": "egyéb"
+   }
+]
