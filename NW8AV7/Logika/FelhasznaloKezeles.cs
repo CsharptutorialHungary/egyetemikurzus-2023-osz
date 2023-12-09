@@ -47,6 +47,14 @@ namespace NW8AV7.Logika
         private void FelhasznaloKivalasztas()
         {
             konzolKezeles.FejlecMutatasa("Felhasználó kiválasztása");
+
+            if (MemoriaModel.Instance.Felhasznalok.Count == 0)
+            {
+                konzolKezeles.InformacioMutatasa("Jelenleg nincs felhasználó. Hozz létre egyet először.");
+                Fooldal();
+                return;
+            }
+
             konzolKezeles.InstrukcioaAdas("Kérlek válassz az alábbi felhasználók közül:", MemoriaModel.Instance.Felhasznalok.ToFormattedString());
 
             int azonosito = konzolKezeles.SzamBeolvasas();
@@ -80,6 +88,14 @@ namespace NW8AV7.Logika
         private void FelhasznaloTorles()
         {
             konzolKezeles.FejlecMutatasa("Felhasználó törlése");
+
+            if (MemoriaModel.Instance.Felhasznalok.Count == 0)
+            {
+                konzolKezeles.InformacioMutatasa("Jelenleg nincs felhasználó. Hozz létre egyet először.");
+                Fooldal();
+                return;
+            }
+
             konzolKezeles.InstrukcioaAdas("Kérlek válassz az alábbi felhasználók közül:", MemoriaModel.Instance.Felhasznalok.ToFormattedString());
 
             int azonosito = konzolKezeles.SzamBeolvasas();
@@ -95,6 +111,14 @@ namespace NW8AV7.Logika
         private void FelhasznaloModosit()
         {
             konzolKezeles.FejlecMutatasa("Felhasználó módosítása");
+
+            if (MemoriaModel.Instance.Felhasznalok.Count == 0)
+            {
+                konzolKezeles.InformacioMutatasa("Jelenleg nincs felhasználó. Hozz létre egyet először.");
+                Fooldal();
+                return;
+            }
+
             konzolKezeles.InstrukcioaAdas("Kérlek válassz az alábbi felhasználók közül:", MemoriaModel.Instance.Felhasznalok.ToFormattedString());
 
             int azonosito = konzolKezeles.SzamBeolvasas();

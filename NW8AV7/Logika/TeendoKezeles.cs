@@ -55,6 +55,14 @@ namespace NW8AV7.Logika
         private void TeendoModosit()
         {
             konzolKezeles.FejlecMutatasa(felhasznalo.Nev + " - Teendő módosítása");
+
+            if (felhasznalo.Teendok.Count == 0)
+            {
+                konzolKezeles.InformacioMutatasa("Jelenleg nincs teendő. Hozz létre egyet először.");
+                Fooldal();
+                return;
+            }
+
             konzolKezeles.InstrukcioaAdas("Kérlek válassz az alábbi teendők közül:", felhasznalo.Teendok.ToFormattedString());
 
             int azonosito = konzolKezeles.SzamBeolvasas();
@@ -78,6 +86,14 @@ namespace NW8AV7.Logika
         private void TeendoTorles()
         {
             konzolKezeles.FejlecMutatasa(felhasznalo.Nev + " - Teendő törlése");
+
+            if (felhasznalo.Teendok.Count == 0)
+            {
+                konzolKezeles.InformacioMutatasa("Jelenleg nincs teendő. Hozz létre egyet először.");
+                Fooldal();
+                return;
+            }
+
             konzolKezeles.InstrukcioaAdas("Kérlek válassz az alábbi teendők közül:", felhasznalo.Teendok.ToFormattedString());
 
             int azonosito = konzolKezeles.SzamBeolvasas();
