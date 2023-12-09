@@ -25,13 +25,13 @@ namespace NW8AV7.Model
             Felhasznalok = new List<Felhasznalo>();
         }
 
-        public void Betoltes(string utvonal)
+        public async Task Betoltes(string utvonal)
         {
             string jsonString = File.ReadAllText(utvonal);
             Felhasznalok = JsonSerializer.Deserialize<List<Felhasznalo>>(jsonString);
         }
 
-        public void Mentes(string utvonal)
+        public async Task Mentes(string utvonal)
         {
             string jsonString = JsonSerializer.Serialize(Felhasznalok);
             File.WriteAllText(utvonal, jsonString);
