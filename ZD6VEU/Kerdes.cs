@@ -29,16 +29,6 @@ namespace ConsoleApp_ZD6VEU
         public int helyes { get; set; }
         public string tema { get; set; }
 
-        //public IEnumerator<Kerdes> GetEnumerator()
-        //{
-        //    return Enumerable.Repeat(this, 1).GetEnumerator();
-        //}
-
-        //IEnumerator IEnumerable.GetEnumerator()
-        //{
-        //    return GetEnumerator();
-        //}
-
         public void temakFeltoltese()
         {
             if (!temak.Contains(this.tema))

@@ -80,13 +80,10 @@ namespace ConsoleApp_ZD6VEU
             Random random = new Random();
             List<Kerdes> kivalasztottKerdesek = new List<Kerdes>();
 
-            // Ellenőrizzük, hogy a kérés számú elem kiválasztható-e
             if (kerdesMenyiseg <= kerdesek.Count())
             {
-                // Az eredeti lista másolása
                 List<Kerdes> kerdesekMasolat = new List<Kerdes>(kerdesek);
 
-                // Véletlenszerű kiválasztás
                 for (int i = 0; i < kerdesMenyiseg; i++)
                 {
                     int index = random.Next(kerdesekMasolat.Count);
