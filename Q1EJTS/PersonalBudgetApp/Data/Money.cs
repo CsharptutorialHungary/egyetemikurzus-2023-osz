@@ -1,7 +1,7 @@
 ﻿
 namespace Q1EJTS.PersonalBudgetApp.Data
 {
-    public record Money(decimal Amount)
+    public sealed record Money(decimal Amount)
     {
         public override string ToString() => $"{Amount} HUF";
 
@@ -13,7 +13,7 @@ namespace Q1EJTS.PersonalBudgetApp.Data
 
         public static Money operator -(Money money1) => new Money(-money1.Amount);
 
+        public static implicit operator Money(decimal amount) => new Money(amount);
+
     }
-
-
 }
