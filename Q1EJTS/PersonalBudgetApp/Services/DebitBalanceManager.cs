@@ -21,7 +21,7 @@ namespace Q1EJTS.PersonalBudgetApp.Services
         public void UpdateBalance(Transaction transaction)
         {
             Money change;
-            if (transaction.Category == FinancialCategory.Bevetel)
+            if (transaction.Category == FinancialCategory.Income)
             {
                 change = transaction.Total;
             }
@@ -29,7 +29,7 @@ namespace Q1EJTS.PersonalBudgetApp.Services
             {
                 change = -transaction.Total;
                 CheckBalance(change);
-            }            
+            }
             _balance.UpdateBalance(change);
         }
         private void CheckBalance(Money change)

@@ -5,7 +5,7 @@ namespace Q1EJTS.PersonalBudgetApp.Services
     static class TransactionManager
     {
         private static List<Transaction> _transactions = new();
-        public static List<Transaction> Transaction
+        public static List<Transaction> Transactions
         {
             get { return _transactions; }
         }
@@ -18,7 +18,7 @@ namespace Q1EJTS.PersonalBudgetApp.Services
             balanceManager.UpdateBalance(transaction);
             _transactions.Add(transaction);
         }
-        public static void AddTransaction(List<Transaction> transactions, IBalanceManager balanceManager)
+        public static void AddTransaction(IEnumerable<Transaction> transactions, IBalanceManager balanceManager)
         {
             foreach (Transaction transaction in transactions)
             {
@@ -26,7 +26,7 @@ namespace Q1EJTS.PersonalBudgetApp.Services
             }
         }
 
-        public static void PrintTransaction(List<Transaction> transactions)
+        public static void PrintTransaction(IEnumerable<Transaction> transactions)
         {
             foreach (Transaction transaction in transactions)
             {
