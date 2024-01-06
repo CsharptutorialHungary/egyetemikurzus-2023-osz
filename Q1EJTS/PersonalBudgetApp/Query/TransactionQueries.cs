@@ -12,29 +12,29 @@ namespace Q1EJTS.PersonalBudgetApp.Query
     }
     static class TransactionQueries
     {
-        public static List<Transaction> SortTransactionsByDate(SortingOrder order)
+        public static IEnumerable<Transaction> SortTransactionsByDate(SortingOrder order)
         {
             if (order == SortingOrder.Descending)
             {
-                return TransactionManager.Transaction.OrderByDescending(t => t.Date).ToList();
+                return TransactionManager.Transactions.OrderByDescending(t => t.Date).ToList();
             }
-            return TransactionManager.Transaction.OrderBy(t => t.Date).ToList();
+            return TransactionManager.Transactions.OrderBy(t => t.Date).ToList();
 
         }
 
-        public static List<Transaction> FilterTransactionByCategory(FinancialCategory financialCategory)
+        public static IEnumerable<Transaction> FilterTransactionByCategory(FinancialCategory financialCategory)
         {
-            return TransactionManager.Transaction.Where(x => x.Category == financialCategory).ToList();
+            return TransactionManager.Transactions.Where(x => x.Category == financialCategory).ToList();
         }
         
-        public static List<Transaction> FilterTransactionsByYear(int year)
+        public static IEnumerable<Transaction> FilterTransactionsByYear(int year)
         {
-            return TransactionManager.Transaction.Where(x => x.Date.Year == year).ToList();
+            return TransactionManager.Transactions.Where(x => x.Date.Year == year).ToList();
         }
 
         public static Dictionary<FinancialCategory, List<Transaction>> GroupTransactionsByCategory()
         {
-            Dictionary<FinancialCategory, List<Transaction>> groupByCategory = TransactionManager.Transaction.GroupBy(x => x.Category).ToDictionary(group => group.Key, group => group.ToList());
+            Dictionary<FinancialCategory, List<Transaction>> groupByCategory = TransactionManager.Transactions.GroupBy(x => x.Category).ToDictionary(group => group.Key, group => group.ToList());
             foreach (KeyValuePair<FinancialCategory, List<Transaction>> entry in groupByCategory)
             {
                 Console.WriteLine(entry.Key + ":");
@@ -48,8 +48,8 @@ namespace Q1EJTS.PersonalBudgetApp.Query
 
         public static Dictionary<string,decimal> GroupByIncomeAndOutcome()
         {
-            var income = TransactionManager.Transaction.Where(x => x.Category == FinancialCategory.Bevetel).Sum(x => x.Total.Amount);
-            var outcome = TransactionManager.Transaction.Where(x => x.Category != FinancialCategory.Bevetel).Sum(x => x.Total.Amount);
+            var income = TransactionManager.Transactions.Where(x => x.Category == FinancialCategory.Income).Sum(x => x.Total.Amount);
+            var outcome = TransactionManager.Transactions.Where(x => x.Category != FinancialCategory.Income).Sum(x => x.Total.Amount);
             Dictionary<string, decimal> groupByIncomeAndOutcome = new Dictionary<string, decimal>();
             groupByIncomeAndOutcome.Add("Income", income);
             groupByIncomeAndOutcome.Add("Outcome", outcome);
@@ -61,14 +61,14 @@ namespace Q1EJTS.PersonalBudgetApp.Query
                 return groupByIncomeAndOutcome;
         }
 
-        public static List<Transaction> FilterTransactionsByDateRange(DateTime startDate, DateTime endDate)
+        public static IEnumerable<Transaction> FilterTransactionsByDateRange(DateTime startDate, DateTime endDate)
         {
-            return TransactionManager.Transaction.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+            return TransactionManager.Transactions.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
         }
 
-        public static List<Transaction> FilterTransactionsByMoneyRange(Money startAmount, Money endAmount)
+        public static IEnumerable<Transaction> FilterTransactionsByMoneyRange(Money startAmount, Money endAmount)
         {
-            return TransactionManager.Transaction.Where(x => x.Total >= startAmount && x.Total <= endAmount).ToList();
+            return TransactionManager.Transactions.Where(x => x.Total >= startAmount && x.Total <= endAmount).ToList();
         }
 
     }
