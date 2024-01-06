@@ -9,9 +9,9 @@ namespace Q1EJTS.PersonalBudgetApp.Serialization
         public static async Task Serialize(string filename)
         {
             CheckJson(filename);
-            string json = JsonConvert.SerializeObject(TransactionManager.Transaction, Formatting.Indented);
             try
             {
+                string json = JsonConvert.SerializeObject(TransactionManager.Transactions, Formatting.Indented);
                 await File.WriteAllTextAsync(filename, json);
             }
             catch (IOException exp)
@@ -39,7 +39,7 @@ namespace Q1EJTS.PersonalBudgetApp.Serialization
 
         private static void CheckJson(string filename)
         {
-            if (!filename.EndsWith("json"))
+            if (Path.GetExtension(filename) != "json")
             {
                 Console.WriteLine("A fájlnak json kiterjesztésűnek kell lennie!");
                 return;
